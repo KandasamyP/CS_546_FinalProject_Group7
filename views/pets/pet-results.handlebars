@@ -1,0 +1,15 @@
+<h1>Here are some adorable pets we found...</h1>
+<main>
+    <h2 class="results_page">{{searchTerm}}</h2>
+    <ul>
+        {{#each pets}}
+        <li>
+            <a href = "/pets/{{this.pet.id}}">{{this.pet.petName}}</a><br>
+        </li>
+        {{/each}}
+    </ul>
+</main>
+{{#unless pets.length}}
+    <p class="not-found">We're sorry, but no results were found for {{searchTerm}}.</p>
+{{/unless}}
+<a href="/" class="search_link">Make another search</a>

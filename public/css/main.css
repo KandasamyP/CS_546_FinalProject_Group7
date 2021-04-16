@@ -1,0 +1,24 @@
+.pet-pic {
+    max-width: 25%;
+    height: auto;
+    float: left;
+    margin-left: 20%;
+}
+
+.pet-text {
+    float: right;
+    max-width: 25%;
+    margin-right: 25%;
+}
+
+p {
+    margin-bottom: 3px;
+}
+
+.pet-text-list:after {
+    content: '||';
+}
+
+.pet-text-list:last-of-type:after {
+    content: '';
+}
