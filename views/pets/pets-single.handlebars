@@ -1,0 +1,15 @@
+<main>
+    <div class="pet_info">
+        <h1>{{pet.petName}}</h1>
+        <img src="../../public/images/{{pet.petPictures}}" alt="{{pet.petName}} image" class="pet-pic">
+        <p class="pet-text">Animal Type: {{pet.animalType}}</p>
+        <p class="pet-text">Filters: {{#each pet.filters}}{{this}}{{#unless @last}} || {{/unless}}{{/each}}</p>
+        <p class="pet-text">Breeds: {{#each pet.breeds}}{{this}}{{#unless @last}} / {{/unless}}{{/each}}</p>
+        <p class="pet-text">Sex: {{pet.sex}}</p>
+        <p class="pet-text">Currently Located: {{pet.currentLocation}}</p>
+        <p class="pet-text">Age Group: {{pet.ageGroup}}</p>
+        <p class="pet-text">Biography: {{pet.biography}}</p>
+        <p class="pet-text">Posted By: {{shelterName}}</p>
+        <p class="pet-text">Adoption Fee: ${{pet.adoptionFee}}</p>
+    </div>
+</main>
