@@ -16,7 +16,7 @@ const exportedMethods = {
             datePosted: today,
             petName: petName,
             animalType: animalType,
-            breeds: breeds,
+            breeds: breeds, //todo change this to accept arrays
             petPictures: petPictures,
             sex: sex,
             currentLocation: currentLocation,
@@ -79,11 +79,11 @@ const exportedMethods = {
         return pet;
     },
 
-    async searchPets() {
-        const petCollection = await pets();
+    async searchPets(animalType, breeds, ageGroups, sex, filters) {
 
 
-        return await petCollection.find({ 'petName': null }).toArray();
+
+        return await searchPetsByType.find({ 'animalType': animalType }).toArray();
     },
 
     // search by only one type at a time

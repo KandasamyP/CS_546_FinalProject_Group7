@@ -1,24 +1,30 @@
-.pet-pic {
-    max-width: 25%;
-    height: auto;
-    float: left;
-    margin-left: 20%;
-}
-
-.pet-text {
-    float: right;
-    max-width: 25%;
-    margin-right: 25%;
-}
-
-p {
-    margin-bottom: 3px;
-}
-
 .pet-text-list:after {
     content: '||';
 }
 
 .pet-text-list:last-of-type:after {
     content: '';
+}
+
+.carousel-small {
+    max-width: 50%;
+}
+
+.carousel {
+    height: 300px;
+}
+
+.carousel-item,
+.carousel-inner,
+.carousel-inner img {
+    height: 100%;
+    width: auto;
+}
+
+.carousel-item {
+    text-align: center;
+}
+
+.pet-carousel-bg {
+    background: rgb(44, 44, 44);
 }
