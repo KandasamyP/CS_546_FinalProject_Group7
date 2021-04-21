@@ -3,7 +3,7 @@ const connection = require('./config/mongoConnection');
 
 async function main() {
     try {
-        let pet = await pets.searchPetsByFilters(["blue"]);
+        let pet = await pets.searchPetsByAge(["Senior"]);
         console.log(pet);
     } catch (e) {
         console.log(e);

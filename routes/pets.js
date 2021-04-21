@@ -8,11 +8,6 @@ router.get("/:id", async (req, res) => {
 		return;
 	}
 
-	if (!Number.isInteger(parseFloat(req.params.id)) || parseInt(req.params.id) < 1) {
-		//res.status(404).render("error", {title: "404 Error", error: "Show ids can only be positive integers.", number: "404"});
-		return;
-	}
-
 	try {
 		// This endpoint returns an object that has all the details for a pet with that ID
 		const pet = await petsData.getPetById(req.params.id);
