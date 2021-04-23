@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const sheltersData = require("../data/shelters");
+
 
 router.get("/:id", async (req, res) => {
 	if (!req.params.id) {
@@ -8,8 +10,10 @@ router.get("/:id", async (req, res) => {
 	}
 
 	try {
+	
+		const shelter = await petsData.getPetById(req.params.id);
 
-		res.status(200).render("pets/individual_shelter");
+		res.status(200).render("pets/individual_shelter", {pet, shelterDetails: shelter});
 	} catch (e) {
 		//res.status(404).render("error", { title: "404 Error", error: "No pet was found.", number: 404 });
 	} 
