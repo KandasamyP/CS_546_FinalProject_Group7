@@ -17,5 +17,6 @@ const getCollectionFn = (collection) => {
 
 // list collections here
 module.exports = {
-    pets: getCollectionFn("pets")
+    pets: getCollectionFn("pets"),
+    shelters: getCollectionFn("shelters")
 };

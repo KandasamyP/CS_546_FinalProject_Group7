@@ -1,5 +1,5 @@
 const petsRoute = require("./pets");
-const shelterRoute = require("./shelter");
+const shelterRoute = require("./shelters");
 const path = require("path");
 
 const constructorMethod = (app) => {
