@@ -4,15 +4,16 @@ const shelters = mongoCollections.shelters;
 
 const exportedMethods = {
     // This async function will return the newly created shelter object
-    async addShelters(name, location, biography, phonenumber, website, socialmedia, availablePets, adoptedPets, reviews, websiteFeedbackGiven) {
+    async addShelters(name, emailAddress, location, biography, phonenumber, website, socialmedia, availablePets, adoptedPets, reviews, websiteFeedbackGiven) {
         // If any inputs are missing, the method should throw
-        if (!name, !location, !biography, !phonenumber, !website, !socialmedia, !availablePets, !adoptedPets, !reviews, !websiteFeedbackGiven) 
+        if (!name, !emailAddress, !location, !biography, !phonenumber, !website, !socialmedia, !availablePets, !adoptedPets, !reviews, !websiteFeedbackGiven) 
             throw "There is at least one missing input argument.";
         
         const sheltersCollection = await shelters();
 
         let newShelter = {
             name: name,
+            emailAddress: emailAddress,
             location: location,
             biography: biography, 
             phonenumber: phonenumber,
@@ -56,7 +57,7 @@ const exportedMethods = {
             throw "Shelter not found";
     
         shelter._id = shelter._id.toString();
-        
+
         return shelter;
     }
 }

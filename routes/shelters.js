@@ -11,9 +11,9 @@ router.get("/:id", async (req, res) => {
 
 	try {
 	
-		const shelter = await petsData.getPetById(req.params.id);
+		const shelter = await sheltersData.getShelterById(req.params.id);
 
-		res.status(200).render("pets/individual_shelter", {pet, shelterDetails: shelter});
+		res.status(200).render("pets/individual-shelter", {shelterDetails: shelter});
 	} catch (e) {
 		//res.status(404).render("error", { title: "404 Error", error: "No pet was found.", number: 404 });
 	} 
