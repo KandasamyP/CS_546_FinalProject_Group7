@@ -1,7 +1,10 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require("../data/");
+let { ObjectId } = require("mongodb");
+
 const pets = data.pets;
 const shelters = data.shelters;
+
 
 async function main() {
     const db = await dbConnection();
@@ -52,7 +55,7 @@ async function main() {
 
     const fur_shelter = await shelters.addShelters("Fur-iends Animal Rescue", 
         "staff@furiendsanimalrescue.com", 
-        '{"streetAddress1": "9999 4th Street", "streetAddress2": "", "city": "Hoboken",  "stateCode": "NJ",  "zipCode": "07030" }',
+        {"streetAddress1": "9999 4th Street", "streetAddress2": "", "city": "Hoboken",  "stateCode": "NJ",  "zipCode": "07030" },
         "Fur-iends Animal Rescue opened in Hoboken, NJ in April 2020 in the midst of the coronavirus pandemic. It is our mission to find the perfect match for our animals.",
         "2015551234",
         "furiendsanimalrescue.com",
@@ -62,15 +65,16 @@ async function main() {
         ["6064a5f081004bcfbc33d6c5"],
         [
             {
-                "reviewDate": "3/26/21",
+                "reviewDate": new Date("3/26/21"),
                 "rating": "5",
                 "reviewBody": "They were very nice and helpful when I was looking for a new pet to adopt!",
+                "reviewer": ObjectId("6063d0e4be26b8a5128c59e1")
             }
         ],
         [
             {
                 "feedback": "This website is user friendly. Posting adoptable pets through this website was easy.",
-                "date": "3/26/21",
+                "date": new Date("3/26/21"),
                 "rating": 5
             }
         ]    
