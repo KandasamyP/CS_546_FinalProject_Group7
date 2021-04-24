@@ -1,7 +1,10 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require("../data/");
+let { ObjectId } = require("mongodb");
+
 const pets = data.pets;
 const shelters = data.shelters;
+
 
 async function main() {
     const db = await dbConnection();
@@ -65,6 +68,7 @@ async function main() {
                 "reviewDate": new Date("3/26/21"),
                 "rating": "5",
                 "reviewBody": "They were very nice and helpful when I was looking for a new pet to adopt!",
+                "reviewer": ObjectId("6063d0e4be26b8a5128c59e1")
             }
         ],
         [
