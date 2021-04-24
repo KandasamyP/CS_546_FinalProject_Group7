@@ -1,2 +1,56 @@
+<section id="individualShelter">
     <h2 class="results_page">{{shelterDetails.name}}</h2>
     <p>{{shelterDetails.biography}}</p>
+    <hr/>
+
+    <div class="row rowDetail">
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Email:</label> 
+                </span>
+                <span class="col-md-9">
+                    {{shelterDetails.emailAddress}}
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Phone:</label> 
+                </span>
+                <span class="col-md-9">
+                    {{shelterDetails.phonenumber}}
+                </span>
+            </div>            
+        </div>
+    </div>
+
+    <div class="row rowDetail">
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Location:</label> 
+                </span>
+                <span class="col-md-9">
+                    {{shelterDetails.location.streetAddress1}} {{shelterDetails.location.streetAddress2}}, {{shelterDetails.location.city}}, {{shelterDetails.location.stateCode}}, {{shelterDetails.location.zipCode}}
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Website:</label> 
+                </span>
+                <span class="col-md-9">
+                    {{#each shelterDetails.socialmedia}}
+                    <a> {{this}} </a>
+                    {{/each}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+
+</section>

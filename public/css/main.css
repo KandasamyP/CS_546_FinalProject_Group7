@@ -28,3 +28,12 @@
 .pet-carousel-bg {
     background: rgb(44, 44, 44);
 }
+
+#individualShelter label {
+    margin: 0px 30px;
+    font-weight: bolder;
+}
+
+#individualShelter .rowDetail {
+    margin-bottom: 15px;
+}
