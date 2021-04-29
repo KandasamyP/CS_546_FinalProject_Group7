@@ -1,18 +1,17 @@
 <main>
     <div class="pet_info">
-        <h1>{{pet.petName}}</h1>
-        <!--<img src="../../public/images/{{pet.petPictures}}" alt="{{pet.petName}} image" class="pet-pic">-->
+        <h1 class="text-centery">Meet {{pet.petName}}!</h1>
         <section class="pet-carousel-bg w-50">
             <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                 {{#each pet.petPictures}}
+                {{#each pet.petPictures}}
                     <li data-target="#carousel-indicators" data-slide-to="{{@index}}"{{#if @first}} class="active"{{/if}}></li>
                 {{/each}}
                 </ol>
                 <div class="carousel-inner">
                     {{#each pet.petPictures}}
                     <div class="carousel-item{{#if @first}} active{{/if}}">
-                        <img class="img-fluid" src="../../public/images/{{this}}" alt="{{pet.petName}}">
+                        <img class="img-fluid" src="../../public/images/pets/{{this}}" alt="{{pet.petName}}">
                     </div>
                     {{/each}}
                 </div>
@@ -26,14 +25,26 @@
                 </a>
             </div>
         </section>
-        <p class="pet-text">Animal Type: {{pet.animalType}}</p>
-        <p class="pet-text">Filters: {{#each pet.filters}}{{this}}{{#unless @last}} || {{/unless}}{{/each}}</p>
-        <p class="pet-text">Breeds: {{#each pet.breeds}}{{this}}{{#unless @last}} / {{/unless}}{{/each}}</p>
-        <p class="pet-text">Sex: {{pet.sex}}</p>
-        <p class="pet-text">Currently Located: {{pet.currentLocation}}</p>
-        <p class="pet-text">Age Group: {{pet.ageGroup}}</p>
-        <p class="pet-text">Biography: {{pet.biography}}</p>
-        <p class="pet-text">Posted By: {{shelterName}}</p>
-        <p class="pet-text">Adoption Fee: ${{pet.adoptionFee}}</p>
+        <!--<span class="fas fa-heart"></span>-->
+        <h3>Animal Type</h3>
+        <h5>{{pet.animalType}}</h5>
+        <h3>Breeds</h3>
+        <h5>{{#each pet.breeds}}{{this}}{{#unless @last}} / {{/unless}}{{/each}}</h5>
+        <h3>Sex</h3>
+        <h5>{{pet.sex}}</h5>
+        <h3>Age Group</h3>
+        <h5>{{pet.ageGroup}}</h5>
+        <h3>Physical Characteristics</h3>
+        <h5>{{#each physicalCharacteristics}}<span class="badge badge-success">{{this}}</span> {{/each}}</h5>
+        <h3>Behavior and Lifestyle</h3>
+        <h5>{{#each otherFilters}}<span class="badge badge-success">{{this}}</span> {{/each}}</h5>
+        <h3>Currently Located</h3>
+        <h5>{{pet.currentLocation}}</h5>
+        <h3>Biography</h3>
+        <h5>{{pet.biography}}</h5>
+        <h3>Posted By</h3>
+        <h5>{{shelterName}}</h5>
+        <h3>Adoption Fee</h3>
+        <h5>${{pet.adoptionFee}}</h5>
     </div>
 </main>

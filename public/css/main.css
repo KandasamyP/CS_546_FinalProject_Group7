@@ -1,9 +1,5 @@
-.pet-text-list:after {
-    content: '||';
-}
-
-.pet-text-list:last-of-type:after {
-    content: '';
+.bg-custom-color {
+    background-color: #edf5e1;
 }
 
 .carousel-small {

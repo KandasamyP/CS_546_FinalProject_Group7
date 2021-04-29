@@ -1,4 +1,5 @@
 const mongoCollections = require("../config/mongoCollections")
+const zipcodes = require("zipcodes-nearby");
 let { ObjectId } = require("mongodb");
 const pets = mongoCollections.pets;
 
@@ -16,7 +17,7 @@ const exportedMethods = {
             datePosted: today,
             petName: petName,
             animalType: animalType,
-            breeds: breeds, //todo change this to accept arrays
+            breeds: breeds,
             petPictures: petPictures,
             sex: sex,
             currentLocation: currentLocation,
@@ -149,9 +150,28 @@ const exportedMethods = {
         }
 
         return petIds;
-    }
+    },
 
-    // todo add distance search https://docs.mongodb.com/manual/tutorial/calculate-distances-using-spherical-geometry-with-2d-geospatial-indexes/
+    // search by distance
+    async searchPetsByDistance(zip, dist) {
+        const zips = await getDistance(zip, dist);
+
+        const petCollection = await pets();
+        const petResults = await petCollection.find({ currentLocation: { $in: zips } }).toArray();
+        let petIds = [];
+
+        for (let i = 0; i < petResults.length; i++) {
+            petIds.push(petResults[i]._id.toString());
+        }
+
+        return petIds;
+    }
 };
+
+async function getDistance(zip, dist) {
+    let metersPerMile = 1609.34;
+    let zips = zipcodes.near(zip, dist*metersPerMile, { datafile: './public/zipcodes.csv' });
+    return zips;
+}
 
 module.exports = exportedMethods;
