@@ -12,6 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+// exphbs.registerHelper('loud', function (aString) {
+//     return aString.toUpperCase()
+// })
+
 configRoutes(app);
 
 app.listen(3000, () => {
