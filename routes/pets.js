@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const petsData = require("../data/pets");
+const csvsync = require('csvsync');
+const fs = require('fs');
 
 router.get("/:id", async (req, res) => {
 	if (!req.params.id) {
@@ -15,7 +17,19 @@ router.get("/:id", async (req, res) => {
 		// todo change this to getShelterById and select the shelter name
 		const shelterName = pet.associatedShelter;
 
-		res.status(200).render("pets/pets-single", {pet, shelterName: shelterName});
+		const physicalCharacteristics = csvsync.parse(fs.readFileSync('data/petInformation/dogPhysical.csv'));
+		let petPhys = [];
+		let petBehavior = [];
+
+		for (let i = 0; i < pet.filters.length; i++) {
+			if (physicalCharacteristics[0].includes(pet.filters[i])) {
+				petPhys.push(pet.filters[i]);
+			} else {
+				petBehavior.push(pet.filters[i]);
+			}
+		}
+		
+		res.status(200).render("pets/pets-single", {pet, physicalCharacteristics: petPhys, otherFilters: petBehavior, shelterName: shelterName});
 	} catch (e) {
 		//res.status(404).render("error", { title: "404 Error", error: "No pet was found.", number: 404 });
 	} 
