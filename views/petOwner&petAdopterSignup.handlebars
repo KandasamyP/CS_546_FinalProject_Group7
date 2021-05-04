@@ -1,5 +1,11 @@
+<header>
+    <h1>Pet Owner & Adopter Sign Up Page</h1>
+</header>
 <main>
-    <form method="POST" id="petOwner-signupForm" action="">
+    <form method="POST" id="petOwner-signupForm" action="/signup/petOwner&petAdopter">
+        <label for="profilePicture">Profile Picture Public URL:</label><br>
+        <input type="text" id="profilePicture" name="profilePicture"><br>
+
         <label for="fname">First name:</label><br>
         <input type="text" id="fname" name="fname"><br>
 
@@ -27,3 +33,5 @@
         <button type="submit">Sign Up</button>
     </form>
 </main>
+
+<script src="/public/js/homepage.js"></script>

@@ -19,8 +19,19 @@ router.get("/login", async (req, res) => {
   res.status(200).render("login");
 });
 
-router.get("/signup/shelter&rescue", async (req, res) => {
+router.get("/signup/sr", async (req, res) => {
   res.status(200).render("shelter&rescueSignup");
+});
+
+router.post("/signup/sr", async (req, res) => {
+  const signupData = req.body;
+
+  try {
+    const newSrUser = await getAPetData.addSr(signupData);
+    res.redirect("/");
+  } catch (e) {
+    res.status(e.status).json({ error: e.error });
+  }
 });
 
 router.get("/signup/petOwner&petAdopter", async (req, res) => {
