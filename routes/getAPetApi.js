@@ -34,15 +34,15 @@ router.post("/signup/sr", async (req, res) => {
   }
 });
 
-router.get("/signup/petOwner&petAdopter", async (req, res) => {
+router.get("/signup/popa", async (req, res) => {
   res.status(200).render("petOwner&petAdopterSignup");
 });
 
-router.post("/signup/petOwner&petAdopter", async (req, res) => {
+router.post("/signup/popa", async (req, res) => {
   const signupData = req.body;
 
   try {
-    const newPetUser = await getAPetData.addPetOwner(signupData);
+    const newPoPa = await getAPetData.addPoPa(signupData);
     res.redirect("/");
   } catch (e) {
     res.status(e.status).json({ error: e.error });

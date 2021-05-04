@@ -2,6 +2,9 @@
     <h1>Shelter & Rescue Sign Up Page</h1>
 </header>
 <main>
+    <div id="error" hidden>
+        <ul id="errorList"></ul>
+    </div>
     <form method="POST" id="shelterRescue-signupForm" action="/signup/sr">
         <label for="profilePicture">Profile Picture Public URL:</label><br>
         <input type="text" id="profilePicture" name="profilePicture"><br>
@@ -16,7 +19,18 @@
         <input type="password" id="password" name="password"><br>
 
         <label for="location">Location:</label><br>
-        <input type="text" id="location" name="location"><br>
+        <div>
+            <input type="hidden" name="country" id="countryId" value="US" />
+            <select name="state" class="states order-alpha" id="stateId">
+                <option value="">Select State</option>
+            </select>
+            <select name="city" class="cities order-alpha" id="cityId">
+                <option value="">Select City</option>
+            </select>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="//geodata.solutions/includes/statecity.js"></script>
+        </div>
+
 
         <label for="biography">Biography:</label><br>
         <input type="text" id="biography" name="biography"><br>
@@ -33,3 +47,6 @@
         <button type="submit">Sign Up</button>
     </form>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="/public/js/shelter&rescueSignup.js"></script>
