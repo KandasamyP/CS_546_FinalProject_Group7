@@ -80,91 +80,56 @@ const exportedMethods = {
         return pet;
     },
 
-    async searchPets(animalType, breeds, ageGroups, sex, filters) {
-
-
-
-        return await searchPetsByType.find({ 'animalType': animalType }).toArray();
-    },
-
-    // search by only one type at a time
-    async searchPetsByType(animalType) {
-        const petCollection = await pets();
-        const petResults = await petCollection.find({ 'animalType': animalType }).toArray();
-        let petIds = [];
-
-        for (let i = 0; i < petResults.length; i++) {
-            petIds.push(petResults[i]._id.toString());
+    async searchPets(animalType, breeds, ageGroups, sex, filters, zip, distance) {
+        let searchObj = {
+            animalType: animalType
         }
 
-        return petIds;
-    },
+        if (breeds.length > 0) {
+            searchObj.breeds = {
+                $in: breeds
+            }
+        };
 
-    // search by any number of breeds
-    async searchPetsByBreed(breeds) {
+        if (ageGroups.length > 0) {
+            searchObj.ageGroup = {
+                $in: ageGroups
+            }
+        };
+
+        if (sex.length > 0) {
+            searchObj.sex = {
+                $in: sex
+            }
+        };
+
+        if (filters.length > 0) {
+            searchObj.filters = {
+                $all: filters // todo probably should separate appearance and behaviors. sigh.
+            }
+        };
+
+        const zips = await getDistance(zip, distance);
+        searchObj.currentLocation = {
+            $in: zips
+        };
+        
         const petCollection = await pets();
-        const petResults = await petCollection.find({ breeds: { $in: breeds } }).toArray();
-        let petIds = [];
+        const petResults = await petCollection.find(searchObj).toArray();
+        let petArr = [];
 
         for (let i = 0; i < petResults.length; i++) {
-            petIds.push(petResults[i]._id.toString());
+            let pet = {
+                _id: petResults[i]._id.toString(),
+                petName: petResults[i].petName,
+                ageGroup: petResults[i].ageGroup,
+                sex: petResults[i].sex,
+                defaultPic: petResults[i].petPictures[0]
+            }
+            petArr.push(pet);
         }
 
-        return petIds;
-    },
-
-    // search by any number of age groups (puppy, young, adult, senior)
-    async searchPetsByAge(ageGroups) {
-        const petCollection = await pets();
-        const petResults = await petCollection.find({ ageGroup: { $in: ageGroups } }).toArray();
-        let petIds = [];
-
-        for (let i = 0; i < petResults.length; i++) {
-            petIds.push(petResults[i]._id.toString());
-        }
-
-        return petIds;
-    },
-
-    // search by only one sex
-    async searchPetsBySex(sex) {
-        const petCollection = await pets();
-        const petResults = await petCollection.find({ sex: sex }).toArray();
-        let petIds = [];
-
-        for (let i = 0; i < petResults.length; i++) {
-            petIds.push(petResults[i]._id.toString());
-        }
-
-        return petIds;
-    },
-
-    // search by any filters
-    async searchPetsByFilters(filters) {
-        const petCollection = await pets();
-        const petResults = await petCollection.find({ filters: { $in: filters } }).toArray();
-        let petIds = [];
-
-        for (let i = 0; i < petResults.length; i++) {
-            petIds.push(petResults[i]._id.toString());
-        }
-
-        return petIds;
-    },
-
-    // search by distance
-    async searchPetsByDistance(zip, dist) {
-        const zips = await getDistance(zip, dist);
-
-        const petCollection = await pets();
-        const petResults = await petCollection.find({ currentLocation: { $in: zips } }).toArray();
-        let petIds = [];
-
-        for (let i = 0; i < petResults.length; i++) {
-            petIds.push(petResults[i]._id.toString());
-        }
-
-        return petIds;
+        return petArr;
     }
 };
 

@@ -1,14 +1,8 @@
 const petsRoute = require("./pets");
 const shelterRoute = require("./shelters");
-const path = require("path");
 
 const constructorMethod = (app) => {
 	app.use("/pets", petsRoute);
-
-	/*app.get("/", (req, res) => {
-		res.sendFile(path.resolve("static/index.html")); 
-	});*/
-
 	app.use("/shelters", shelterRoute);
 
 	// All other URLS should return a 404
