@@ -1,0 +1,217 @@
+<main>
+    <h1>What type of pet are you looking for?</h1>
+    <div class="container" style="width:75%"> <!-- todo put this in main.css -->
+        <div class="row">
+            <div class="col-sm">
+                <label class="btn">
+                    <button type="button" id="choose-dog" class="choose-animal-type">
+                    <img src="../../public/images/site/choose-dog.png" class="img-fluid">
+                    <div class="choose-pet-text">Search for dogs</div>
+                </label>
+            </div>
+            <div class="col-sm">
+                <label class="btn">
+                    <button type="button" id="choose-cat" class="choose-animal-type">
+                    <img src="../../public/images/site/choose-cat.png" class="img-fluid">
+                    <div class="choose-pet-text">Search for cats</div>
+                </label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <form method="POST" id="dog-chosen" action="/pets/search">
+        <h3>Great! Let's get more specific on what kind of dog you're looking for.</h3>
+        <p>You may select by breed, approximate age, sex, appearance, behavior, and lifestyle, but the only requirement is that you enter a United States zip code!</p>
+        <p>Leaving distance blank will default your search radius to 50 miles.</p>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Breeds
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each dogBreeds}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="breeds" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Age Group
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Puppy">Puppy
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Young">Young
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Adult">Adult
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Senior">Senior
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sex
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="sex" value="Female">Female
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="sex" value="Male">Male
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Physical Appearance
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each dogAppearance}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="appearance" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Behavior and Lifestyle
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each behavior}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="behaviors" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <input type="number" id="zip-code" name="zipCodeDogs" placeholder="Zip code" min="00501" max="99950" required>
+        <input type="number" id="distance" name="distance" placeholder="Distance (mi)" min="0" max="500">
+        <input type="submit" value="Search" />
+    </form>
+
+    <form method="POST" id="cat-chosen" action="/pets/search">
+        <h3>Great! Let's get more specific on what kind of cat you're looking for.</h3>
+        <p>You may select by breed, approximate age, sex, appearance, behavior, and lifestyle, but the only requirement is that you enter a United States zip code!</p>
+        <p>Leaving distance blank will default your search radius to 50 miles.</p>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Breeds
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each catBreeds}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="breeds" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Age Group
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Kitten">Kitten
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Young">Young
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Adult">Adult
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="ageGroup" value="Senior">Senior
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sex
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="sex" value="Female">Female
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="sex" value="Male">Male
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Physical Appearance
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each catAppearance}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="appearance" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Behavior and Lifestyle
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each behavior}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="behaviors" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <input type="number" id="zip-code" name="zipCodeCats" placeholder="Zip code" min="00501" max="99950" required>
+        <input type="number" id="distance" name="distance" placeholder="Distance (mi)" min="0" max="500">
+        <input type="submit" value="Search" />
+    </form>
+    <br>
+    <br>
+    <br>
+</main>
+
+<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script>
+<script src='../../public/js/pet-search.js'></script>

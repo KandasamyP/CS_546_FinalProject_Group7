@@ -4,7 +4,7 @@ const petsData = require("../data/pets");
 const csvsync = require('csvsync');
 const fs = require('fs');
 
-router.get("/:id", async (req, res) => {
+router.get("/pet/:id", async (req, res) => {
 	if (!req.params.id) {
 		//res.status(404).render("error", {title: "404 Error", error: "No id supplied.", number: "404"});
 		return;
@@ -35,20 +35,93 @@ router.get("/:id", async (req, res) => {
 	} 
 });
 
-router.post("/", async (req, res) => {
-	if (req.body.searchTerm.trim().length === 0) {
-		res.status(400).render("pets/error", { title: "400 Error", number: "400", error: "You must provide a search term" });
-		return;
-	}
+router.post("/search", async (req, res) => { 
+	try {
+		let inputAnimalType = req.body.zipCodeDogs ? "Dog" : "Cat";
+		let inputBreeds = req.body.breeds;
+		let inputAgeGroups = req.body.ageGroup;
+		let inputSex = req.body.sex;
+		let inputAppearance = req.body.appearance;
+		let inputBehaviors = req.body.behaviors;
+		let inputZip = req.body.zipCodeDogs ? req.body.zipCodeDogs : req.body.zipCodeCats;
+		let inputDistance = req.body.distance;
 
-  	try {
-		let searchResults = await searchData.getShowsBySearchTerm(req.body.searchTerm);
-		// if search results are empty, the view will state no matches were found
-		res.status(200).render("pets/pet-results", { title: "Shows Found", searchTerm: req.body.searchTerm , shows: searchResults });
-  	} catch (e) {
-    	res.status(500).render("pets/error", { title: "500 Error", number: "500", error: "Unknown error occurred." });
-  	}
-})
+		if (inputBreeds == undefined) {
+			inputBreeds = [];
+		} else if (!Array.isArray(inputBreeds)) {
+			inputBreeds = [inputBreeds];
+		}
+
+		if (inputAgeGroups == undefined) {
+			inputAgeGroups = [];
+		} else if (!Array.isArray(inputAgeGroups)) {
+			inputAgeGroups = [inputAgeGroups];
+		}
+
+		if (inputSex == undefined) {
+			inputSex = [];
+		} else if (!Array.isArray(inputSex)) {
+			inputSex = [inputSex];
+		}
+
+		if (inputAppearance == undefined) {
+			inputAppearance = [];
+		} else if (!Array.isArray(inputAppearance)) {
+			inputAppearance = [inputAppearance];
+		}
+
+		if (inputBehaviors == undefined) {
+			inputBehaviors = [];
+		} else if (!Array.isArray(inputBehaviors)) {
+			inputBehaviors = [inputBehaviors];
+		}
+
+		let inputFilters = inputAppearance.concat(inputBehaviors);
+
+		if (inputDistance == "") {
+			inputDistance = 50; // default to 50 miles if left blank
+		}
+
+		let searchResults = await petsData.searchPets(
+			inputAnimalType, inputBreeds, inputAgeGroups, inputSex, inputFilters, inputZip, inputDistance);
+
+		if (searchResults.length > 0) {
+			res.status(200).render("pets/pet-results", { searchTerm: inputBreeds, pets: searchResults });
+		} else {
+			res.status(200).render("pets/pet-search");
+		}
+	} catch (e) {
+		res.status(500).render("pets/error", { title: "500 Error", number: "500", error: e });
+	}
+});
+
+router.get("/", async (req, res) => { 
+	try {
+		const dogPhysicalCharacteristics = csvsync.parse(fs.readFileSync('data/petInformation/dogPhysical.csv'))[0];
+		const dogBreeds = csvsync.parse(fs.readFileSync('data/petInformation/dogBreeds.csv'))[0];
+		const catPhysicalCharacteristics = csvsync.parse(fs.readFileSync('data/petInformation/catPhysical.csv'))[0];
+		const catBreeds = csvsync.parse(fs.readFileSync('data/petInformation/catBreeds.csv'))[0];
+		const behaviors = csvsync.parse(fs.readFileSync('data/petInformation/behaviors.csv'))[0];
+
+		res.status(200).render("pets/pet-search", {dogBreeds: dogBreeds, dogAppearance: dogPhysicalCharacteristics, catBreeds: catBreeds, catAppearance: catPhysicalCharacteristics, behavior: behaviors});
+	} catch (e) {
+		res.status(500).render("pets/error", { title: "500 Error", number: "500", error: "Unknown error occurred." });
+	}
+});
+
+router.get("/new", async (req, res) => { 
+	try {
+		const dogPhysicalCharacteristics = csvsync.parse(fs.readFileSync('data/petInformation/dogPhysical.csv'))[0];
+		const dogBreeds = csvsync.parse(fs.readFileSync('data/petInformation/dogBreeds.csv'))[0];
+		const catPhysicalCharacteristics = csvsync.parse(fs.readFileSync('data/petInformation/catPhysical.csv'))[0];
+		const catBreeds = csvsync.parse(fs.readFileSync('data/petInformation/catBreeds.csv'))[0];
+		const behaviors = csvsync.parse(fs.readFileSync('data/petInformation/behaviors.csv'))[0];
+
+		res.status(200).render("pets/pet-add", {dogBreeds: dogBreeds, dogAppearance: dogPhysicalCharacteristics, catBreeds: catBreeds, catAppearance: catPhysicalCharacteristics, behavior: behaviors});
+	} catch (e) {
+		res.status(500).render("pets/error", { title: "500 Error", number: "500", error: "Unknown error occurred." });
+	}
+});
 
 
 module.exports = router;

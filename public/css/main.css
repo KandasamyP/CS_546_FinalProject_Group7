@@ -33,3 +33,32 @@
 #individualShelter .rowDetail {
     margin-bottom: 15px;
 }
+
+.card-width-18 {
+    width: 18rem;
+}
+
+.dropdown-menu {         
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+label input {
+    margin-right:5px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+    width: 100px;
+}
+
+.choose-animal-type:hover {
+    cursor: pointer;
+}
