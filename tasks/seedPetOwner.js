@@ -1,16 +1,19 @@
 const dbConnection = require("../config/mongoConnection");
 const petOwnerData = require("../data/petOwner");
 const { ObjectId } = require('mongodb');
+const bcrypt = require('bcrypt');
+const saltRounds = 16;
 
 async function main(){
     const db = await dbConnection();
     await db.dropDatabase();
 
+    const hashedPassword1 = await bcrypt.hash("johnDoe", saltRounds);
     await petOwnerData.addPetOwner(
-    "john.jpg",
+    "no_image.png",
     {firstName: "John", lastName: "Doe"},
     "johndoe@stevens.edu",
-    "5F4DCC3B5AA765D61D8327DEB882CF99",
+    hashedPassword1,
     2011234567,
     "07030",
     "I love animals and I’m searching for a dog or cat sibling for my current dog.",
@@ -19,7 +22,7 @@ async function main(){
     [
             {
                 _id: ObjectId(),
-                feedback: "Adopting through this site is great!",
+                description: "Adopting through this site is great!",
                 date: "3/25/21",
                 rating: 5
             }
@@ -30,11 +33,13 @@ async function main(){
     true
     );
 
+    const hashedPassword2 = await bcrypt.hash("TheOffice", saltRounds);
+
     await petOwnerData.addPetOwner(
-        "Steve.jpg",
+        "Steve.png",
         {firstName: "Steve", lastName: "Carell"},
         "stevecarell@dundermifflin.com",
-        "5F4DCC3B5AA765D61D8327DEB882CF98",
+        hashedPassword2,
         2011234568,
         "07307",
         "I love animals and I’m searching for a dog or cat sibling for my current dog.",
@@ -43,9 +48,9 @@ async function main(){
         [
                 {
                     _id: ObjectId(),
-                    feedback: "This site is great resource to adopt a pet.",
+                    description: "This site is great resource to adopt a pet.",
                     date: "4/20/21",
-                    rating: 5
+                    rating: 4.2
                 }
         ],
         ["6063d5103833261e97e0920b"],
