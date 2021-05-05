@@ -5,20 +5,21 @@
     <div id="error" hidden>
         <ul id="errorList"></ul>
     </div>
+    <p>(*) - Mandatory Field</p>
     <form method="POST" id="shelterRescue-signupForm" action="/signup/sr">
-        <label for="profilePicture">Profile Picture Public URL:</label><br>
-        <input type="text" id="profilePicture" name="profilePicture"><br>
-
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name"><br>
-
-        <label for="email">Email Address:</label><br>
+        <label for="email">Email Address: (*)</label><br>
         <input type="email" id="email" name="email"><br>
 
-        <label for="password">Password:</label><br>
+        <label for="password">Password: (*)</label><br>
         <input type="password" id="password" name="password"><br>
 
-        <label for="location">Location:</label><br>
+        <label for="name">Shelter or Rescue Name: (*)</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="profilePicture">Profile Picture Public URL:</label><br>
+        <input type="url" id="profilePicture" name="profilePicture"><br>
+
+        <label for="location">Location: (*)</label><br>
         <div>
             <input type="hidden" name="country" id="countryId" value="US" />
             <select name="state" class="states order-alpha" id="stateId">
@@ -27,22 +28,30 @@
             <select name="city" class="cities order-alpha" id="cityId">
                 <option value="">Select City</option>
             </select>
+            <input type="text" id="streetId" name="street" placeholder="Street Address">
+            <input type="text" id="apartmentId" name="apartment" placeholder="Apartment/Floor (Optional)">
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
             <script src="//geodata.solutions/includes/statecity.js"></script>
         </div>
 
-
-        <label for="biography">Biography:</label><br>
+        <label for="biography">Biography: (*)</label><br>
         <input type="text" id="biography" name="biography"><br>
 
-        <label for="phoneNumber">Phone Number:</label><br>
+        <label for="phoneNumber">Phone Number: (*)</label><br>
         <input type="number" id="phoneNumber" name="phoneNumber"><br>
 
         <label for="website">Web Site:</label><br>
-        <input type="text" id="website" name="website"><br>
+        <input type="url" id="website" name="website"><br>
 
-        <label for="socialMedia">Social Media:</label><br>
-        <input type="text" id="socialMedia" name="socialMedia"><br>
+        <p>Social Media (Enter Username):</p>
+        <div>
+            <label for="facebook">Facebook:</label><br>
+            <input type="text" id="facebook" name="facebook"><br>
+            <label for="instagram">Instagram:</label><br>
+            <input type="text" id="instagram" name="instagram"><br>
+            <label for="twitter">Twitter:</label><br>
+            <input type="text" id="twitter" name="twitter"><br>
+        </div>
 
         <button type="submit">Sign Up</button>
     </form>
