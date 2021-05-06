@@ -3,13 +3,19 @@ const router = express.Router();
 
 const data = require("../data");
 const getAPetData = data.getAPetData;
+const petsData = data.pets;
 
 const path = require("path");
 
 // GET '/'
 router.get("/", async (req, res) => {
   try {
-    res.status(200).render("homepage/homepage");
+    var pets = await petsData.getPetHomepage();
+    res.status(200).render("homepage/homepage", {
+      loginSignUp: "show",
+      greeting: "hidden",
+      pet: pets,
+    });
   } catch (e) {
     res.status(500).json({ message: e });
   }

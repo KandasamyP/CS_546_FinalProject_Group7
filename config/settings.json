@@ -1,6 +1,6 @@
 {
-    "mongoConfig": {
-      "serverUrl": "mongodb://localhost:27017/",
-      "database": "Group7FinalProject"
-    }
+  "mongoConfig": {
+    "serverUrl": "mongodb://localhost:27017/",
+    "database": "getAPet"
+  }
 }
