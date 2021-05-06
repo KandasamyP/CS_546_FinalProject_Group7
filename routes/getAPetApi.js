@@ -6,19 +6,21 @@ const getAPetData = data.getAPetData;
 
 const path = require("path");
 
-// GET http://localhost:3000/
+// GET '/'
 router.get("/", async (req, res) => {
   try {
-    res.status(200).render("homepage");
+    res.status(200).render("homepage/homepage");
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
+//GET '/login'
 router.get("/login", async (req, res) => {
-  res.status(200).render("login");
+  res.status(200).render("homepage/login");
 });
 
+//POST '/login'
 router.post("/login", async (req, res) => {
   try {
     const logInData = req.body;
@@ -69,7 +71,7 @@ router.post("/login", async (req, res) => {
       res.cookie("AuthCookie", { userAuthenticated: true });
       res.redirect("/");
     } else {
-      res.render("login", {
+      res.render("homepage/login", {
         message: "Wrong Username or Password!",
       });
     }
@@ -78,10 +80,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//GET '/signup/sr'
 router.get("/signup/sr", async (req, res) => {
-  res.status(200).render("shelter&rescueSignup");
+  res.status(200).render("homepage/shelter&rescueSignup");
 });
 
+//POST '/signup/sr'
 router.post("/signup/sr", async (req, res) => {
   try {
     const signupData = req.body;
@@ -198,7 +202,7 @@ router.post("/signup/sr", async (req, res) => {
     if (newSrUser) {
       res.redirect("/");
     } else {
-      res.render("login", {
+      res.render("homepage/login", {
         message: "User is already registered, please Log In!",
       });
     }
@@ -207,10 +211,12 @@ router.post("/signup/sr", async (req, res) => {
   }
 });
 
+//GET '/signup/popa'
 router.get("/signup/popa", async (req, res) => {
-  res.status(200).render("petOwner&petAdopterSignup");
+  res.status(200).render("homepage/petOwner&petAdopterSignup");
 });
 
+//POST '/signup/popa'
 router.post("/signup/popa", async (req, res) => {
   try {
     const signupData = req.body;
@@ -309,7 +315,7 @@ router.post("/signup/popa", async (req, res) => {
     if (newPoPa) {
       res.redirect("/");
     } else {
-      res.render("login", {
+      res.render("homepage/login", {
         message: "User is already registered, please Log In!",
       });
     }
@@ -317,4 +323,6 @@ router.post("/signup/popa", async (req, res) => {
     res.status(e.status).json({ error: e.error });
   }
 });
+
+//Export Router function
 module.exports = router;

@@ -13,7 +13,7 @@ const getCollectionFn = (collection) => {
   };
 };
 
-/* Now, you can list your collections here: */
+// Collection list to export
 module.exports = {
   petAdopter: getCollectionFn("petAdopter"),
   shelterAndRescue: getCollectionFn("shelterAndRescue"),
@@ -21,7 +21,6 @@ module.exports = {
   messages: getCollectionFn("messages"),
   feedback: getCollectionFn("feedback"),
   reviews: getCollectionFn("reviews"),
-
   pets: getCollectionFn("pets"),
   shelters: getCollectionFn("shelters"),
 };
