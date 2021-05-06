@@ -47,31 +47,20 @@ async function main() {
     ]
   );
 
-  const max = await pets.addPet(
-    "Max",
-    "Dog",
-    ["Welsh Cardigan Corgi"],
-    ["max1.jpg", "max2.jpg", "max3.jpg"],
-    "Male",
-    "07002",
-    true,
-    "Puppy",
-    "Max's mom was brought into the shelter when she was pregnant. His litter was born on 1/5/21 and consists of three females and one other male. He is the most playful of his siblings and loves car rides. Adoption fee is $300 and includes neutering.",
-    fur_shelter._id.toString(),
-    300.0,
-    [
-      "dog-friendly",
-      "cat-friendly",
-      "child-friendly",
-      "yard required",
-      "tricolor",
-      "black",
-      "white",
-      "tan",
-      "medium-sized",
-      "medium-hair",
-    ]
-  );
+
+    const max = await pets.addPet("Max",
+        "Dog",
+        ["Cardigan Welsh Corgi"],
+        ["max1.jpg", "max2.jpg", "max3.jpg"],
+        "Male",
+        "07002",
+        true,
+        "Puppy",
+        "Max's mom was brought into the shelter when she was pregnant. His litter was born on 1/5/21 and consists of three females and one other male. He is the most playful of his siblings and loves car rides. Adoption fee is $300 and includes neutering.",
+        fur_shelter._id.toString(),
+        300.00,
+        ["dog-friendly", "cat-friendly", "child-friendly", "yard required", "tricolor", "black", "white", "tan", "medium-sized", "medium-hair"]
+    );
 
   const butterscotch = await pets.addPet(
     "Butterscotch",

@@ -1,8 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const petsData = require("../data/pets");
-const csvsync = require("csvsync");
-const fs = require("fs");
+
+const csvsync = require('csvsync');
+const fs = require('fs');
+const multer = require("multer"); // required for multer
+const { pets } = require("../config/mongoCollections");
+
+/* required for multer --> */
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	  	cb(null, 'public/images/pets')
+	},
+	filename: function (req, file, cb) {
+	  	cb(null, Date.now() + '-' + file.originalname) // todo find best way to name files if not this. uuid?
+	}
+})
+   
+const upload = multer({ storage: storage })
+/* <-- required for multer */
+
 
 router.get("/pet/:id", async (req, res) => {
   if (!req.params.id) {
@@ -116,38 +133,85 @@ router.post("/search", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
-  try {
-    const dogPhysicalCharacteristics = csvsync.parse(
-      fs.readFileSync("data/petInformation/dogPhysical.csv")
-    )[0];
-    const dogBreeds = csvsync.parse(
-      fs.readFileSync("data/petInformation/dogBreeds.csv")
-    )[0];
-    const catPhysicalCharacteristics = csvsync.parse(
-      fs.readFileSync("data/petInformation/catPhysical.csv")
-    )[0];
-    const catBreeds = csvsync.parse(
-      fs.readFileSync("data/petInformation/catBreeds.csv")
-    )[0];
-    const behaviors = csvsync.parse(
-      fs.readFileSync("data/petInformation/behaviors.csv")
-    )[0];
+/* upload.array(name of item from form submission) is required for multer */
+router.post("/add", upload.array("petPictures", 5), async (req, res) => { 
+	let imgArray = [];
 
-    res.status(200).render("pets/pet-search", {
-      dogBreeds: dogBreeds,
-      dogAppearance: dogPhysicalCharacteristics,
-      catBreeds: catBreeds,
-      catAppearance: catPhysicalCharacteristics,
-      behavior: behaviors,
-    });
-  } catch (e) {
-    res.status(500).render("pets/error", {
-      title: "500 Error",
-      number: "500",
-      error: "Unknown error occurred.",
-    });
-  }
+	// add file names to an array
+	for (let i = 0; i < req.files.length; i++) {
+		imgArray.push(req.files[i].filename);
+	}
+
+	let breedArray = [];
+
+	// make sure breeds is an array even if one option was chosen
+	if (typeof req.body.breeds === "string") {
+		breedArray.push(req.body.breeds);
+	} else {
+		breedArray = req.body.breeds;
+	}
+
+	let appearanceArray = [];
+	let behaviorsArray = [];
+
+	// make sure filters is an array even if one option was chosen
+	if (typeof req.body.appearance === "string") {
+		appearanceArray.push(req.body.appearance);
+	} else {
+		appearanceArray = req.body.appearance;
+	}
+
+	if (typeof req.body.behaviors === "string") {
+		behaviorsArray.push(req.body.behaviors);
+	} else {
+		behaviorsArray = req.body.behaviors;
+	}
+
+	let filters = appearanceArray.concat(behaviorsArray);
+
+	const newPet = await petsData.addPet(req.body.petName,
+        req.body.animalType,
+        breedArray,
+        imgArray,
+        req.body.sex,
+        req.body.currentLocation,
+        req.body.availableForAdoption === "true" ? true : false,
+        req.body.ageGroup,
+        req.body.biography,
+		"todo", // change to poster's objectid using authentication cookie
+        req.body.adoptionFee,
+        filters
+	);
+
+	console.log(newPet)
+
+	//res.redirect(`/pet/${newPet._id}`);
+
+	try {
+		//console.log(req.body)
+
+		/*if (searchResults.length > 0) {
+			res.status(200).render("pets/pet-results", { searchTerm: inputBreeds, pets: searchResults });
+		} else {
+			res.status(200).render("pets/pet-search");
+		}*/
+	} catch (e) {
+		res.status(500).render("pets/error", { title: "500 Error", number: "500", error: e });
+	}
+});
+
+router.get("/", async (req, res) => { 
+	try {
+		const dogPhysicalCharacteristics = csvsync.parse(fs.readFileSync('data/petInformation/dogPhysical.csv'))[0];
+		const dogBreeds = csvsync.parse(fs.readFileSync('data/petInformation/dogBreeds.csv'))[0];
+		const catPhysicalCharacteristics = csvsync.parse(fs.readFileSync('data/petInformation/catPhysical.csv'))[0];
+		const catBreeds = csvsync.parse(fs.readFileSync('data/petInformation/catBreeds.csv'))[0];
+		const behaviors = csvsync.parse(fs.readFileSync('data/petInformation/behaviors.csv'))[0];
+
+		res.status(200).render("pets/pet-search", {dogBreeds: dogBreeds, dogAppearance: dogPhysicalCharacteristics, catBreeds: catBreeds, catAppearance: catPhysicalCharacteristics, behavior: behaviors});
+	} catch (e) {
+		res.status(500).render("pets/error", { title: "500 Error", number: "500", error: "Unknown error occurred." });
+	}
 });
 
 router.get("/new", async (req, res) => {
