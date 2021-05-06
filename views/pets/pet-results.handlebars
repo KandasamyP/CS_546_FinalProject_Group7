@@ -1,0 +1,19 @@
+<h1>Here are some adorable pets we found...</h1>
+<main>
+    <ul>
+        {{#each pets}}
+        <div class="card card-width-18">
+            <img class="card-img-top" src="../public/images/pets/{{defaultPic}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{petName}}</h5>
+                <p class="card-text">{{sex}} | {{ageGroup}}</p>
+                <a href="/pets/{{_id}}" class="btn btn-primary">View {{petName}}</a>
+            </div>
+        </div>
+        {{/each}}
+    </ul>
+</main>
+{{#unless pets.length}}
+    <p class="not-found">We're sorry, but no results were found for that criteria.</p>
+{{/unless}}
+<a href="/pets" class="search_link">Make another search</a>
