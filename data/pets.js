@@ -6,8 +6,9 @@ const pets = mongoCollections.pets;
 const exportedMethods = {
     // This async function will return the newly created pet object
     async addPet(petName, animalType, breeds, petPictures, sex, currentLocation, availableForAdoption, ageGroup, biography, associatedShelter, adoptionFee, filters) {
+
         // If any inputs are missing, the method should throw
-        if (!petName || !animalType || !breeds || !petPictures || !sex || !currentLocation || !availableForAdoption || !ageGroup || !biography || !associatedShelter || !adoptionFee || !filters) 
+        if (!petName || !animalType || !breeds || !petPictures || !sex || !currentLocation || availableForAdoption === undefined || !ageGroup || !biography || !associatedShelter || !adoptionFee || !filters) 
             throw "There is at least one missing input argument.";
         
         const petCollection = await pets();
