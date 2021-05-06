@@ -66,6 +66,7 @@ router.post("/login", async (req, res) => {
     const isSuccess = await getAPetData.logInUser(logInData);
 
     if (isSuccess) {
+      res.cookie("AuthCookie", { userAuthenticated: true });
       res.redirect("/");
     } else {
       res.render("login", {
