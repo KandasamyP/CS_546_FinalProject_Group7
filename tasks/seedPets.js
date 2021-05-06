@@ -39,7 +39,7 @@ async function main() {
 
     const max = await pets.addPet("Max",
         "Dog",
-        ["Welsh Cardigan Corgi"],
+        ["Cardigan Welsh Corgi"],
         ["max1.jpg", "max2.jpg", "max3.jpg"],
         "Male",
         "07002",
