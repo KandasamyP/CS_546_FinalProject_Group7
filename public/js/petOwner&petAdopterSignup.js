@@ -9,10 +9,13 @@ $(function () {
   let zipCode = $("#zipCode");
   let phoneNumber = $("#phoneNumber");
   let biography = $("#biography");
+  let error = $("#error");
+  let errorList = $("#errorList");
 
   if (myForm) {
     myForm.submit(function (event) {
       event.preventDefault();
+
       var email_term = email.val();
       var password_term = password.val();
       var fname_term = fname.val();
@@ -22,8 +25,6 @@ $(function () {
       var zipCode_term = zipCode.val();
       let phoneNumber_term = phoneNumber.val();
       var biography_term = biography.val();
-      let error = $("#error");
-      let errorList = $("#errorList");
 
       errorList.empty();
       error.hide();
