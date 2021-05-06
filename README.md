@@ -56,7 +56,7 @@ When people click on the “Adopt/Inquire” button on the pet page, they can st
 
 #### 10. Give your feedback<br>
 
-    This is a page where people who have adopted pets through this website can leave feedback about their experience of the process of adopting a pet through the website.<br>
+This is a page where people who have adopted pets through this website can leave feedback about their experience of the process of adopting a pet through the website.<br>
 
 ### Extra Features
 
