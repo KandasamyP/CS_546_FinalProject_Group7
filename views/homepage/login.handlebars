@@ -1,0 +1,29 @@
+<main>
+    {{error}}
+    <div id="error">
+        <ul id="errorList"></ul>
+    </div>
+    <div id="message">{{{message}}}</div>
+    <form method="POST" id="login-form" action="/login">
+        <label id="emailLabel" for="email">
+            Enter E-Mail:
+            <input type="email" name="email" id="email" autocomplete="off" />
+        </label>
+        <label id="passwordLabel" for="password">
+            Enter Password:
+            <input type="password" name="password" id="password" />
+        </label>
+        <br>
+        <p>Select User Type:</p>
+        <input type="radio" id="srUser" name="userType" value="srUser">
+        <label for="male">Shelter/Rescue</label><br>
+        <input type="radio" id="popaUser" name="userType" value="popaUser">
+        <label for="female">Pet Owner/Pet Adopter</label>
+        <br>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="/public/js/login.js"></script>

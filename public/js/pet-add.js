@@ -1,13 +1,13 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $(".dog-chosen").hide();
     $(".cat-chosen").hide();
 
-    $("#dog").click(function() {
+    $("#dog").click(function () {
         $(".cat-chosen").hide();
         $(".dog-chosen").show();
     });
 
-    $("#cat").click(function() {
+    $("#cat").click(function () {
         $(".dog-chosen").hide();
         $(".cat-chosen").show();
     });

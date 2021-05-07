@@ -1,0 +1,42 @@
+<header>
+    <h1>Pet Owner & Adopter Sign Up Page</h1>
+</header>
+<main>
+    <div id="error">
+        <ul id="errorList"></ul>
+    </div>
+    <p>(*) - Mandatory Field</p>
+    <form method="POST" id="petOwner-signupForm" action="/signup/popa">
+        <label for="email">Email Address: (*)</label><br>
+        <input type="email" id="email" name="email"><br>
+
+        <label for="password">Password: (*)</label><br>
+        <input type="password" id="password" name="password"><br>
+
+        <label for="fname">First name: (*)</label><br>
+        <input type="text" id="fname" name="fname"><br>
+
+        <label for="lname">Last name: (*)</label><br>
+        <input type="text" id="lname" name="lname"><br>
+
+        <label for="dateOfBirth">Date Of Birth: (*)</label><br>
+        <input type="date" id="dateOfBirth" name="dateOfBirth"><br>
+
+        <label for="profilePicture">Profile Picture Public URL:</label><br>
+        <input type="url" id="profilePicture" name="profilePicture"><br>
+
+        <label for="phoneNumber">Phone Number:</label><br>
+        <input type="number" id="phoneNumber" name="phoneNumber"><br>
+
+        <label for="zipCode">Zip Code:</label><br>
+        <input type="string" id="zipCode" name="zipCode"><br>
+
+        <label for="biography">Biography:</label><br>
+        <input type="text" id="biography" name="biography"><br>
+
+        <button type="submit">Sign Up</button>
+    </form>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="/public/js/petOwner&petAdopterSignup.js"></script>
