@@ -52,22 +52,34 @@ function validateForm(){
         alert("You must enter Last Name.");
         $("#lastName").focus();
         return false;
-    }    
+    }  
+
     if($("#dateOfBirth").val().trim() === ""){ //check for proper format
         alert("You must enter Date Of Birth.");
         $("#dateOfBirth").focus();
         return false;
     }
+
     if($("#phoneNumber").val().trim() === ""){ //check for proper format
         alert("You must enter Phone Number.");
         $("#phoneNumber").focus();
         return false;
     }
+
     if($("#zipCode").val().trim() === ""){ //check for proper format
         alert("You must enter zip code.");
         $("#zipCode").focus();
         return false;
     }
+    
+    const zipCodeRegex = /^\d{5}$/;     //regex to check zipcode
+    if(!zipCodeRegex.test($("#zipCode").val().trim())){
+        alert("You must enter a valid zip code.");
+        $("#zipCode").focus();
+        return false;
+    }
+
+
 
     return true;
 }
