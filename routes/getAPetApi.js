@@ -11,11 +11,20 @@ const path = require("path");
 router.get("/", async (req, res) => {
   try {
     var pets = await petsData.getPetHomepage();
-    res.status(200).render("homepage/homepage", {
-      loginSignUp: "show",
-      greeting: "hidden",
-      pet: pets,
-    });
+    if (req.cookies.AuthCookie) {
+      res.status(200).render("homepage/homepage", {
+        loginSignUp: "hidden",
+        greeting: "show",
+        username: req.cookies.AuthCookie.username,
+        pet: pets,
+      });
+    } else {
+      res.status(200).render("homepage/homepage", {
+        loginSignUp: "show",
+        greeting: "hidden",
+        pet: pets,
+      });
+    }
   } catch (e) {
     res.status(500).json({ message: e });
   }
@@ -74,7 +83,11 @@ router.post("/login", async (req, res) => {
     const isSuccess = await getAPetData.logInUser(logInData);
 
     if (isSuccess) {
-      res.cookie("AuthCookie", { userAuthenticated: true });
+      res.cookie("AuthCookie", {
+        userAuthenticated: true,
+        username: logInData.email,
+      });
+
       res.redirect("/");
     } else {
       res.render("homepage/login", {

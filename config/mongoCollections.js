@@ -19,8 +19,8 @@ module.exports = {
   shelterAndRescue: getCollectionFn("shelterAndRescue"),
   pets: getCollectionFn("pets"),
   messages: getCollectionFn("messages"),
-  feedback: getCollectionFn("feedback"),
-  reviews: getCollectionFn("reviews"),
+  // feedback: getCollectionFn("feedback"),
+  // reviews: getCollectionFn("reviews"),
   pets: getCollectionFn("pets"),
   shelters: getCollectionFn("shelters"),
 };
