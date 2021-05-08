@@ -1,6 +1,12 @@
-const petOwnerData = require("./petOwner");
+  const petOwnerData = require("./petOwner");
+const getAPetData = require("./getAPetData");
+const petsData = require("./pets");
+const sheltersData = require("./shelters");
 
 module.exports = {
-    petOwnerData
-}
+  getAPetData: getAPetData,
+  pets: petsData,
+  shelters: sheltersData,
+   petOwnerData
+};
 
