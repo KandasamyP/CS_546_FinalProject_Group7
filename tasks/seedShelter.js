@@ -1,13 +1,13 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require("../data");
-const shelter = data.shelter
+const shelters = data.shelters
 const ObjectId = require('mongodb').ObjectID;
 
 async function main() {
     const db = await dbConnection();
     await db.dropDatabase();
 
-    const michealanimalrescue = await shelter.create("Micheal Scott Adoption Company",
+    const michealanimalrescue = await shelters.create("Micheal Scott Adoption Company",
         "littleanimallover@gmail.com",
         {
             streetAddress1: "126 Kellium Court",
@@ -39,7 +39,7 @@ async function main() {
 
     );
 
-    const dwightanimalrescue = await shelter.create("Dwight K shrute Adoption Company",
+    const dwightanimalrescue = await shelters.create("Dwight K shrute Adoption Company",
         "shrutefarmsadoption@gmail.com",
         {
             streetAddress1: "Rural Rt. 6",
@@ -71,7 +71,7 @@ async function main() {
 
     );
 
-    const jimanimalrescue = await shelter.create("Jim Helpert Adoption Company",
+    const jimanimalrescue = await shelters.create("Jim Helpert Adoption Company",
         "jimhelpertadoption@gmail.com",
         {
             streetAddress1: "Calvert Street",
@@ -102,7 +102,7 @@ async function main() {
         }
 
     );
-    const pamanimalrescue = await shelter.create("Pam beesly Adoption Company",
+    const pamanimalrescue = await shelters.create("Pam beesly Adoption Company",
         "pambeeslyadoption@gmail.com",
         {
             streetAddress1: "Calvert Street",
@@ -133,7 +133,7 @@ async function main() {
         }
 
     );
-    const kellyanimalrescue = await shelter.create("kelly kapoor Adoption Company",
+    const kellyanimalrescue = await shelters.create("kelly kapoor Adoption Company",
         "kellykapooradoption@gmail.com",
         {
             streetAddress1: "Calvert Street",
@@ -164,7 +164,7 @@ async function main() {
         }
 
     );
-    const ryananimalrescue = await shelter.create("ryan howard Adoption Company",
+    const ryananimalrescue = await shelters.create("ryan howard Adoption Company",
         "ryanhowardadoption@gmail.com",
         {
             streetAddress1: "Calvert Street",

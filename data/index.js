@@ -1,4 +1,4 @@
-const shelterData = require('./shelter')
+const sheltersData = require('./shelters')
 module.exports = {
-  shelter: shelterData,
+  shelters: sheltersData,
 };

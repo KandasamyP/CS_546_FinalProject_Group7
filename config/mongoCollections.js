@@ -17,7 +17,5 @@ const getCollectionFn = (collection) => {
 
 /* Now, you can list your collections here: */
 module.exports = {
-  shelter: getCollectionFn('shelter'),
-  volunteer: getCollectionFn('volunteer'),
-
+  shelters: getCollectionFn('shelters'),
 };
