@@ -75,7 +75,7 @@ const exportedMethods = {
         return await this.getThreadById(threadId);
     },
 
-    // When given an id, this function will return a message thread from the database.
+    // When given an id, this function will return a list of message threads from the database.
     async getThreadsByParticipant(id) {
         // If no id is provided, the method should throw
         if (!id) throw "The input argument 'id' is missing.";
@@ -102,6 +102,14 @@ const exportedMethods = {
         }
 
         return threadList;
+    },
+
+    // When given an id, this function will return a message thread from the database.
+    async getThreadByParticipants(array) {
+        const messageCollection = await messages();
+        let thread = await messageCollection.findOne({ participants: {$all: array} });
+
+        return thread._id.toString();
     }
 
 };

@@ -9,7 +9,8 @@ router.get("/", async (req, res) => {
 
         res.status(200).render("messages/messages", {
             thread: threadList,
-            userId: userId
+            userId: userId,
+            reloaded: false
         });
     } catch (e) {
         res.status(500).render("pets/error", {
@@ -21,7 +22,20 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
+    const threadId = await messagesData.getThreadByParticipants(["asdfghjkl", req.body.recipient]);
+    const newMsg = await messagesData.addMessage(threadId, "asdfghjkl", req.body.reply);
+
+    const threadList = await messagesData.getThreadsByParticipant("asdfghjkl");
+    const userId = "asdfghjkl";
+    //console.log(newMsg)
+
+    res.status(200).render("messages/messages", {
+        thread: threadList,
+        userId: userId,
+        reloaded: true,
+        recipient: req.body.recipient
+    });
     /*try {
         const threadList = await messagesData.getThreadsByParticipant("asdfghjkl");
         const userId = "asdfghjkl";
