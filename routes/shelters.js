@@ -41,4 +41,24 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+    try {
+        const shelter = await sheltersData.getAll();
+        // console.log(shelter)
+        res.status(200).render("shelters/allShelters", { shelter, title: "List of shelters" });
+    } catch (error) {
+        res.render('shelters/error', { title: "No Data Found" });
+    }
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        let shelter = await sheltersData.getShelterByID(req.params.id)
+        res.status(200).render('shelters/shelterDetails', { title: "Individual Shelter Page" })
+    } catch (error) {
+        res.status(200).render('shelters/error', { title: "No Such shelter Found" });
+        retrun;
+    }
+});
+
 module.exports = router;
