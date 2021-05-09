@@ -4,9 +4,10 @@
         <section class="pet-carousel-bg w-50">
             <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                {{#each pet.petPictures}}
-                    <li data-target="#carousel-indicators" data-slide-to="{{@index}}"{{#if @first}} class="active"{{/if}}></li>
-                {{/each}}
+                    {{#each pet.petPictures}}
+                    <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
+                        {{/if}}></li>
+                    {{/each}}
                 </ol>
                 <div class="carousel-inner">
                     {{#each pet.petPictures}}
