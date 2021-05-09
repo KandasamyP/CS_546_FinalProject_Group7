@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         let shelter = await sheltersData.getShelterByID(req.params.id)
-        res.status(200).render('shelter/shelterDetails')
+        res.status(200).render('shelters/shelterDetails', { title: "Individual Shelter Page" })
     } catch (error) {
         res.status(200).render('shelters/error', { title: "No Such shelter Found" });
         retrun;

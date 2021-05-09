@@ -48,7 +48,6 @@ let exportedMethods = {
         let shelter = await sheltersCollection.findOne({ _id: parsedId })
 
         if (shelter === null) throw "shelter not found";
-        shelter._id = shelter._id.toString();
         return shelter;
     },
     // async searchShelter(search) {
