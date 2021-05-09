@@ -1,19 +1,20 @@
 <main>
     <h1>What type of pet are you looking for?</h1>
-    <div class="container" style="width:75%"> <!-- todo put this in main.css -->
+    <div class="container" style="width:75%">
+        <!-- todo put this in main.css -->
         <div class="row">
             <div class="col-sm">
                 <label class="btn">
                     <button type="button" id="choose-dog" class="choose-animal-type">
-                    <img src="../../public/images/site/choose-dog.png" class="img-fluid">
-                    <div class="choose-pet-text">Search for dogs</div>
+                        <img src="../../public/images/site/choose-dog.png" class="img-fluid">
+                        <div class="choose-pet-text">Search for dogs</div>
                 </label>
             </div>
             <div class="col-sm">
                 <label class="btn">
                     <button type="button" id="choose-cat" class="choose-animal-type">
-                    <img src="../../public/images/site/choose-cat.png" class="img-fluid">
-                    <div class="choose-pet-text">Search for cats</div>
+                        <img src="../../public/images/site/choose-cat.png" class="img-fluid">
+                        <div class="choose-pet-text">Search for cats</div>
                 </label>
             </div>
         </div>
@@ -21,10 +22,12 @@
     <br>
     <form method="POST" id="dog-chosen" action="/pets/search">
         <h3>Great! Let's get more specific on what kind of dog you're looking for.</h3>
-        <p>You may select by breed, approximate age, sex, appearance, behavior, and lifestyle, but the only requirement is that you enter a United States zip code!</p>
+        <p>You may select by breed, approximate age, sex, appearance, behavior, and lifestyle, but the only requirement
+            is that you enter a United States zip code!</p>
         <p>Leaving distance blank will default your search radius to 50 miles.</p>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Breeds
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -38,7 +41,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Age Group
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -65,7 +69,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Sex
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -82,7 +87,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Physical Appearance
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -96,7 +102,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Behavior and Lifestyle
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -116,10 +123,12 @@
 
     <form method="POST" id="cat-chosen" action="/pets/search">
         <h3>Great! Let's get more specific on what kind of cat you're looking for.</h3>
-        <p>You may select by breed, approximate age, sex, appearance, behavior, and lifestyle, but the only requirement is that you enter a United States zip code!</p>
+        <p>You may select by breed, approximate age, sex, appearance, behavior, and lifestyle, but the only requirement
+            is that you enter a United States zip code!</p>
         <p>Leaving distance blank will default your search radius to 50 miles.</p>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Breeds
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -133,7 +142,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Age Group
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -160,7 +170,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Sex
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -177,7 +188,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Physical Appearance
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -191,7 +203,8 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Behavior and Lifestyle
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -213,5 +226,6 @@
     <br>
 </main>
 
-<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script>
+{{!--
+<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script> --}}
 <script src='../../public/js/pet-search.js'></script>

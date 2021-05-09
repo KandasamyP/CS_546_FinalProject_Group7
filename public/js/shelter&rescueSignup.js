@@ -8,6 +8,7 @@ $(function () {
   let locationCityId = $("#cityId");
   let locationStreetId = $("#streetId");
   let locationApartmentId = $("#apartmentId");
+  let locationZipCodeId = $("#zipCodeId");
   let biography = $("#biography");
   let phoneNumber = $("#phoneNumber");
   let website = $("#website");
@@ -29,6 +30,7 @@ $(function () {
       let locationCityId_term = locationCityId.val();
       let locationStreetId_term = locationStreetId.val();
       let locationApartmentId_term = locationApartmentId.val();
+      let locationZipCodeId_term = locationZipCodeId.val();
       var biography_term = biography.val();
       var phoneNumber_term = phoneNumber.val();
       var website_term = website.val();
@@ -84,6 +86,18 @@ $(function () {
         );
         error.show();
       }
+
+      function validateZipCode(zipCode) {
+        const re = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+        return re.test(String(zipCode));
+      }
+      if (locationZipCodeId_term) {
+        if (!validateZipCode(locationZipCodeId_term)) {
+          errorList.append(`<li>Zip Code must be in correct format!</li>`);
+          error.show();
+        }
+      }
+
       if (!biography_term || biography_term.trim() === "") {
         errorList.append(`<li>Biography must be provided!</li>`);
         error.show();

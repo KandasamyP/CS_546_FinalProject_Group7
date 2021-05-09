@@ -111,6 +111,7 @@ const exportedMethods = {
 
         return thread._id.toString();
     }
+
 };
 
 module.exports = exportedMethods;

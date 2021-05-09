@@ -131,62 +131,65 @@ router.post("/search", async (req, res) => {
 });
 
 /* upload.array(name of item from form submission) is required for multer */
-router.post("/add", upload.array("petPictures", 5), async (req, res) => { 
-	try {
-		let imgArray = [];
+router.post("/add", upload.array("petPictures", 5), async (req, res) => {
+  try {
+    let imgArray = [];
 
-		// add file names to an array
-		for (let i = 0; i < req.files.length; i++) {
-			imgArray.push(req.files[i].filename);
-		}
+    // add file names to an array
+    for (let i = 0; i < req.files.length; i++) {
+      imgArray.push(req.files[i].filename);
+    }
 
-		let breedArray = [];
+    let breedArray = [];
 
-		// make sure breeds is an array even if one option was chosen
-		if (typeof req.body.breeds === "string") {
-			breedArray.push(req.body.breeds);
-		} else {
-			breedArray = req.body.breeds;
-		}
+    // make sure breeds is an array even if one option was chosen
+    if (typeof req.body.breeds === "string") {
+      breedArray.push(req.body.breeds);
+    } else {
+      breedArray = req.body.breeds;
+    }
 
-		let appearanceArray = [];
-		let behaviorsArray = [];
+    let appearanceArray = [];
+    let behaviorsArray = [];
 
-		// make sure filters is an array even if one option was chosen
-		if (typeof req.body.appearance === "string") {
-			appearanceArray.push(req.body.appearance);
-		} else {
-			appearanceArray = req.body.appearance;
-		}
+    // make sure filters is an array even if one option was chosen
+    if (typeof req.body.appearance === "string") {
+      appearanceArray.push(req.body.appearance);
+    } else {
+      appearanceArray = req.body.appearance;
+    }
 
-		if (typeof req.body.behaviors === "string") {
-			behaviorsArray.push(req.body.behaviors);
-		} else {
-			behaviorsArray = req.body.behaviors;
-		}
+    if (typeof req.body.behaviors === "string") {
+      behaviorsArray.push(req.body.behaviors);
+    } else {
+      behaviorsArray = req.body.behaviors;
+    }
 
-		let filters = appearanceArray.concat(behaviorsArray);
+    let filters = appearanceArray.concat(behaviorsArray);
 
-		const newPet = await petsData.addPet(req.body.petName,
-			req.body.animalType,
-			breedArray,
-			imgArray,
-			req.body.sex,
-			req.body.currentLocation,
-			req.body.availableForAdoption === "true" ? true : false,
-			req.body.ageGroup,
-			req.body.biography,
-			"todo", // change to poster's objectid using authentication cookie
-			req.body.adoptionFee,
-			filters
-		);
+    const newPet = await petsData.addPet(
+      req.body.petName,
+      req.body.animalType,
+      breedArray,
+      imgArray,
+      req.body.sex,
+      req.body.currentLocation,
+      req.body.availableForAdoption === "true" ? true : false,
+      req.body.ageGroup,
+      req.body.biography,
+      "todo", // change to poster's objectid using authentication cookie
+      req.body.adoptionFee,
+      filters
+    );
 
-		console.log(newPet)
+    console.log(newPet);
 
-		res.redirect(`/pet/${newPet._id}`);
-	} catch (e) {
-		res.status(500).render("pets/error", { title: "500 Error", number: "500", error: e });
-	}
+    res.redirect(`/pet/${newPet._id}`);
+  } catch (e) {
+    res
+      .status(500)
+      .render("pets/error", { title: "500 Error", number: "500", error: e });
+  }
 });
 
 router.get("/", async (req, res) => {
@@ -207,23 +210,19 @@ router.get("/", async (req, res) => {
       fs.readFileSync("data/petInformation/behaviors.csv")
     )[0];
 
-    res
-      .status(200)
-      .render("pets/pet-search", {
-        dogBreeds: dogBreeds,
-        dogAppearance: dogPhysicalCharacteristics,
-        catBreeds: catBreeds,
-        catAppearance: catPhysicalCharacteristics,
-        behavior: behaviors,
-      });
+    res.status(200).render("pets/pet-search", {
+      dogBreeds: dogBreeds,
+      dogAppearance: dogPhysicalCharacteristics,
+      catBreeds: catBreeds,
+      catAppearance: catPhysicalCharacteristics,
+      behavior: behaviors,
+    });
   } catch (e) {
-    res
-      .status(500)
-      .render("pets/error", {
-        title: "500 Error",
-        number: "500",
-        error: "Unknown error occurred.",
-      });
+    res.status(500).render("pets/error", {
+      title: "500 Error",
+      number: "500",
+      error: "Unknown error occurred.",
+    });
   }
 });
 
