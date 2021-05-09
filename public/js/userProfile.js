@@ -1,7 +1,15 @@
+//userInformation fields
 const userInfo = document.getElementById("userInfo");
 const editData = document.getElementById("editData");
 const saveData = document.getElementById("saveData");
 const emailId = document.getElementById("email");
+
+//passwordForm field
+const passwordForm = document.getElementById("passwordForm");
+const editPassword = document.getElementById("editPassword");
+const savePassword = document.getElementById("savePassword");
+const password = document.getElementById("password");
+
 var pathname = window.location.pathname;
 
 function userProfile() {
@@ -10,16 +18,29 @@ function userProfile() {
     event.preventDefault();
     form(userInfo, true);
     editData.disabled = false;
-    saveData.disabled = false;
+    saveData.disabled = true;
+    emailId.disabled = true;
+    password.disabled = true;
+    editPassword.disabled = false;
+    savePassword.disabled = true;
     //$("#userInfo:input").prop("disabled", true);
   });
 
   editData.addEventListener("click", (event) => {
     event.preventDefault();
     form(userInfo, false);
+    emailId.disabled = true;
     editData.disabled = true;
     saveData.disabled = false;
     //emailId.disabled = true;  //uncomment this as value will come from session
+  });
+
+  editPassword.addEventListener("click", (event)=>{
+    event.preventDefault();
+    password.disabled = false;
+    password.value = "";
+    editPassword.disabled = true;
+    savePassword.disabled = false;
   });
 
   function form(formId, value) {
@@ -83,8 +104,18 @@ function userProfile() {
 
     return true;
   }
+
 }
 
+// function changePasswordSection(){
+
+// }
+
 if (pathname === "/petOwner") {
+  userProfile();
+}
+
+if( pathname === "/petOwner/changePassword") {
+  window.location.pathname = "/petOwner";
   userProfile();
 }

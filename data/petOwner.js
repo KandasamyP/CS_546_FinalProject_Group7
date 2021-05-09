@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const { ObjectId } = require("mongodb").ObjectId;
-
+const bcrypt = require("bcrypt");
+const saltRounds = 16;
 const petOwnerData = mongoCollections.petOwner;
 
 // //creates a petOwner user
@@ -189,9 +190,34 @@ async function updatePetOwner(updatedData) {
   return await getPetOwnerById(existingUserData._id);
 }
 
+async function updatePassword(userId, plainTextPassword){
+    //check for type of ID and password
+    if(!userId){
+      throw "User id must be provided.";
+    }
+
+    if(!plainTextPassword){
+      throw "Password must be provided";
+    }
+
+    const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
+    const petOwnerCollection = await petOwnerData();
+
+    const updateInfo = await petOwnerCollection.updateOne(
+      {_id: userId},
+      {$set: {"password": hashedPassword}}
+    );
+
+    if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
+        throw "Could not update password";
+
+    return await getPetOwnerById(userId);    
+}
+
 module.exports = {
   // addPetOwner,
   getPetOwnerById,
   updatePetOwner,
   getPetOwnerByUserEmail,
+  updatePassword
 };
