@@ -20,12 +20,15 @@
         <label for="male">Male</label>
         <br>
         <label for="currentLocation">What zip code is this animal currently located in?</label>
-        <input type="number" id="currentLocation" name="currentLocation" placeholder="e.g. 07030" min="00501" max="99950" required>
+        <input type="number" id="currentLocation" name="currentLocation" placeholder="e.g. 07030" min="00501"
+            max="99950" required>
         <br>
         <label for="adoptionFee">Adoption fee (USD):</label>
-        <input type="number" id="adoptionFee" name="adoptionFee" step="0.01" placeholder="e.g. 200.00" min="0" max="1000" required>
+        <input type="number" id="adoptionFee" name="adoptionFee" step="0.01" placeholder="e.g. 200.00" min="0"
+            max="1000" required>
         <br>
-        <label for="biography">Give us more details about this pet. Do you know its birthday, its parents, its exact breed mix? What does this pet like or dislike? Explain why someone would fall in love with it!</label>
+        <label for="biography">Give us more details about this pet. Do you know its birthday, its parents, its exact
+            breed mix? What does this pet like or dislike? Explain why someone would fall in love with it!</label>
         <textarea id="biography" name="biography" rows="7" cols="100"></textarea>
         <br>
         <label for="availableForAdoption">Is this pet currently adoptable?</label>
@@ -36,7 +39,8 @@
         <br class="dog-chosen cat-chosen">
         <label for="breeds" class="dog-chosen cat-chosen">Breeds (maximum 2):</label>
         <div class="dropdown btn-group dog-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Breeds
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -50,7 +54,8 @@
             </div>
         </div>
         <div class="dropdown btn-group cat-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Breeds
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -69,16 +74,18 @@
         <label for="baby" class="dog-chosen">Puppy</label>
         <input type="radio" id="baby" class="cat-chosen" name="ageGroup" value="Kitten">
         <label for="baby" class="cat-chosen">Kitten</label>
-		<input type="radio" class="dog-chosen cat-chosen" id="young" name="ageGroup" value="Young">
+        <input type="radio" class="dog-chosen cat-chosen" id="young" name="ageGroup" value="Young">
         <label for="young" class="dog-chosen cat-chosen">Young</label>
-		<input type="radio" class="dog-chosen cat-chosen" id="adult" name="ageGroup" value="Adult">
+        <input type="radio" class="dog-chosen cat-chosen" id="adult" name="ageGroup" value="Adult">
         <label for="adult" class="dog-chosen cat-chosen">Adult</label>
-		<input type="radio" class="dog-chosen cat-chosen" id="senior" name="ageGroup" value="Senior">
+        <input type="radio" class="dog-chosen cat-chosen" id="senior" name="ageGroup" value="Senior">
         <label for="senior" class="dog-chosen cat-chosen">Senior</label>
         <br class="dog-chosen cat-chosen">
-        <label for="appearance" class="dog-chosen">Select anything from this list that describes the pet's appearance:</label>
+        <label for="appearance" class="dog-chosen">Select anything from this list that describes the pet's
+            appearance:</label>
         <div class="dropdown btn-group dog-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Physical Appearance
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -91,9 +98,11 @@
                 {{/each}}
             </div>
         </div>
-        <label for="appearance" class="cat-chosen">Select anything from this list that describes the pet's appearance:</label>
+        <label for="appearance" class="cat-chosen">Select anything from this list that describes the pet's
+            appearance:</label>
         <div class="dropdown btn-group cat-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Physical Appearance
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -110,7 +119,8 @@
         <br>
         <label for="appearance">Select anything from this list that describes the pet's behaviors or lifestyle:</label>
         <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Behavior and Lifestyle
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -131,5 +141,6 @@
     <br>
 </main>
 
-<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script>
+{{!--
+<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script> --}}
 <script src='../../public/js/pet-add.js'></script>

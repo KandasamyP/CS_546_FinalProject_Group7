@@ -1,9 +1,11 @@
-const getAPetRoutes = require("./getAPetApi");
+const homepage = require("./homepage");
+const petOwnerRoute = require("./petOwner");
 const petsRoute = require("./pets");
 const shelterRoute = require("./shelters");
 
 const constructorMethod = (app) => {
-  app.use("/", getAPetRoutes);
+  app.use("/", homepage);
+  app.use("/petOwner", petOwnerRoute);
   app.use("/pets", petsRoute);
   app.use("/shelters", shelterRoute);
 

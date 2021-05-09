@@ -12,6 +12,7 @@ $(document).ready(function () {
     $(".cat-chosen").show();
   });
 
+  // don't allow more than 2 breeds to be checked
   $("input.breeds").on("change", function () {
     if ($("input[name='breeds']:checked").length > 2) {
       this.checked = false;
@@ -21,5 +22,14 @@ $(document).ready(function () {
   // keep the dropdown from closing immediately
   $(".dropdown-menu").click(function (event) {
     event.stopPropagation();
+  });
+
+  // limit image upload to 5
+  $(function () {
+    $("input[type='submit']").click(function () {
+      if (parseInt($("input[type='file']").get(0).files.length) > 5) {
+        alert("You may upload no more than 5 images.");
+      }
+    });
   });
 });

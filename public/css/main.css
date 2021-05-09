@@ -1,3 +1,41 @@
+.user-bg {
+  background-color: rgb(247, 242, 242);
+}
+
+.container-fluid {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.profile-picture {
+  border-radius: 100px;
+  width: 150px;
+  height: 150px;
+}
+
+.spacing {
+  padding-top: 20px;
+  padding-top: 20px;
+}
+
+#user-photo {
+  background-color: white;
+}
+
+#profile-title {
+  background-color: white;
+}
+
+#info {
+  background-color: white;
+}
+
+#formSpacing {
+  margin-bottom: 0rem;
+}
+
 .bg-custom-color {
   background-color: #edf5e1;
 }
