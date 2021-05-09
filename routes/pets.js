@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     cb(null, "public/images/pets");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // todo find best way to name files if not this. uuid?
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
@@ -117,18 +117,16 @@ router.post("/search", async (req, res) => {
       inputDistance
     );
 
-    if (searchResults.length > 0) {
-      res.status(200).render("pets/pet-results", {
-        searchTerm: inputBreeds,
-        pets: searchResults,
-      });
-    } else {
-      res.status(200).render("pets/pet-search");
-    }
+    res.status(200).render("pets/pet-results", {
+      searchTerm: inputBreeds,
+      pets: searchResults,
+    });
   } catch (e) {
-    res
-      .status(500)
-      .render("pets/error", { title: "500 Error", number: "500", error: e });
+    res.status(500).render("pets/error", { 
+      title: "500 Error", 
+      number: "500", 
+      error: e 
+    });
   }
 });
 
