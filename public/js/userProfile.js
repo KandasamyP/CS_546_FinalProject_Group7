@@ -85,6 +85,6 @@ function userProfile() {
   }
 }
 
-if (pathname === "/user") {
+if (pathname === "/petOwner") {
   userProfile();
 }
