@@ -1,28 +1,28 @@
 <section id="individualShelter">
     <h2 class="results_page">{{shelterDetails.name}}</h2>
     <p>{{shelterDetails.biography}}</p>
-    <hr/>
+    <hr />
 
     <div class="row rowDetail">
         <div class="col-md-6">
             <div class="row">
                 <span class="col-md-3">
-                    <label>Email:</label> 
+                    <label>Email:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.emailAddress}}
+                    {{shelterDetails.email}}
                 </span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="row">
                 <span class="col-md-3">
-                    <label>Phone:</label> 
+                    <label>Phone:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.phonenumber}}
+                    {{shelterDetails.phoneNumber}}
                 </span>
-            </div>            
+            </div>
         </div>
     </div>
 
@@ -30,64 +30,72 @@
         <div class="col-md-6">
             <div class="row">
                 <span class="col-md-3">
-                    <label>Location:</label> 
+                    <label>Location:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.location.streetAddress1}} {{shelterDetails.location.streetAddress2}}, {{shelterDetails.location.city}}, {{shelterDetails.location.stateCode}}, {{shelterDetails.location.zipCode}}
+                    {{shelterDetails.location.street}}, {{shelterDetails.location.city}},
+                    {{shelterDetails.location.state}}, {{shelterDetails.location.zipCode}}
                 </span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="row">
                 <span class="col-md-3">
-                    <label>Website:</label> 
+                    <label>Website:</label>
                 </span>
                 <span class="col-md-9">
-                    {{#each shelterDetails.socialmedia}}
+                    {{#each shelterDetails.socialMedia}}
                     <a> {{this}} </a>
                     {{/each}}
                 </span>
             </div>
         </div>
     </div>
-    <hr/>
-  {{#if geoLocation.latitude}}  
-<iframe src="https://maps.google.com/maps?q={{geoLocation.latitude}}, {{geoLocation.longitude}}&z=15&output=embed" width="360" height="270" frameborder="0" style="border:0"></iframe>
-{{/if}}
+    <hr />
+    {{#if geoLocation.latitude}}
+    <iframe src="https://maps.google.com/maps?q={{geoLocation.latitude}}, {{geoLocation.longitude}}&z=15&output=embed"
+        width="360" height="270" frameborder="0" style="border:0"></iframe>
+    {{/if}}
     <div id="map"></div>
     <div id="floating-panel">
-      <input id="address" type="textbox" value="Sydney, NSW" />
-      <input id="submit" type="button" value="Geocode" />
-    </div> 
+        <input id="address" type="textbox" value="Sydney, NSW" />
+        <input id="submit" type="button" value="Geocode" />
+    </div>
 
-    <div class="row"> 
+    <div class="row">
         <div class="col-md-3">
             Overall Rating of Shelter
             <div class="ratings"> <span class="product-rating">4.6</span><span>/5</span>
-                <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
+                <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                        class="fa fa-star"></i> </div>
                 <div class="rating-text"> <span>46 ratings & 15 reviews</span> </div>
             </div>
         </div>
         <div class="row col-md-9">
 
             {{#each shelterDetails.reviews}}
-               
-                <div>
-                    <div class="row">
+
+            <div>
+                <div class="row">
+                    <div>
+                        <h3>Reviewer name comes here</h3>
                         <div>
-                            <h3>Reviewer name comes here</h3>
-                            <div>
-                                <p class="text-left"><span class="text-muted"> {{this.rating}}</span> <span class="fa fa-star star-active ml-3"></span> <span class="fa fa-star star-active"></span> <span class="fa fa-star star-active"></span> <span class="fa fa-star star-active"></span> <span class="fa fa-star star-inactive"></span></p>
-                            </div>
-                        </div>
-                        <div class="">
-                            <p class="">{{this.reviewDate}}</p>
+                            <p class="text-left"><span class="text-muted"> {{this.rating}}</span> <span
+                                    class="fa fa-star star-active ml-3"></span> <span
+                                    class="fa fa-star star-active"></span> <span class="fa fa-star star-active"></span>
+                                <span class="fa fa-star star-active"></span> <span
+                                    class="fa fa-star star-inactive"></span>
+                            </p>
                         </div>
                     </div>
-                    <div class="row text-left">
-                        <p class="content">{{this.reviewBody}}</p>
+                    <div class="">
+                        <p class="">{{this.reviewDate}}</p>
                     </div>
                 </div>
+                <div class="row text-left">
+                    <p class="content">{{this.reviewBody}}</p>
+                </div>
+            </div>
             {{/each}}
 
         </div>
