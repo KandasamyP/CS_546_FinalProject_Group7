@@ -73,6 +73,35 @@ const exportedMethods = {
         if (insertInfo.insertedCount === 0) throw "The message could not be created.";
 
         return await this.getThreadById(threadId);
+    },
+
+    // When given an id, this function will return a message thread from the database.
+    async getThreadsByParticipant(id) {
+        // If no id is provided, the method should throw
+        if (!id) throw "The input argument 'id' is missing.";
+        // If the id provided is not a string, or is an  empty string, the method should throw
+        if (typeof id != "string") throw "The input 'id' must be a string.";
+        if (id.trim().length === 0) throw "The input 'id' must not be empty.";
+        // If the id provided is not a valid ObjectId, the method should throw
+        // if it cannot be converted to ObjectId, it will automatically throw an error
+        //let parsedId = ObjectId(id);
+
+        const messageCollection = await messages();
+        let threadList = await messageCollection.find({ participants: {$in: [id]} }).toArray();
+
+        // reorder participants arrays so that user's id is always first
+        if (threadList.length > 0) {
+            for (let thread of threadList) {
+                if (thread.participants[0] !== id) {
+                    let x = thread.participants[0];
+                    thread.participants[0] = thread.participants[1];
+                    thread.participants[1] = x;
+                }
+                thread._id = thread._id.toString();
+            }
+        }
+
+        return threadList;
     }
 };
 

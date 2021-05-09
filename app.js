@@ -3,6 +3,7 @@ console.clear();
 
 //Require Express, Express Handlebars, Express Session & Cookie Parser
 const express = require("express");
+const moment = require("moment");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
@@ -19,7 +20,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Setup Express View Engine as Express Handlebars
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+//Formats for moment.js can be found here: https://momentjs.com/
+app.engine("handlebars", exphbs({ 
+  defaultLayout: "main" ,
+  helpers: {
+    formatDate: function (date, format) {
+        return moment(date).format(format);
+    },
+    ifUserIsSender: function(senderId, userId) {
+      return senderId === userId ? "right" : "left";
+    }
+  }
+}));
 app.set("view engine", "handlebars");
 
 //Create Express Session
