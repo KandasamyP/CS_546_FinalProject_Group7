@@ -1,7 +1,7 @@
 const homepage = require("./homepage");
 const petOwnerRoute = require("./petOwner");
 const petsRoute = require("./pets");
-const shelterRoute = require("./shelters");
+const shelterRoute = require("./shelterAndRescue");
 
 const constructorMethod = (app) => {
   app.use("/", homepage);
