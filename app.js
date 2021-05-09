@@ -25,10 +25,16 @@ app.engine("handlebars", exphbs({
   defaultLayout: "main" ,
   helpers: {
     formatDate: function (date, format) {
-        return moment(date).format(format);
+      return moment(date).format(format);
     },
     ifUserIsSender: function(senderId, userId) {
-      return senderId === userId ? "right" : "left";
+      return senderId === userId ? "user" : "recipient";
+    },
+    ifMessageSent: function(recipient, participant) {
+      if (recipient === participant) {
+        return "reloaded"
+      }
+      return;
     }
   }
 }));

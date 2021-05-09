@@ -63,3 +63,41 @@ input[type="number"] {
 .choose-animal-type:hover {
   cursor: pointer;
 }
+
+.flex-container {
+  display: flex;
+}
+
+.fill-width {
+  flex: 1;
+}
+
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  overflow-y: scroll
+}
+
+.message-recipient,
+.message-user {
+  display: flex;
+  flex-shrink: 0
+}
+
+.message-recipient {
+  margin-right: auto
+}
+
+.message-user {
+  flex-direction: row-reverse;
+  margin-left: auto
+}
+
+.bg-user {
+  background-color: #a2aab1!important;
+}
+
+.bg-recipient {
+  background-color: #e6e8eb!important;
+}
