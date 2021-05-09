@@ -1,5 +1,7 @@
 const dbConnection = require("./mongoConnection");
 
+/* This will allow you to have one reference to each collection per app */
+
 const getCollectionFn = (collection) => {
   let _col = undefined;
 
@@ -13,14 +15,13 @@ const getCollectionFn = (collection) => {
   };
 };
 
+/*list collections here: */
+
 // Collection list to export
 module.exports = {
-  petAdopter: getCollectionFn("petAdopter"),
+  petAdopterAndOwner: getCollectionFn("petAdopterAndOwner"),
+  petOwner: getCollectionFn("petAdopterAndOwner"),
   shelterAndRescue: getCollectionFn("shelterAndRescue"),
   pets: getCollectionFn("pets"),
   messages: getCollectionFn("messages"),
-  feedback: getCollectionFn("feedback"),
-  reviews: getCollectionFn("reviews"),
-  pets: getCollectionFn("pets"),
-  shelters: getCollectionFn("shelters"),
 };

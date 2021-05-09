@@ -1,7 +1,3 @@
-<header>
-    GetAPet
-</header>
-
 <main>
     <div id="loginAndSignup" {{loginSignUp}}>
         <button onclick="location.href = '/login'" type="button" class="login">Shelter/Rescue - Log
@@ -16,13 +12,14 @@
     </div>
 
     <div id="username" {{greeting}}>
-        <h2>Welcome USERNAME</h2>
+        <h2>Welcome {{username}}</h2>
     </div>
 
     <div id="displayPets">
         {{#each pet}}
         <div>
             <br>
+            <img src="/public/images/pets/{{{petName}}}1.jpg" alt="petPhoto:{{petName}}">
             Name: {{petName}}<br>
             Pet Type: {{animalType}}<br>
             Breed: {{breeds}}<br>
