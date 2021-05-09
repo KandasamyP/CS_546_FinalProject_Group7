@@ -1,6 +1,6 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require("../data");
-const shelters = data.shelters
+const shelters = data.shelterAndRescueData
 const ObjectId = require('mongodb').ObjectID;
 
 async function main() {

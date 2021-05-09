@@ -51,6 +51,9 @@ router.get("/profile", async (req, res) => {
     if (req.cookies.AuthCookie.userType === "popaUser") {
       res.status(200).redirect("/petOwner");
     }
+    if (req.cookies.AuthCookie.userType === "srUser") {
+      res.status(200).redirect("/petOwner");
+    }
   } else {
     res.status(200).render("homepage/login");
   }
