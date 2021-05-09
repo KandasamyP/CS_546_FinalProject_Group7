@@ -23,6 +23,7 @@ router.get("/:id", async (req, res) => {
 
   try {
     const shelter = await sheltersData.getShelterById(req.params.id);
+    console.log(shelter);
     if (shelter.location && shelter.location.zipCode) {
       res.status(200).render("pets/individual-shelter", {
         shelterDetails: shelter,
