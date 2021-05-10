@@ -1,7 +1,7 @@
 const homepage = require("./homepage");
 const petOwnerRoute = require("./petOwner");
 const petsRoute = require("./pets");
-const shelterRoute = require("./shelters");
+const shelterRoute = require("./sheltersAndRescue");
 const feedbackRoutes = require('./feedback')
 const helpPageRoutes = require('./helppage')
 
@@ -9,7 +9,7 @@ const constructorMethod = (app) => {
   app.use("/", homepage);
   app.use("/petOwner", petOwnerRoute);
   app.use("/pets", petsRoute);
-  app.use("/shelters", shelterRoute);
+  app.use("/sheltersAndRescue", shelterRoute);
   app.use('/helppage', helpPageRoutes);
   app.use('/feedback', feedbackRoutes);
 

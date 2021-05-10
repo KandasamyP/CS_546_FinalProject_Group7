@@ -10,7 +10,7 @@ module.exports = [
             state: "NJ",
             zipcode: "07030"
         },
-        image: "/public/images/dogpark.jfif",
+        image: "/public/images/helppage/dogpark.jfif",
 
     },
     {
@@ -24,7 +24,7 @@ module.exports = [
             state: "NJ",
             zipcode: "07030"
         },
-        image: "/public/images/vetimage.jpg",
+        image: "/public/images/helppage/vetimage.jpg",
 
     },
     {
@@ -38,7 +38,7 @@ module.exports = [
             state: "NJ",
             zipcode: "07030"
         },
-        image: "/public/images/petstore.png"
+        image: "/public/images/helppage/petstore.png"
     }
 
 ]
