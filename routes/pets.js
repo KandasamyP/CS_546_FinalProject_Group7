@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const petsData = require("../data/pets");
+const shelterData = require("../data/shelterAndRescue");
+const petOwnerData = require("../data/petOwner");
+const messagesData = require("../data/messages");
+const zipcodes = require("zipcodes");
 
 const csvsync = require("csvsync");
 const fs = require("fs");
@@ -27,11 +31,28 @@ router.get("/pet/:id", async (req, res) => {
   }
 
   try {
-    // This endpoint returns an object that has all the details for a pet with that ID
-    const pet = await petsData.getPetById(req.params.id);
+    // only pet owner/adopter accounts can message shelters, so even a logged in SR user will
+    // have authentication set to false for this page
+    let authenticated = false;
+    let userId;
+    const sessionInfo = req.cookies.AuthCookie;
+    if (sessionInfo && 
+        sessionInfo.userAuthenticated &&
+        sessionInfo.userType === "popaUser") {
+      authenticated = true;
+      const userInfo = await petOwnerData.getPetOwnerByUserEmail(sessionInfo.email);
+      userId = userInfo._id;
+    }
 
-    // todo change this to getShelterById and select the shelter name
-    const shelterName = pet.associatedShelter;
+    // This endpoint returns an object that has all the details for a pet with that ID
+    let pet = await petsData.getPetById(req.params.id);
+
+    let currentLoc = zipcodes.lookup(pet.currentLocation);
+    let cityState = currentLoc.city + ", " + currentLoc.state;
+    let latLong = currentLoc.latitude + "," + currentLoc.longitude;
+    pet.currentLocation = cityState;
+
+    const shelter = await shelterData.getShelterById(pet.associatedShelter);
 
     const physicalCharacteristics = csvsync.parse(
       fs.readFileSync("data/petInformation/dogPhysical.csv")
@@ -48,13 +69,37 @@ router.get("/pet/:id", async (req, res) => {
     }
 
     res.status(200).render("pets/pets-single", {
-      pet,
+      pet: pet,
       physicalCharacteristics: petPhys,
       otherFilters: petBehavior,
-      shelterName: shelterName,
+      shelter: shelter,
+      latLong: latLong,
+      isAuthenticated: authenticated,
+      userId: userId
     });
   } catch (e) {
     //res.status(404).render("error", { title: "404 Error", error: "No pet was found.", number: 404 });
+  }
+});
+
+router.post("/inquire", async (req, res) => {
+  //console.log(req.body)
+  try {
+    // check if a thread already exists between these two users
+    let thread = await messagesData.getThreadByParticipants([req.body.user, req.body.recipient]);
+    
+    if (thread === null) {	  
+      thread = await messagesData.addNewThread(req.body.user, req.body.recipient, req.body.reply);
+    } else {
+      //console.log(thread)
+      thread = await messagesData.addMessage(thread._id, req.body.user, req.body.reply);
+    }
+      
+    res.redirect(`pet/${req.body.petId}`);
+  } catch (e) {
+    res
+      .status(500)
+      .render("pets/error", { title: "500 Error", number: "500", error: e });
   }
 });
 

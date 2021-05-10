@@ -1,18 +1,20 @@
 const mongoCollections = require("../config/mongoCollections");
 let { ObjectId } = require("mongodb");
 const messages = mongoCollections.messages;
+const petOwners = require("./petOwner");
+const sheltersRescues = require("./shelterAndRescue");
 
 const exportedMethods = {
     // This async function will return the newly created message thread
-    async addNewThread(participants, sender, messageText) {
+    async addNewThread(petOwner, shelterRescue, messageText) {
         const messageCollection = await messages();
         let currentTime = new Date();
 
         let newThread = {
-            participants: participants,
+            participants: [petOwner, shelterRescue],
             messages: [
                 {
-                    sender: sender,
+                    sender: petOwner,
                     timestamp: currentTime,
                     messageText: messageText
                 }
@@ -72,6 +74,7 @@ const exportedMethods = {
 
         if (insertInfo.insertedCount === 0) throw "The message could not be created.";
 
+
         return await this.getThreadById(threadId);
     },
 
@@ -90,12 +93,21 @@ const exportedMethods = {
         let threadList = await messageCollection.find({ participants: {$in: [id]} }).toArray();
 
         // reorder participants arrays so that user's id is always first
+        // and while in the loop, grab the second participant's name
         if (threadList.length > 0) {
             for (let thread of threadList) {
+                // first participant should be pet owner
+                // second participant should be shelter/rescue
+                let petOwner = await petOwners.getPetOwnerById(thread.participants[0]);
+                let shelter = await sheltersRescues.getShelterById(thread.participants[1]);
+                thread.petOwnerName = petOwner.fullName.firstName + " " + petOwner.fullName.lastName;
+                thread.shelterName = shelter.name;
+
                 if (thread.participants[0] !== id) {
                     let x = thread.participants[0];
                     thread.participants[0] = thread.participants[1];
                     thread.participants[1] = x;
+
                 }
                 thread._id = thread._id.toString();
             }
@@ -104,12 +116,17 @@ const exportedMethods = {
         return threadList;
     },
 
-    // When given an id, this function will return a message thread from the database.
+    // When given an array of ids, this function will return a message thread from the database if it exists
     async getThreadByParticipants(array) {
         const messageCollection = await messages();
         let thread = await messageCollection.findOne({ participants: {$all: array} });
 
-        return thread._id.toString();
+        if (thread === null) {
+            return null;
+        } else {
+            thread._id = thread._id.toString();
+            return thread;
+        }
     }
 
 };

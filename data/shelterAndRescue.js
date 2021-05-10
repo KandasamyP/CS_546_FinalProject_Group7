@@ -21,6 +21,24 @@ const exportedMethods = {
 
     return shelter;
   },
+
+  // SH - I adapted this from the function in petOwner.js
+  //returns a petOwner user searches by petOwner Email/Username
+  async getShelterAndRescueByUserEmail(srEmail) {
+    //check email
+    const sheltersCollection = await shelterAndRescue();
+
+    let shelterDetails = await sheltersCollection.findOne({
+      email: srEmail,
+    });
+
+    if (shelterDetails == null || !shelterDetails) throw "User not found.";
+
+    // convert _id to string for return
+    shelterDetails._id = shelterDetails._id.toString();
+
+    return shelterDetails;
+  }
 };
 
 module.exports = exportedMethods;

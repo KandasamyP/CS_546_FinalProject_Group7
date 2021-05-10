@@ -1,17 +1,36 @@
 const express = require("express");
 const router = express.Router();
 const messagesData = require("../data/messages");
+const shelterAndRescueData = require("../data/shelterAndRescue");
+const petOwnerData = require("../data/petOwner");
 
 router.get("/", async (req, res) => {
     try {
-        const threadList = await messagesData.getThreadsByParticipant("asdfghjkl");
-        const userId = "asdfghjkl";
+        // if user is authenticated, render messages; if not, redirect to login
+        if (req.cookies.AuthCookie && req.cookies.AuthCookie.userAuthenticated) {
+            let userInfo;
+            let isUserShelter;
+            //todo add another if condition to check if it's an sr or pet owner user
+            if (req.cookies.AuthCookie.userType === "popaUser") {
+                userInfo = await petOwnerData.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
+                isUserShelter = false;
+            } else {
+                userInfo = await shelterAndRescueData.getShelterAndRescueByUserEmail(req.cookies.AuthCookie.email);
+                isUserShelter = true;
+            }
 
-        res.status(200).render("messages/messages", {
-            thread: threadList,
-            userId: userId,
-            reloaded: false
-        });
+            // todo need to check specifically for userType just in case ids overlap
+            const threadList = await messagesData.getThreadsByParticipant(userInfo._id);
+
+            res.status(200).render("messages/messages", {
+                thread: threadList,
+                userId: userInfo._id,
+                reloaded: false,
+                isUserShelter: isUserShelter
+            });
+        } else {
+            res.redirect("login");
+        }
     } catch (e) {
         res.status(500).render("pets/error", {
           title: "500 Error",

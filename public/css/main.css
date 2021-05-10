@@ -36,6 +36,10 @@
   margin-bottom: 0rem;
 }
 
+.bg-card-header {
+  background-color: white;
+}
+
 .bg-custom-color {
   background-color: #edf5e1;
 }
@@ -45,7 +49,7 @@
 }
 
 .carousel {
-  height: 300px;
+  height: 400px;
 }
 
 .carousel-item,

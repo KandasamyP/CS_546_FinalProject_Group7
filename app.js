@@ -32,9 +32,20 @@ app.engine("handlebars", exphbs({
     },
     ifMessageSent: function(recipient, participant) {
       if (recipient === participant) {
-        return "reloaded"
+        return "reloaded";
       }
       return;
+    },
+    setSenderName: function(senderId, userId, petOwnerName, shelterName, isUserShelter) {
+      if (senderId === userId) {
+        return "You";
+      } else {
+        if (isUserShelter) {
+          return petOwnerName;
+        } else {
+          return shelterName;
+        }
+      }
     }
   }
 }));
