@@ -3,10 +3,25 @@
         <br>
         <h1>Meet {{pet.petName}}!</h1>
         {{#if isThisShelterLoggedIn}}
-        <form id="remove-pet" method="POST" action="/pets/delete">
-            <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
-            <input type="hidden" id="shelterId" name="shelterId" value="{{pet.associatedShelter}}">
-            <input type="submit" class="btn btn-danger" value="Remove Pet"/>
+        <div class="btn-toolbar">
+            <form id="remove-pet" method="POST" action="/pets/delete">
+                <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
+                <input type="hidden" id="shelterId" name="shelterId" value="{{pet.associatedShelter}}">
+                <input type="submit" class="btn btn-danger mx-2" value="Remove Pet"/>
+            </form>
+            <a href="/pets/pet/{{pet._id}}/update" class="btn btn-warning mx-2">Update Pet</a>
+        </div>
+        {{/if}}
+        {{#if isAuthenticated}}
+        {{!--todo once routes/methods are made, add javascript here so that it shows favorite button when not favorited
+        and shows unfavorite button when pet is favorited--}}
+        <form id="favorite-pet" method="POST" action="/pets/favorite">
+            <input type="hidden" id="favoritedPet" name="favoritedPet" value="{{pet._id}}">
+            <input type="submit" class="btn btn-info" value="&hearts; Add to Favorites"/>
+        </form>
+        <form id="unfavorite-pet" method="POST" action="/pets/unfavorite">
+            <input type="hidden" id="unfavoritedPet" name="unfavoritedPet" value="{{pet._id}}">
+            <input type="submit" class="btn btn-danger" value="&hearts; Remove from Favorites"/>
         </form>
         {{/if}}
         <br>
@@ -35,7 +50,6 @@
                 </a>
             </div>
         </section>
-        <!--<span class="fas fa-heart"></span>-->
         <br>
         <div class="card-deck">
             <div class="card text-center">

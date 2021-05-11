@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
         if (req.cookies.AuthCookie && req.cookies.AuthCookie.userAuthenticated) {
             let userInfo;
             let isUserShelter;
-            //todo add another if condition to check if it's an sr or pet owner user
             if (req.cookies.AuthCookie.userType === "popaUser") {
                 userInfo = await petOwnerData.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
                 isUserShelter = false;
@@ -32,44 +31,48 @@ router.get("/", async (req, res) => {
             res.redirect("login");
         }
     } catch (e) {
-        res.status(500).render("pets/error", {
-          title: "500 Error",
-          number: "500",
-          error: e,
+        res.render("pets/error", {
+            title: "Something went wrong!",
+            error: e,
         });
     }
 });
 
 router.post("/", async (req, res) => {
-    //console.log(req.body)
-    const threadId = await messagesData.getThreadByParticipants(["asdfghjkl", req.body.recipient]);
-    const newMsg = await messagesData.addMessage(threadId, "asdfghjkl", req.body.reply);
+    try {
+        // if user is authenticated, render messages; if not, redirect to login
+        if (req.cookies.AuthCookie && req.cookies.AuthCookie.userAuthenticated) {
+            let userInfo;
+            let isUserShelter;
+            if (req.cookies.AuthCookie.userType === "popaUser") {
+                userInfo = await petOwnerData.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
+                isUserShelter = false;
+            } else {
+                userInfo = await shelterAndRescueData.getShelterAndRescueByUserEmail(req.cookies.AuthCookie.email);
+                isUserShelter = true;
+            }
 
-    const threadList = await messagesData.getThreadsByParticipant("asdfghjkl");
-    const userId = "asdfghjkl";
-    //console.log(newMsg)
+            const thread = await messagesData.getThreadByParticipants([userInfo._id, req.body.recipient]);
+            const newMsg = await messagesData.addMessage(thread._id, userInfo._id, req.body.reply);
+            
+            const threadList = await messagesData.getThreadsByParticipant(userInfo._id);
+            //console.log(JSON.stringify(threadList))
 
-    res.status(200).render("messages/messages", {
-        thread: threadList,
-        userId: userId,
-        reloaded: true,
-        recipient: req.body.recipient
-    });
-    /*try {
-        const threadList = await messagesData.getThreadsByParticipant("asdfghjkl");
-        const userId = "asdfghjkl";
-
-        res.status(200).render("messages/messages", {
-            thread: threadList,
-            userId: userId
-        });
+            res.status(200).render("messages/messages", {
+                thread: threadList,
+                userId: userInfo._id,
+                reloaded: true,
+                recipient: req.body.recipient
+            });
+        } else {
+            res.redirect("/login");
+        }
     } catch (e) {
-        res.status(500).render("pets/error", {
-          title: "500 Error",
-          number: "500",
-          error: e,
+        res.render("pets/error", {
+            title: "Something went wrong!",
+            error: e,
         });
-    }*/
+    }
 });
 
 module.exports = router;

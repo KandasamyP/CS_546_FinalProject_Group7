@@ -15,6 +15,9 @@
         <input type="file" id="petPictures" name="petPictures" accept="image/*" multiple>
         <input type="reset" value="Clear Images" name="petPictures">
         <br>
+        <div class="alert alert-warning" role="alert">
+            Uploading new pictures will overwrite the old ones. Choose carefully!
+        </div>
         <label for="sex">Sex:</label>
         <input type="radio" id="female" name="sex" value="Female" {{prefillRadioButton pet.sex "Female"}}>
         <label for="female">Female</label>
@@ -136,8 +139,10 @@
             </div>
         </div>
         <br>
-        <input type="submit" value="Update Pet" />
+        <input type="submit" class="btn btn-success" value="Update Pet" />
     </form>
+    <br>
+    <a href="/pets/pet/{{pet._id}}" class="btn btn-primary">Return to {{pet.petName}}'s Page</a>
     <br>
     <br>
     <br>

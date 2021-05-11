@@ -14,30 +14,9 @@ $(document).ready(function () {
         $(`.${id}`).show();
         $(`form:not(.${id})`).hide();
     });
+
+    // scroll to bottom of chat if reloaded
+    let messageDiv = $('#message-container');
+    messageDiv.scrollTop(messageDiv.get(0).scrollHeight);
 });
   
-$(function() {
-    // Get the form.
-    let form = $("#send-message-form");
-
-    $(form).submit(function(event) {
-		// Stop the browser from submitting the form.
-		event.preventDefault();
-
-		let formData = $(form).serialize();
-        let recipientId = $("input[name='recipient']", $(form)).val(); 
-
-		// Submit the form using AJAX.
-		$.ajax({
-			type: "POST",
-			url: $(form).attr("action"),
-			data: formData,
-            success: function(data) {
-                let id = recipientId; // todo trying to show the same thread after the page reloads but doesn't work... added a fix for it above
-                $("#message-container").removeAttr("hidden");
-                $(`.${id}`).show();
-                $(`form:not(.${id})`).hide();
-            }
-		});
-	});
-});

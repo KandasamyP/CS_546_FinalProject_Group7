@@ -34,7 +34,7 @@ router.get("/pet/:id", async (req, res) => {
   try {
     // only pet owner/adopter accounts can message shelters, so even a logged in SR user will
     // have authentication set to false for this page
-    let authenticated = false;
+    let authenticatedPetOwner = false;
     let userId;
     let isUserThisShelter = false;
     const sessionInfo = req.cookies.AuthCookie;
@@ -44,7 +44,7 @@ router.get("/pet/:id", async (req, res) => {
 
     if (sessionInfo && sessionInfo.userAuthenticated) {
       if (sessionInfo.userType === "popaUser") {
-        authenticated = true;
+        authenticatedPetOwner = true;
         const userInfo = await petOwnerData.getPetOwnerByUserEmail(sessionInfo.email);
         userId = userInfo._id;
       } else {
@@ -92,7 +92,7 @@ router.get("/pet/:id", async (req, res) => {
       otherFilters: petBehavior,
       shelter: shelter,
       latLong: latLong,
-      isAuthenticated: authenticated,
+      isAuthenticated: authenticatedPetOwner,
       userId: userId,
       isThisShelterLoggedIn: isUserThisShelter
     });
@@ -116,9 +116,10 @@ router.post("/inquire", async (req, res) => {
       
     res.redirect(`pet/${req.body.petId}`);
   } catch (e) {
-    res
-      .status(500)
-      .render("pets/error", { title: "500 Error", number: "500", error: e });
+    res.render("pets/error", { 
+      title: "Something went wrong!",
+      error: e,
+    });
   }
 });
 
@@ -183,10 +184,9 @@ router.post("/search", async (req, res) => {
       pets: searchResults,
     });
   } catch (e) {
-    res.status(500).render("pets/error", { 
-      title: "500 Error", 
-      number: "500", 
-      error: e 
+    res.render("pets/error", { 
+      title: "Something went wrong!",
+      error: e,
     });
   }
 });
@@ -251,9 +251,10 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
       res.redirect("/");
     }
   } catch (e) {
-    res
-      .status(500)
-      .render("pets/error", { title: "500 Error", number: "500", error: e });
+    res.render("pets/error", { 
+      title: "Something went wrong!",
+      error: e,
+    });
   }
 });
 
@@ -283,10 +284,9 @@ router.get("/", async (req, res) => {
       behavior: behaviors,
     });
   } catch (e) {
-    res.status(500).render("pets/error", {
-      title: "500 Error",
-      number: "500",
-      error: "Unknown error occurred.",
+    res.render("pets/error", { 
+      title: "Something went wrong!",
+      error: e,
     });
   }
 });
@@ -324,10 +324,9 @@ router.get("/new", async (req, res) => {
       res.redirect("/"); 
     }
   } catch (e) {
-    res.status(500).render("pets/error", {
-      title: "500 Error",
-      number: "500",
-      error: "Unknown error occurred.",
+    res.render("pets/error", { 
+      title: "Something went wrong!",
+      error: e,
     });
   }
 });
@@ -386,9 +385,8 @@ router.get("/pet/:id/update", async (req, res) => {
       pet: pet
     });
   } catch (e) {
-    res.status(500).render("pets/error", {
-      title: "500 Error",
-      number: "500",
+    res.render("pets/error", { 
+      title: "Something went wrong!",
       error: e,
     });
   }
@@ -475,9 +473,8 @@ router.post('/delete', async (req, res) => {
 
     res.redirect(`/pets/pet/${info.petId}`);
     } catch (e) {
-      res.status(500).render("pets/error", {
-        title: "500 Error",
-        number: "500",
+      res.render("pets/error", { 
+        title: "Something went wrong!",
         error: e,
       });
     }

@@ -7,7 +7,7 @@
                 <div class="list-group-item list-group-item-action">
                     <div class="d-flex">
                         <div class="flex-grow-1">
-                            Messages with <span class="font-weight-bold">{{#if isUserShelter}}{{this.petOwnerName}}{{else}}{{this.shelterName}}{{/if}}</span>
+                            Messages with <span class="font-weight-bold">{{#if ../isUserShelter}}{{this.petOwnerName}}{{else}}{{this.shelterName}}{{/if}}</span>
                         </div>
                     </div>
                 </div>
@@ -41,5 +41,4 @@
     </div>
     <br>
 </main>
-<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script>
 <script src='../../public/js/messages.js'></script>
