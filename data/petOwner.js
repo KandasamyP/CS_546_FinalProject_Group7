@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 const petOwnerData = mongoCollections.petOwner;
+const shelterAndRescueData = mongoCollections.shelterAndRescue;
 
 // //creates a petOwner user
 async function addPetOwner(
@@ -110,7 +111,7 @@ async function updatePetOwner(updatedData) {
     phoneNumber: Number,
     zipCode: String,
     biography: String,
-    dateOfBirth: String,
+    dateOfBirth: Date,
   };
 
   //check updatedData fields
@@ -214,10 +215,25 @@ async function updatePassword(userId, plainTextPassword){
     return await getPetOwnerById(userId);    
 }
 
+async function getShelterReviews(shelterReviewsArray){
+  if (!Array.isArray(shelterReviewsArray)) throw "Parameter must be an array";
+
+  const shelterAndRescueCollection = await shelterAndRescueData();
+  
+  const parsedId = ObjectId(shelterReviewsArray[0]);
+ 
+  const reviewData = await shelterAndRescueCollection.findOne({"reviews._id": parsedId}, {projection: {_id:0, reviews:1, name:1}});
+
+  if(reviewData === null)  throw `No review found`;
+
+  console.log(reviewData);
+}
+
 module.exports = {
   addPetOwner,
   getPetOwnerById,
   updatePetOwner,
   getPetOwnerByUserEmail,
-  updatePassword
+  updatePassword,
+  getShelterReviews
 };

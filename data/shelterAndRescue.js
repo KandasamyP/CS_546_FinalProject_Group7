@@ -3,18 +3,19 @@ let { ObjectId } = require("mongodb");
 const shelterAndRescue = mongoCollections.shelterAndRescue;
 
 let exportedMethods = {
-  async create(name, email, location, biography, phoneNumber, website, socialMedia, availablePets, adoptedPets, reviews, profilePicture, websiteFeedbackGiven) {
-    if (!name || !email || !location || !biography || !phoneNumber || !website || !socialMedia || !availablePets || !adoptedPets || !reviews || !profilePicture || !websiteFeedbackGiven) throw "One of the input paramertes are missing"
+  async create(name, email, password, location, biography, phoneNumber, website, socialMedia, availablePets, adoptedPets, reviews, profilePicture, websiteFeedbackGiven) {
+    if (!name || !email || !password || !location || !biography || !phoneNumber || !website || !socialMedia || !availablePets || !adoptedPets || !reviews || !profilePicture || !websiteFeedbackGiven) throw "One of the input paramertes are missing"
     const sheltersCollection = await shelterAndRescue();
 
     let newShelter = {
       name: name,
       email: email,
+      password: password,
       location: location, //object
       biography: biography,
       phoneNumber: phoneNumber,
       website: website,
-      socialMedia: socialMedia, //array
+      socialMedia: socialMedia, //array changed it to object.
       availablePets: availablePets, //array
       adoptedPets: adoptedPets, //array
       reviews: reviews, //Subdoc
@@ -164,7 +165,7 @@ let exportedMethods = {
     let shelter = await sheltersCollection.findOne({ _id: parsedId })
 
     if (shelter === null) throw "shelter not found";
-    shelter._id = shelter._id.toString();
+    // shelter._id = shelter._id.toString();
     return shelter;
   },
   // async searchShelter(search) {

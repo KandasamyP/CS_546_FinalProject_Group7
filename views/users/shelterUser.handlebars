@@ -112,7 +112,7 @@
                                 <input type="text" class="form-control" name="country" id="country" value="{{shelterUser.location.country}}" placeholder="Apartment"></input>
                             </div>
                             <div class="col-sm-4">
-                                <input type="number" class="form-control" name="zipCode" id="zipCode" value="{{shelterUser.location.zipCode}}" placeholder="Zip Code" ></input>
+                                <input type="number" class="form-control" name="zipCode" id="zipCode" value="{{shelterUser.location.zipCode}}"  min="00501" max="99950" placeholder="Zip Code" required></input>
                             </div>
                         </div>
 

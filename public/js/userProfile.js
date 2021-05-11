@@ -62,51 +62,60 @@ function userProfile() {
   //     }
 
   // });
-  function validateForm() {
-    if ($("#firstName").val().trim() === "") {
-      alert("You must enter First Name.");
-      $("#firstName").focus();
-      return false;
-    }
-    if ($("#lastName").val().trim() === "") {
-      alert("You must enter Last Name.");
-      $("#lastName").focus();
-      return false;
-    }
-
-    if ($("#dateOfBirth").val().trim() === "") {
-      //check for proper format
-      alert("You must enter Date Of Birth.");
-      $("#dateOfBirth").focus();
-      return false;
-    }
-
-    if ($("#phoneNumber").val().trim() === "") {
-      //check for proper format
-      alert("You must enter Phone Number.");
-      $("#phoneNumber").focus();
-      return false;
-    }
-
-    if ($("#zipCode").val().trim() === "") {
-      //check for proper format
-      alert("You must enter zip code.");
-      $("#zipCode").focus();
-      return false;
-    }
-
-    const zipCodeRegex = /^\d{5}$/; //regex to check zipcode
-    if (!zipCodeRegex.test($("#zipCode").val().trim())) {
-      alert("You must enter a valid zip code.");
-      $("#zipCode").focus();
-      return false;
-    }
-
-    return true;
-  }
+  
 
 }
 
+function validateForm() {
+  // if ($("#firstName").val().trim() === "") {
+  //   alert("You must enter First Name.");
+  //   $("#firstName").focus();
+  //   return false;
+  // }
+  // if ($("#lastName").val().trim() === "") {
+  //   alert("You must enter Last Name.");
+  //   $("#lastName").focus();
+  //   return false;
+  // }
+
+  // if ($("#dateOfBirth").val().trim() === "") {
+  //   //check for proper format
+  //   alert("You must enter Date Of Birth.");
+  //   $("#dateOfBirth").focus();
+  //   return false;
+  // }
+
+  // if ($("#phoneNumber").val().trim() === "") {
+  //   //check for proper format
+  //   alert("You must enter Phone Number.");
+  //   $("#phoneNumber").focus();
+  //   return false;
+  // }
+
+  // if ($("#zipCode").val().trim() === "") {
+  //   //check for proper format
+  //   alert("You must enter zip code.");
+  //   $("#zipCode").focus();
+  //   return false;
+  // }
+
+  const zipCodeRegex = /^\d{5}$/; //regex to check zipcode
+  if (!zipCodeRegex.test($("#zipCode").val())) {
+    alert("You must enter a valid zip code.");
+    $("#zipCode").focus();
+    return false;
+  }
+
+  // const phoneNumberRegex = /^\d{10}$/;  //regex to check phone Number
+
+  // if (!phoneNumberRegex.test($("#phoneNumber").val())) {
+  //   alert("You must enter a valid Phone Number.");
+  //   $("#phoneNumber").focus();
+  //   return false;
+  // }
+
+  return true;
+}
 // function changePasswordSection(){
 
 // }

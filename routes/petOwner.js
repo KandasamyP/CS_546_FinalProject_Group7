@@ -7,6 +7,13 @@ router.get("/", async (req, res) => {
     if (req.cookies.AuthCookie) {
       var email = req.cookies.AuthCookie.email;
       const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
+      if (petOwner.shelterReviewsGiven.length != 0){
+        try{
+          const shelterReviewsInfo = await petOwnerData.getShelterReviews(petOwner.shelterReviewsGiven);
+        }catch(e){
+         //res.status(500).json({ error: "Internal server error." });
+        }
+      }
       res.status(200).render("users/petOwner", { petOwner });
     }
   } catch (e) {

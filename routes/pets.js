@@ -38,7 +38,7 @@ router.get("/pet/:id", async (req, res) => {
     );
     let petPhys = [];
     let petBehavior = [];
-
+    
     for (let i = 0; i < pet.filters.length; i++) {
       if (physicalCharacteristics[0].includes(pet.filters[i])) {
         petPhys.push(pet.filters[i]);
