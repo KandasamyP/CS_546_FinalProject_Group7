@@ -1,4 +1,4 @@
-module.exports = [
+const helpcarddata = [
     {
         _id: "1",
         name: "Stevens Park",
@@ -42,3 +42,30 @@ module.exports = [
     }
 
 ]
+
+const helpfaqdata = [
+    {
+        question: "What is this website about?",
+        answer: "this website is about letting adopters adopt pets.",
+        collapse: "collapse"
+    },
+    {
+        question: "What is this website about?",
+        answer: "this website is about letting adopters adopt pets.",
+        collapse: "collapse"
+    },
+    {
+        question: "What is this website about?",
+        answer: "this website is about letting adopters adopt pets.",
+        collapse: "collapse"
+    },
+    {
+        question: "What is this website about?",
+        answer: "this website is about letting adopters adopt pets.",
+        collapse: "collapse"
+    }
+]
+module.exports = {
+    helpcarddata,
+    helpfaqdata
+}

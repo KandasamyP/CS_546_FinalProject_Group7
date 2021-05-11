@@ -2,13 +2,16 @@ const dbConnection = require('../config/mongoConnection');
 const data = require("../data");
 const shelters = data.shelterAndRescueData
 const ObjectId = require('mongodb').ObjectID;
+const bcrypt = require("bcrypt");
+const saltRounds = 16;
 
 async function main() {
     const db = await dbConnection();
-    await db.dropDatabase();
-
+    //await db.dropDatabase();
+    const hashedPassword1 = await bcrypt.hash("micheal123", saltRounds);
     const michealanimalrescue = await shelters.create("Micheal Scott Adoption Company",
         "littleanimallover@gmail.com",
+        hashedPassword1,
         {
             streetAddress1: "126 Kellium Court",
             streetAddress2: "",
@@ -38,9 +41,10 @@ async function main() {
         }
 
     );
-
+    const hashedPassword2 = await bcrypt.hash("dwight123", saltRounds);
     const dwightanimalrescue = await shelters.create("Dwight K shrute Adoption Company",
         "shrutefarmsadoption@gmail.com",
+        hashedPassword2,
         {
             streetAddress1: "Rural Rt. 6",
             streetAddress2: "",
@@ -70,9 +74,10 @@ async function main() {
         }
 
     );
-
+    const hashedPassword3 = await bcrypt.hash("jim123", saltRounds);
     const jimanimalrescue = await shelters.create("Jim Helpert Adoption Company",
         "jimhelpertadoption@gmail.com",
+        hashedPassword3,
         {
             streetAddress1: "Calvert Street",
             streetAddress2: "",
@@ -102,8 +107,10 @@ async function main() {
         }
 
     );
+    const hashedPassword4 = await bcrypt.hash("pam123", saltRounds);
     const pamanimalrescue = await shelters.create("Pam beesly Adoption Company",
         "pambeeslyadoption@gmail.com",
+        hashedPassword4,
         {
             streetAddress1: "Calvert Street",
             streetAddress2: "",
@@ -133,8 +140,10 @@ async function main() {
         }
 
     );
+    const hashedPassword5 = await bcrypt.hash("kelly123", saltRounds);
     const kellyanimalrescue = await shelters.create("kelly kapoor Adoption Company",
         "kellykapooradoption@gmail.com",
+        hashedPassword5,
         {
             streetAddress1: "Calvert Street",
             streetAddress2: "",
@@ -164,8 +173,10 @@ async function main() {
         }
 
     );
+    const hashedPassword6 = await bcrypt.hash("ryan123", saltRounds);
     const ryananimalrescue = await shelters.create("ryan howard Adoption Company",
         "ryanhowardadoption@gmail.com",
+        hashedPassword6,
         {
             streetAddress1: "Calvert Street",
             streetAddress2: "",

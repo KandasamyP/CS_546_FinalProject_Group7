@@ -1,7 +1,7 @@
 <br>
 <title> {{title}}</title>
-{{error}}
 <div id="error">
+    <ul id="errorList"></ul>
 </div>
 <form method="POST" id="review-form">
     <div>
@@ -9,29 +9,34 @@
             highest)</label><br>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
+                value="option1">
             <label class="form-check-label" for="inlineRadio1">1</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
+                value="option2">
             <label class="form-check-label" for="inlineRadio2">2</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
+                value="option3">
             <label class="form-check-label" for="inlineRadio3">3</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
+                value="option4">
             <label class="form-check-label" for="inlineRadio4">4</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
+                value="option5">
             <label class="form-check-label" for="inlineRadio5">5</label>
         </div>
     </div><br>
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Tell us about your experience.</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="7" name="experience"></textarea>
+        <textarea class="form-control" id="review" rows="7" name="review"></textarea>
         <div id="error">
         </div>
 
@@ -41,3 +46,4 @@
     </div>
 
 </form>
+<script src="/public/js/review.js"></script>

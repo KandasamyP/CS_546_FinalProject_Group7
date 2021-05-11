@@ -11,6 +11,8 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const { inlineRadioOptions, experience } = req.body
     if (!inlineRadioOptions) throw "Please provide a rating."
+    if (!experience) throw "Please provide the experience."
+
     try {
         res.status(200).render("shelters/feedback", { title: "Feedback", success: "Feedback sent!" });
 
