@@ -19,7 +19,7 @@ async function main() {
         'This is the bio for the shelter owned by micheal.',
         '201 344 5446',
         "micehalscottanimalrescue.com",
-        ["facebook.com/michealscottanimalrescue", "twitter.com/michealscottanimalrescue"],
+        ["facebook.com/michealscottanimalrescue", "instagram.com/michealscottanimalrescue", "twitter.com/michealscottanimalrescue"],
         ["6063d472f5a17f32a5cbdc24", "6064a5d02f56e4da24413ab3"],
         ["6064a5f081004bcfbc33d6c5"],
         {
@@ -29,7 +29,7 @@ async function main() {
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
             reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
         },
-        'http://michealscottanimalrescue.jpg',
+        '/public/images/shelters/MSwithcat.png',
         {
             _id: ObjectId("507f1f77bcf86cd799439011"),
             feedback: "This website is user friendly. Posting adoptable pets through this website was easy.",
@@ -61,7 +61,7 @@ async function main() {
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
             // reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
         },
-        'http://dwightschruteanimalrescue.jpg',
+        '/public/images/shelters/DSwithcat.jpg',
         {
             _id: ObjectId("507f1f77bcf86cd799439011"),
             feedback: "This website is user friendly. Posting adoptable pets through this website was easy.",
@@ -93,7 +93,7 @@ async function main() {
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
             reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
         },
-        'http://jimhelpertanimalrescue.jpg',
+        '/public/images/shelters/JHwithcat.png',
         {
             _id: ObjectId("507f1f77bcf86cd799439011"),
             feedback: "This website is user friendly. Posting adoptable pets through this website was easy.",
@@ -124,7 +124,7 @@ async function main() {
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
             reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
         },
-        'http://pambeeslyanimalrescue.jpg',
+        '/public/images/shelters/pamascat.jpg',
         {
             _id: ObjectId("507f1f77bcf86cd799439011"),
             feedback: "This website is user friendly. Posting adoptable pets through this website was easy.",
@@ -155,7 +155,7 @@ async function main() {
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
             reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
         },
-        'http://kellykapooranimalrescue.jpg',
+        '/public/images/shelters/kellykappor.jpg',
         {
             _id: ObjectId("507f1f77bcf86cd799439011"),
             feedback: "This website is user friendly. Posting adoptable pets through this website was easy.",
@@ -186,7 +186,7 @@ async function main() {
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
             reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
         },
-        'http://ryanhowardanimalrescue.jpg',
+        '/public/images/shelters/ryanhorse.jpg',
         {
             _id: ObjectId("507f1f77bcf86cd799439011"),
             feedback: "This website is user friendly. Posting adoptable pets through this website was easy.",
