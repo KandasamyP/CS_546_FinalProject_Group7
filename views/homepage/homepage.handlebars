@@ -24,6 +24,14 @@
     <h2>Welcome {{username}}</h2>
   </div>
 
+  <div id="logout" {{greeting}}>
+    <button
+      onclick="location.href = '/logout'"
+      type="button"
+      class="logout"
+    >Logout</button>
+  </div>
+
   <div id="displayPets">
     {{#each pet}}
       <div>

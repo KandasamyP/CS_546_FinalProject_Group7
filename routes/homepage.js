@@ -400,5 +400,11 @@ router.post(
   }
 );
 
+router.get("/logout", async (req, res) => {
+  res.clearCookie("AuthCookie");
+  req.session.destroy();
+  res.status(200).redirect("/");
+});
+
 //Export Router function
 module.exports = router;
