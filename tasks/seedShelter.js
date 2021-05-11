@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectID;
 
 async function main() {
     const db = await dbConnection();
-    await db.dropDatabase();
+    //await db.dropDatabase();
 
     const michealanimalrescue = await shelters.create("Micheal Scott Adoption Company",
         "littleanimallover@gmail.com",

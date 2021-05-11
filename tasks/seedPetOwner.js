@@ -6,7 +6,7 @@ const saltRounds = 16;
 
 async function main() {
   const db = await dbConnection();
-  await db.dropDatabase();
+  //await db.dropDatabase();
 
   const hashedPassword1 = await bcrypt.hash("johnDoe", saltRounds);
   await petOwnerData.addPetOwner(

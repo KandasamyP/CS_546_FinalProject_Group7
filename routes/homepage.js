@@ -52,7 +52,7 @@ router.get("/profile", async (req, res) => {
       res.status(200).redirect("/petOwner");
     }
     if (req.cookies.AuthCookie.userType === "srUser") {
-      res.status(200).redirect("/petOwner");
+      res.status(200).redirect("/shelterUser");
     }
   } else {
     res.status(200).render("homepage/login");

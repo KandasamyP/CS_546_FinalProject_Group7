@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const petOwnerData = require("../data/petOwner");
+const shelterUserData = require("../data/shelterUser");
 
 router.get("/", async (req, res) => {
   try {
     if (req.cookies.AuthCookie) {
       var email = req.cookies.AuthCookie.email;
-      const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
-      res.status(200).render("users/petOwner", { petOwner });
+      const shelterUser = await shelterUserData.getPetShelterByEmail(email);
+      res.status(200).render("users/shelterUser", { shelterUser });
     }
   } catch (e) {
-    res.status(404).json({ error: "User not found." });
+    res.status(404).json({ error: "Shelter User not found." });
     return;
   }
 });

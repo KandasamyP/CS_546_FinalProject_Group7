@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "seedPets": "node ./tasks/seedPets.js"
+    "seedPets": "node ./tasks/seedPets.js",
+    "seedPetOwner":"node  ./tasks/seedPetOwner.js"
   },
   "repository": {
     "type": "git",
