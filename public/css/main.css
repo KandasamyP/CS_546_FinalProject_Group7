@@ -64,8 +64,11 @@
 }
 
 #individualShelter label {
-  margin: 0px 30px;
   font-weight: bolder;
+}
+
+#individualShelterRating {
+  margin-top: 40px;
 }
 
 #individualShelter .rowDetail {

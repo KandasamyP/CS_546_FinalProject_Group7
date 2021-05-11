@@ -36,6 +36,7 @@
     "leaflet": "^1.7.1",
     "mongodb": "^3.6.6",
     "multer": "^1.4.2",
+    "xss": "^1.0.9",
     "zipcodes": "^8.0.0",
     "zipcodes-nearby": "^0.1.4"
   }
