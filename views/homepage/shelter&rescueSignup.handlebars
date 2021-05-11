@@ -6,7 +6,7 @@
         <ul id="errorList"></ul>
     </div>
     <p>(*) - Mandatory Field</p>
-    <form method="POST" id="shelterRescue-signupForm" action="/signup/sr">
+    <form method="POST" id="shelterRescue-signupForm" action="/signup/sr" enctype="multipart/form-data>
         <label for="email">Email Address: (*)</label><br>
         <input type="email" id="email" name="email"><br>
 
@@ -17,7 +17,7 @@
         <input type="text" id="name" name="name"><br>
 
         <label for="profilePicture">Profile Picture Public URL:</label><br>
-        <input type="url" id="profilePicture" name="profilePicture"><br>
+        <input type="file" id="profilePicture" name="profilePicture" accept="image/*"><br>
 
         <label for="location">Location: (*)</label><br>
         <div>

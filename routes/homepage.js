@@ -6,6 +6,12 @@ const data = require("../data");
 const homepageData = data.homepageData;
 const petsData = data.pets;
 
+// const axios = require("axios").default;
+// const { data } = await axios.get(
+//   `https://us-street.api.smartystreets.com/street-address?auth-id=22a00ddf-39d3-6b81-2879-fad4ea212f2e&auth-token=0c5K0gNRcw48IVmksXD8&street=207%20Congress%20Street&street2=Apartment%202&city=Jersey%20City&state=NJ&zipcode=07307`
+// );
+// console.log(data);
+
 const path = require("path");
 
 /* required for multer --> */
@@ -26,9 +32,9 @@ router.get("/", async (req, res) => {
   try {
     var pets = await petsData.getPetHomepage();
 
-    if (req.cookies.AuthCookie) {
+    if (req.session.user) {
       res.status(200).render("homepage/homepage", {
-        username: req.cookies.AuthCookie.email,
+        username: req.body.userData.email,
         loginSignUp: "hidden",
         greeting: "show",
         pet: pets,
@@ -47,9 +53,11 @@ router.get("/", async (req, res) => {
 
 //GET '/profile'
 router.get("/profile", async (req, res) => {
-  if (req.cookies.AuthCookie) {
-    if (req.cookies.AuthCookie.userType === "popaUser") {
+  if (req.session.user) {
+    if (req.body.userData.userType === "popaUser") {
       res.status(200).redirect("/petOwner");
+    } else if (req.body.userData.userType === "srUser") {
+      res.status(200).send("Shelter Owner Profile Page");
     }
   } else {
     res.status(200).render("homepage/login");
@@ -67,7 +75,8 @@ router.post("/login", async (req, res) => {
     const logInData = req.body;
 
     function validateEmail(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
 
@@ -109,6 +118,11 @@ router.post("/login", async (req, res) => {
     const isSuccess = await homepageData.logInUser(logInData);
 
     if (isSuccess) {
+      req.session.user = {
+        userAuthenticated: true,
+        email: logInData.email,
+        userType: logInData.userType,
+      };
       res.cookie("AuthCookie", {
         userAuthenticated: true,
         email: logInData.email,
@@ -131,12 +145,13 @@ router.get("/signup/sr", async (req, res) => {
 });
 
 //POST '/signup/sr'
-router.post("/signup/sr", async (req, res) => {
+router.post("/signup/sr", upload.single("profilePicture"), async (req, res) => {
   try {
     const signupData = req.body;
 
     function validateEmail(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
 
@@ -249,6 +264,7 @@ router.post("/signup/sr", async (req, res) => {
 
   try {
     const signupData = req.body;
+    signupData.profilePicture = req.file.filename;
     const newSrUser = await homepageData.addSr(signupData);
 
     if (newSrUser) {
@@ -277,7 +293,8 @@ router.post(
       const signupData = req.body;
 
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
 
@@ -333,7 +350,8 @@ router.post(
 
       //Phone Number
       function validatePhoneNumber(phoneNumber) {
-        const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        const re =
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
         return re.test(String(phoneNumber));
       }
       if (signupData.phoneNumber) {

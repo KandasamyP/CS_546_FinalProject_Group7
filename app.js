@@ -34,8 +34,27 @@ app.use(
 );
 
 //Middleware: Check if user is already signed in on signup route
+app.use("/", (req, res, next) => {
+  if (req.session.user) {
+    req.body.userData = req.session.user;
+    next();
+  } else {
+    next();
+  }
+});
+
+//Middleware: Check if user is already signed in on signup route
 app.use("/signup", (req, res, next) => {
-  if (req.cookies.AuthCookie) {
+  if (req.session.user) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
+
+//Middleware: Check if user is already logged in on login route
+app.use("/login", (req, res, next) => {
+  if (req.session.user) {
     return res.redirect("/");
   } else {
     next();
@@ -44,25 +63,35 @@ app.use("/signup", (req, res, next) => {
 
 //Middleware: Check if user is already signed in on pet search route
 app.use("/pets", (req, res, next) => {
-  if (!req.cookies.AuthCookie) {
-    return res.redirect("/");
+  if (!req.session.user) {
+    return res.redirect("/login");
   } else {
     next();
   }
 });
 //Middleware: Check if user is already signed in on shelters route
 app.use("/shelters", (req, res, next) => {
-  if (!req.cookies.AuthCookie) {
-    return res.redirect("/");
+  if (!req.session.user) {
+    return res.redirect("/login");
   } else {
     next();
   }
 });
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {
-  if (!req.cookies.AuthCookie) {
-    return res.redirect("/");
+  if (!req.session.user) {
+    return res.redirect("/login");
   } else {
+    req.body.userData = req.session.user;
+    next();
+  }
+});
+
+app.use("/petOwner", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  } else {
+    req.body.userData = req.session.user;
     next();
   }
 });

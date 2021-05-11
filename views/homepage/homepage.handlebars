@@ -1,31 +1,48 @@
 <main>
-    <div id="loginAndSignup" {{loginSignUp}}>
-        <button onclick="location.href = '/login'" type="button" class="login">Shelter/Rescue - Log
-            In</button>
-        <br>
-        <br>
-        <button onclick="location.href = '/signup/sr'" type="button" class="signup">Shelter/Rescue - Sign
-            Up</button>
-        <br>
-        <button onclick="location.href = '/signup/popa'" type="button" class="signup">Pet Owner/Adopter -
-            Sign Up</button>
-    </div>
+  <div id="loginAndSignup" {{loginSignUp}}>
+    <button
+      onclick="location.href = '/login'"
+      type="button"
+      class="login"
+    >Shelter/Rescue - Log In</button>
+    <br />
+    <br />
+    <button
+      onclick="location.href = '/signup/sr'"
+      type="button"
+      class="signup"
+    >Shelter/Rescue - Sign Up</button>
+    <br />
+    <button
+      onclick="location.href = '/signup/popa'"
+      type="button"
+      class="signup"
+    >Pet Owner/Adopter - Sign Up</button>
+  </div>
 
-    <div id="username" {{greeting}}>
-        <h2>Welcome {{username}}</h2>
-    </div>
+  <div id="username" {{greeting}}>
+    <h2>Welcome {{username}}</h2>
+  </div>
 
-    <div id="displayPets">
-        {{#each pet}}
-        <div>
-            <br>
-            <img src="/public/images/pets/{{{petName}}}1.jpg" alt="petPhoto:{{petName}}">
-            Name: {{petName}}<br>
-            Pet Type: {{animalType}}<br>
-            Breed: {{breeds}}<br>
-            Biography: {{biography}}<br>
-            <br>
-        </div>
-        {{/each}}
-    </div>
+  <div id="displayPets">
+    {{#each pet}}
+      <div>
+        <br />
+        <img
+          src="/public/images/pets/{{{petName}}}1.jpg"
+          alt="petPhoto:{{petName}}"
+        />
+        <br />
+        Name:
+        {{petName}}<br />
+        Pet Type:
+        {{animalType}}<br />
+        Breed:
+        {{breeds}}<br />
+        Biography:
+        {{biography}}<br />
+        <br />
+      </div>
+    {{/each}}
+  </div>
 </main>
