@@ -24,6 +24,7 @@
         <h3>Great! Let's get more specific on what kind of dog you're looking for.</h3>
         <p>You may select by breed, approximate age, sex, appearance, behavior, and lifestyle, but the only requirement
             is that you enter a United States zip code!</p>
+        <p>Searching by all of these fields, except behaviors and lifestyle, will return results matching any of the selected options. Options selected in behaviors and lifestyle will only return available pets that fit all conditions in order to make it easy to find pets that meet every single one of your needs!</p>
         <p>Leaving distance blank will default your search radius to 50 miles.</p>
         <div class="dropdown btn-group">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -116,7 +117,8 @@
                 {{/each}}
             </div>
         </div>
-        <input type="number" id="zip-code" name="zipCodeDogs" placeholder="Zip code" min="00501" max="99950" required>
+        <input type="hidden" id="animalType" name="animalType" value="Dog">
+        <input type="number" id="zipCode" name="zipCode" placeholder="Zip code" min="00501" max="99950" required>
         <input type="number" id="distance" name="distance" placeholder="Distance (mi)" min="0" max="500">
         <input type="submit" value="Search" />
     </form>
@@ -217,7 +219,8 @@
                 {{/each}}
             </div>
         </div>
-        <input type="number" id="zip-code" name="zipCodeCats" placeholder="Zip code" min="00501" max="99950" required>
+        <input type="hidden" id="animalType" name="animalType" value="Cat">
+        <input type="number" id="zipCode" name="zipCode" placeholder="Zip code" min="00501" max="99950" required>
         <input type="number" id="distance" name="distance" placeholder="Distance (mi)" min="0" max="500">
         <input type="submit" value="Search" />
     </form>

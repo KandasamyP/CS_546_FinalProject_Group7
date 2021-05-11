@@ -1,6 +1,14 @@
 <main>
     <div class="pet_info">
+        <br>
         <h1>Meet {{pet.petName}}!</h1>
+        {{#if isThisShelterLoggedIn}}
+        <form id="remove-pet" method="POST" action="/pets/delete">
+            <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
+            <input type="hidden" id="shelterId" name="shelterId" value="{{pet.associatedShelter}}">
+            <input type="submit" class="btn btn-danger" value="Remove Pet"/>
+        </form>
+        {{/if}}
         <br>
         <section class="pet-carousel-bg w-100">
             <div id="carousel-indicators" class="carousel slide" data-ride="carousel">

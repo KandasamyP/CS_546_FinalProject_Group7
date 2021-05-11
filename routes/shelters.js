@@ -34,8 +34,6 @@ router.get("/:id", async (req, res) => {
         .status(200)
         .render("pets/individual-shelter", { shelterDetails: shelter });
     }
-
-    console.log(shelter);
   } catch (e) {
     res.status(404).send(e);
   }

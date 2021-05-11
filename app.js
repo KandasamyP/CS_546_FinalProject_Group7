@@ -46,6 +46,21 @@ app.engine("handlebars", exphbs({
           return shelterName;
         }
       }
+    },
+    prefillRadioButton: function(originalValue, formValue) {
+      if (originalValue === formValue) {
+        return "checked";
+      } else {
+        return "unchecked";
+      }
+    },
+    prefillCheckboxes: function(originalValues, formValue) {
+      for (let val of originalValues) {
+        if (val === formValue) {
+          return "checked";
+        }
+      }
+      return;
     }
   }
 }));
