@@ -26,7 +26,7 @@ async function main() {
       "facebook.com/furiendsanimalrescuehoboken",
       "twitter.com/furiendsanimalrescuehoboken",
     ],
-    ["6063d472f5a17f32a5cbdc24", "6064a5d02f56e4da24413ab3"],
+    ["609832cf96d17d6a645b0911"],
     ["6064a5f081004bcfbc33d6c5"],
     [
       {

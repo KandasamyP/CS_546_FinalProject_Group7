@@ -97,14 +97,15 @@ const exportedMethods = {
     };
     addReview._id = ObjectId();
 
-    shelter.reviews.push(addReview);
-    console.log(shelter._id);
+   shelter.reviews.push(addReview);
 
-    const updateInfo = await sheltersCollection.updateOne({ _id: shelter._id }, { $set: shelter});
+    shelter._id = ObjectId(shelter._id);
+
+    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter});
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
-
-    return await this.getShelterById(updateInfo._id);
+    
+    return await this.getShelterById(shelter._id.toString());
   },
 };
 
