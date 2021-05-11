@@ -11,6 +11,19 @@ async function getGeoLocation(zip) {
   return zips;
 }
 
+
+
+router.get('/', async (req, res) => {
+  try {
+    const shelter = await shelterAndRescueData.getAll();
+    // console.log(shelter)
+    res.status(200).render("shelters/allShelters", { shelter, title: "List of shelters" });
+  } catch (error) {
+    res.render('shelters/error', { title: "No Data Found" });
+  }
+});
+
+
 router.get("/:id", async (req, res) => {
   if (!req.params.id) {
     res.status(404).render("error", {
@@ -40,16 +53,5 @@ router.get("/:id", async (req, res) => {
     res.status(404).send(e);
   }
 });
-
-router.get('/', async (req, res) => {
-  try {
-    const shelter = await shelterAndRescueData.getAll();
-    // console.log(shelter)
-    res.status(200).render("shelters/allShelters", { shelter, title: "List of shelters" });
-  } catch (error) {
-    res.render('shelters/error', { title: "No Data Found" });
-  }
-});
-
 
 module.exports = router;

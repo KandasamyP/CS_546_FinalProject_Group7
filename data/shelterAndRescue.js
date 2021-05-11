@@ -15,7 +15,7 @@ let exportedMethods = {
       biography: biography,
       phoneNumber: phoneNumber,
       website: website,
-      socialMedia: socialMedia, //array
+      socialMedia: socialMedia, //array changed it to object.
       availablePets: availablePets, //array
       adoptedPets: adoptedPets, //array
       reviews: reviews, //Subdoc

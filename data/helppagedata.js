@@ -50,18 +50,18 @@ const helpfaqdata = [
         collapse: "collapse"
     },
     {
-        question: "What is this website about?",
-        answer: "this website is about letting adopters adopt pets.",
+        question: "WHo is batman?",
+        answer: "bruce wayne",
         collapse: "collapse"
     },
     {
-        question: "What is this website about?",
-        answer: "this website is about letting adopters adopt pets.",
+        question: "who is Superman?",
+        answer: "Clark Kent",
         collapse: "collapse"
     },
     {
-        question: "What is this website about?",
-        answer: "this website is about letting adopters adopt pets.",
+        question: "who is Wonder Woman?",
+        answer: "Diana Prince",
         collapse: "collapse"
     }
 ]
