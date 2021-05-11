@@ -51,7 +51,7 @@ app.use("/pets", (req, res, next) => {
   }
 });
 //Middleware: Check if user is already signed in on shelters route
-app.use("/shelters", (req, res, next) => {
+app.use("/sheltersAndRescue", (req, res, next) => {
   if (!req.cookies.AuthCookie) {
     return res.redirect("/");
   } else {
@@ -60,6 +60,22 @@ app.use("/shelters", (req, res, next) => {
 });
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {
+  if (!req.cookies.AuthCookie) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
+//Middleware: Check if user is already signed in on feedback route
+app.use("/feedback", (req, res, next) => {
+  if (!req.cookies.AuthCookie) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
+//Middleware: Check if user is already signed in on helppage route
+app.use("/helppage", (req, res, next) => {
   if (!req.cookies.AuthCookie) {
     return res.redirect("/");
   } else {

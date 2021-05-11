@@ -4,6 +4,7 @@
   "description": "Pet Adoption",
   "main": "app.js",
   "scripts": {
+    "shelter seed": "node ./tasks/seedShelter.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
