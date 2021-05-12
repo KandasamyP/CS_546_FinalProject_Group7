@@ -36,6 +36,10 @@
   margin-bottom: 0rem;
 }
 
+.bg-card-header {
+  background-color: white;
+}
+
 .bg-custom-color {
   background-color: #edf5e1;
 }
@@ -45,7 +49,7 @@
 }
 
 .carousel {
-  height: 300px;
+  height: 400px;
 }
 
 .carousel-item,
@@ -64,16 +68,21 @@
 }
 
 #individualShelter label {
-  margin: 0px 30px;
   font-weight: bolder;
+}
+
+#individualShelterRating {
+  margin-top: 40px;
 }
 
 #individualShelter .rowDetail {
   margin-bottom: 15px;
 }
 
-.card-width-18 {
-  width: 18rem;
+.card-img-top {
+  max-height: 250px;
+  min-height: 250px;
+  object-fit: cover;
 }
 
 .dropdown-menu {
@@ -100,4 +109,42 @@ input[type="number"] {
 
 .choose-animal-type:hover {
   cursor: pointer;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.fill-width {
+  flex: 1;
+}
+
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  overflow-y: scroll
+}
+
+.message-recipient,
+.message-user {
+  display: flex;
+  flex-shrink: 0
+}
+
+.message-recipient {
+  margin-right: auto
+}
+
+.message-user {
+  flex-direction: row-reverse;
+  margin-left: auto
+}
+
+.bg-user {
+  background-color: #a2aab1!important;
+}
+
+.bg-recipient {
+  background-color: #e6e8eb!important;
 }

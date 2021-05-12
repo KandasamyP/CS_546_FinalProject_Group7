@@ -6,8 +6,8 @@ $(function () {
   let profilePicture = $("#profilePicture");
   let locationStateId = $("#stateId");
   let locationCityId = $("#cityId");
-  let locationStreetId = $("#streetId");
-  let locationApartmentId = $("#apartmentId");
+  let locationStreetId1 = $("#streetId1");
+  let locationStreetId2 = $("#streetId12");
   let locationZipCodeId = $("#zipCodeId");
   let biography = $("#biography");
   let phoneNumber = $("#phoneNumber");
@@ -28,8 +28,8 @@ $(function () {
       var profilePicture_term = profilePicture.val();
       let locationStateId_term = locationStateId.val();
       let locationCityId_term = locationCityId.val();
-      let locationStreetId_term = locationStreetId.val();
-      let locationApartmentId_term = locationApartmentId.val();
+      let locationStreetId_term = locationStreetId1.val();
+      let locationApartmentId_term = locationStreetId2.val();
       let locationZipCodeId_term = locationZipCodeId.val();
       var biography_term = biography.val();
       var phoneNumber_term = phoneNumber.val();
@@ -45,7 +45,8 @@ $(function () {
 
       //Email
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
       if (!email_term || email_term.trim() === "") {
@@ -105,7 +106,8 @@ $(function () {
 
       //Phone Number
       function validatePhoneNumber(phoneNumber) {
-        const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        const re =
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
         return re.test(String(phoneNumber));
       }
       if (!phoneNumber_term || phoneNumber_term.trim() === "") {

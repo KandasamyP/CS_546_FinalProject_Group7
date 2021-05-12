@@ -1,4 +1,4 @@
-const mongoCollections = require('../config/mongoCollections');
+const mongoCollections = require("../config/mongoCollections");
 let { ObjectId } = require("mongodb");
 const shelterAndRescue = mongoCollections.shelterAndRescue;
 
@@ -21,7 +21,6 @@ let exportedMethods = {
       reviews: reviews, //Subdoc
       profilePicture: profilePicture,
       websiteFeedbackGiven: websiteFeedbackGiven //Subdoc
-
     };
 
     const insertInfo = await sheltersCollection.insertOne(newShelter);
@@ -33,41 +32,70 @@ let exportedMethods = {
 
     return shelter;
   },
-  // async addFeedback(feedbackdata) {
-  //   try {
-  //     if (!feedbackdata.rating || feedbackdata.rating === undefined || feedbackdata.rating.trim() === "") {
-  //       throw {
-  //         status: 400,
-  //         error: "Please provide a proper rating.",
-  //       };
-  //     }
-  //     if (!feedbackdata.experience || feedbackdata.experience === undefined || feedbackdata.experience.trim() === "") {
-  //       throw {
-  //         status: 400,
-  //         error: "Pease provide a feedback.",
-  //       };
-  //     }
-  //   } catch (e) {
-  //     res.status(e.status).send({ title: "Error", error: e.error });
-  //     return;
-  //   }
-  //   try {
-  //     const sheltersCollection = await shelterAndRescue();
-  //     const userid = await sheltersCollection.findOne({ id: feedbackdata.id })
+  
+  // When given an id, this function will return a shelter from the database.
+  async getShelterById(id) {
+    if (!id) throw "The input argument 'id' is missing.";
+    if (typeof id != "string") throw "The input 'id' must be a string.";
+    if (id.trim().length === 0) throw "The input 'id' must not be empty.";
 
-  //     if (userid) {
+    let parsedId = ObjectId(id);
 
-  //     } else {
-  //       throw {
-  //         status: 500,
-  //         error:
-  //           "No such user exists with this id",
-  //       };
-  //     }
-  //   } catch (e) {
-  //     throw { status: e.status, error: e.error };
-  //   }
-  // },
+    const sheltersCollection = await shelterAndRescue();
+    let shelter = await sheltersCollection.findOne({ _id: parsedId });
+
+    // If the no shelter exists with that id, the method should throw
+    if (shelter === null) throw "Shelter not found";
+
+    shelter._id = shelter._id.toString();
+
+    return shelter;
+  },
+
+  async updateShelterReviewById(req) {
+    if (req && req.params.id) {
+      let reviewBody = req.body.reviewBody;
+      let rating = req.body.rating;
+    }     
+
+    const sheltersCollection = await shelterAndRescue();
+    let shelter = await this.getShelterById(req.params.id);
+
+    const addReview = {
+      reviewDate: new Date().getTime(),
+      rating: req.body.rating,
+      reviewBody: req.body.reviewBody
+    };
+    addReview._id = ObjectId();
+
+   shelter.reviews.push(addReview);
+
+    shelter._id = ObjectId(shelter._id);
+
+    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter});
+    if (updateInfo.modifiedCount === 0)
+      throw "Not able to update db";
+    
+    return await this.getShelterById(shelter._id.toString());
+  },
+  
+  // SH - I adapted this from the function in petOwner.js
+  //returns a petOwner user searches by petOwner Email/Username
+  async getShelterAndRescueByUserEmail(srEmail) {
+    //check email
+    const sheltersCollection = await shelterAndRescue();
+
+    let shelterDetails = await sheltersCollection.findOne({
+      email: srEmail,
+    });
+
+    if (shelterDetails == null || !shelterDetails) throw "User not found.";
+
+    // convert _id to string for return
+    shelterDetails._id = shelterDetails._id.toString();
+
+    return shelterDetails;
+  },
 
   async updateShelterFeedbackById(req) {
     const sheltersColl = await shelterAndRescue();
@@ -225,18 +253,7 @@ let exportedMethods = {
 
     return await this.getShelterByID(existingUserData._id);
   },
-  async getShelterByID(id) {
-    if (!id) throw "Please provide a proper ID "
-    if (typeof id != "string") throw "Please provide a String based ID"
-    if (id.trim().length === 0) throw "Input ID cannot be blank"
-    let parsedId = ObjectId(id);
-    const sheltersCollection = await shelterAndRescue();
-    let shelter = await sheltersCollection.findOne({ _id: parsedId })
-
-    if (shelter === null) throw "shelter not found";
-    // shelter._id = shelter._id.toString();
-    return shelter;
-  },
 }
+
 
 module.exports = exportedMethods;
