@@ -3,6 +3,7 @@ console.clear();
 
 //Require Express, Express Handlebars, Express Session & Cookie Parser
 const express = require("express");
+const moment = require("moment");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
@@ -19,7 +20,50 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Setup Express View Engine as Express Handlebars
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+//Formats for moment.js can be found here: https://momentjs.com/
+app.engine("handlebars", exphbs({ 
+  defaultLayout: "main" ,
+  helpers: {
+    formatDate: function (date, format) {
+      return moment(date).format(format);
+    },
+    ifUserIsSender: function(senderId, userId) {
+      return senderId === userId ? "user" : "recipient";
+    },
+    ifMessageSent: function(recipient, participant) {
+      if (recipient === participant) {
+        return "reloaded";
+      }
+      return;
+    },
+    setSenderName: function(senderId, userId, petOwnerName, shelterName, isUserShelter) {
+      if (senderId === userId) {
+        return "You";
+      } else {
+        if (isUserShelter) {
+          return petOwnerName;
+        } else {
+          return shelterName;
+        }
+      }
+    },
+    prefillRadioButton: function(originalValue, formValue) {
+      if (originalValue === formValue) {
+        return "checked";
+      } else {
+        return "unchecked";
+      }
+    },
+    prefillCheckboxes: function(originalValues, formValue) {
+      for (let val of originalValues) {
+        if (val === formValue) {
+          return "checked";
+        }
+      }
+      return;
+    }
+  }
+}));
 app.set("view engine", "handlebars");
 
 //Create Express Session
