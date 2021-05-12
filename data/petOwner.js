@@ -70,11 +70,14 @@ async function getPetOwnerByUserEmail(petOwnerEmail) {
   //check email
   const petOwnerCollection = await petOwnerData();
 
-  const petOwnerDetails = await petOwnerCollection.findOne({
+  let petOwnerDetails = await petOwnerCollection.findOne({
     email: petOwnerEmail,
   });
 
   if (petOwnerDetails == null || !petOwnerDetails) throw "User not found.";
+
+  // return _id as string
+  petOwnerDetails._id = petOwnerDetails._id.toString();
 
   return petOwnerDetails;
 }

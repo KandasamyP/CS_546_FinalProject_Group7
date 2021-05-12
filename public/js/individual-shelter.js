@@ -1,25 +1,36 @@
-function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 8,
-    center: { lat: -34.397, lng: 150.644 },
-  });
-  const geocoder = new google.maps.Geocoder();
-  document.getElementById("submit").addEventListener("click", () => {
-    geocodeAddress(geocoder, map);
-  });
-}
+(function($) {
+  var addReviewForm = $('#addReviewForm');
+  var reviewBody = $('#reviewBody');
+  var rating = $('#rating');
+  var reviewError = $('#reviewError');
+  var successMessage = $('#successMessage');
 
-function geocodeAddress(geocoder, resultsMap) {
-  const address = document.getElementById("address").value;
-  geocoder.geocode({ address: address }, (results, status) => {
-    if (status === "OK") {
-      resultsMap.setCenter(results[0].geometry.location);
-      new google.maps.Marker({
-        map: resultsMap,
-        position: results[0].geometry.location,
-      });
-    } else {
-      alert("Geocode was not successful for the following reason: " + status);
-    }
+  console.log("form is called");
+
+  addReviewForm.submit(function(event) {
+    event.preventDefault();
+    console.log("Add review submit btn is clicked");
+
+    if(!reviewBody.val() || !rating.val()) {
+      console.log("form needs to submit");
+      reviewError.attr("hidden", false);
+      return;
+    } 
+    var requestConfig = {
+      method: 'POST',
+      url: `/shelters/addReviews/609841df6e0fe6a790ab212f`,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        reviewBody: reviewBody.val(),
+        rating: rating.val()
+      })
+  };
+
+  $.ajax(requestConfig).then(function(responseMessage) {
+    reviewError.attr("hidden", true);
+    successMessage.attr("hidden", false);
+    console.log("Add review submit btn is clicked");
   });
-}
+    
+  });
+})(window.jQuery);

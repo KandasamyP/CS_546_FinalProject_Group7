@@ -4,8 +4,8 @@ const petOwnerData = require("../data/petOwner");
 
 router.get("/", async (req, res) => {
   try {
-    if (req.cookies.AuthCookie) {
-      var email = req.cookies.AuthCookie.email;
+    if (req.session.user) {
+      var email = req.body.userData.email;
       const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
       if (petOwner.shelterReviewsGiven.length != 0){
         try{
