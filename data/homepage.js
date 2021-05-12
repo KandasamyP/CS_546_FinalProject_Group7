@@ -9,7 +9,8 @@ const exportedMethods = {
   async addSr(srData) {
     try {
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
 
@@ -70,7 +71,10 @@ const exportedMethods = {
         };
       }
 
-      if (srData.street === undefined || srData.street.trim() === "") {
+      if (
+        srData.streetAddress1 === undefined ||
+        srData.streetAddress1.trim() === ""
+      ) {
         throw {
           status: 400,
           error:
@@ -93,7 +97,8 @@ const exportedMethods = {
       }
 
       function validatePhoneNumber(phoneNumber) {
-        const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        const re =
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
         return re.test(String(phoneNumber));
       }
 
@@ -125,8 +130,8 @@ const exportedMethods = {
       country: srData.country,
       state: srData.state,
       city: srData.city,
-      street: srData.street,
-      apartment: srData.apartment,
+      streetAddress1: srData.streetAddress1,
+      streetAddress2: srData.streetAddress2,
       zipCode: srData.zipCode,
     };
     srData.socialMedia = {
@@ -140,8 +145,8 @@ const exportedMethods = {
     delete srData.country;
     delete srData.state;
     delete srData.city;
-    delete srData.apartment;
-    delete srData.street;
+    delete srData.streetAddress1;
+    delete srData.streetAddress2;
     delete srData.zipCode;
     delete srData.facebook;
     delete srData.instagram;
@@ -161,9 +166,8 @@ const exportedMethods = {
           async function (err, hash) {
             if (!err) {
               srData.password = hash;
-              const newInsertInformation = await shelterAndRescueCollection.insertOne(
-                srData
-              );
+              const newInsertInformation =
+                await shelterAndRescueCollection.insertOne(srData);
               if (newInsertInformation.insertedCount === 0) {
                 throw {
                   status: 500,
@@ -192,7 +196,8 @@ const exportedMethods = {
   async addPoPa(poPaData) {
     try {
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
 
@@ -245,7 +250,8 @@ const exportedMethods = {
 
       //Phone Number
       function validatePhoneNumber(phoneNumber) {
-        const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        const re =
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
         return re.test(String(phoneNumber));
       }
       if (poPaData.phoneNumber) {
@@ -335,7 +341,8 @@ const exportedMethods = {
   async logInUser(loginData) {
     try {
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
 

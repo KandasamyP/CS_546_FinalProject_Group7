@@ -6,8 +6,8 @@ const saltRounds = 16;
 
 router.get("/", async (req, res) => {
   try {
-    if (req.cookies.AuthCookie) {
-      var email = req.cookies.AuthCookie.email;
+    if (req.session.user) {
+      var email = req.body.userData.email;
       const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
       res.status(200).render("users/petOwner", { petOwner });
     }
