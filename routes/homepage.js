@@ -54,6 +54,9 @@ router.get("/profile", async (req, res) => {
     } else if (req.body.userData.userType === "srUser") {
       res.status(200).send("Shelter Owner Profile Page");
     }
+    if (req.cookies.AuthCookie.userType === "srUser") {
+      res.status(200).redirect("/shelterUser");
+    }
   } else {
     res.status(200).render("homepage/login");
   }

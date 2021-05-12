@@ -1,19 +1,54 @@
 const express = require("express");
 const router = express.Router();
 const petOwnerData = require("../data/petOwner");
-const bcrypt = require("bcrypt");
-const saltRounds = 16;
 
 router.get("/", async (req, res) => {
   try {
     if (req.session.user) {
       var email = req.body.userData.email;
       const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
+      if (petOwner.shelterReviewsGiven.length != 0){
+        try{
+          const shelterReviewsInfo = await petOwnerData.getShelterReviews(petOwner.shelterReviewsGiven);
+        }catch(e){
+         //res.status(500).json({ error: "Internal server error." });
+        }
+      }
       res.status(200).render("users/petOwner", { petOwner });
     }
   } catch (e) {
     res.status(404).json({ error: "User not found." });
+    return;
   }
+});
+
+//handles change password request
+router.post("/changePassword", async(req,res)=>{
+  try{
+        let plainTextPassword = req.body.password;
+        console.log(req.body);
+        if (!plainTextPassword || plainTextPassword.trim() === ""){
+            throw "Password must be provided";
+        }
+        let email = req.cookies.AuthCookie.email;
+        let existingUserData;
+        try {
+            existingUserData = await petOwnerData.getPetOwnerByUserEmail(email);
+        } catch (e) {
+            res.status(404).json({error: "user not found"});
+            return;
+        }
+        try{
+          const petOwner = await petOwnerData.updatePassword(existingUserData._id,plainTextPassword);
+          console.log(petOwner);
+          res.status(200).render("users/petOwner", { petOwner, status: "success", alertMessage: "Password Updated Successfully." });
+        }catch(e){
+          res.status(200).render("users/petOwner", { petOwner, status: "failed", alertMessage: "Password Update Failed. Please try again."});
+        }
+        
+    }catch(e){
+      res.status(500).json({error: "Internal server error."});
+    };
 });
 
 router.post("/", async (req, res) => {
@@ -26,9 +61,7 @@ router.post("/", async (req, res) => {
   //getting existing data of user
   let existingUserData;
   try {
-    existingUserData = await petOwnerData.getPetOwnerByUserEmail(
-      petOwnerInfo.email
-    );
+    existingUserData = await petOwnerData.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
   } catch (e) {
     res.status(404).json({ error: "user not found" });
     return;

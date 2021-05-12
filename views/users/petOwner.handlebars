@@ -1,7 +1,4 @@
 <div class="user-bg container-fluid">
-    <div class="row card-header" id="profile-title">
-        <h5>Profile</h5>
-    </div>
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
@@ -9,14 +6,16 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-2">
-                            <img class="profile-picture rounded-circle"
-                                src="../public/images/popaUsers/{{petOwner.profilePicture}}"
-                                alt="{{petOwner.fullName.firstName}}" />
+                            {{#if petOwner.profilePicture}}
+                                <img class="profile-picture rounded-circle" src="../public/images/popaUsers/{{petOwner.profilePicture}}" alt="{{petOwner.fullName.firstName}}" />
+                            {{else}}
+                                <img class="profile-picture rounded-circle" src="../public/images/popaUsers/no_image.png" alt="{{petOwner.fullName.firstName}}" />
+                            {{/if}}
                         </div>
                         <div class="col-sm-10">
                             <p>Choose an image from your computer</p>
-                            <button class="btn">Upload</button>
-                            <button class="btn">Delete</button>
+                            <button class="btn">Change</button>
+                            {{!-- <button class="btn">Delete</button> --}}
                         </div>
                     </div>
                 </div>
@@ -30,20 +29,27 @@
             <div class="card">
                 <h5 class="card-header" id="user-photo">Change Password</h5>
                 <div class="card-body">
-                    <form id="passwordForm" method="POST" action="">
+                    <form id="passwordForm" method="POST" action="/petOwner/changePassword">
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <label for="password" class="col-form-label">Enter New Password</label>
                             </div>
                             <div class="col-sm-6">
                                 <input type="password" class="form-control" name="password" id="password"
-                                    value="{{petOwner.password}}" placeholder="password"></input>
+                                    value="{{petOwner.password}}" placeholder="Enter New Password"></input>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-12">
+                                <button class="btn btn-primary" id="editPassword">Edit</button>
                                 <button class="btn btn-success" id="savePassword" type="submit">Save</button>
                             </div>
+                        </div>
+                        <div class="form-group row">
+                             <div class="col-sm-12">
+                                 <p>{{alertMessage}}</p>
+    
+                             </div>
                         </div>
                     </form>
                 </div>
@@ -58,23 +64,8 @@
                 <h5 class="card-header" id="info">Information</h5>
                 <div class="card-body">
                     <form id="userInfo" method="POST" action="/petOwner" onsubmit="return(validateForm());">
-                        {{!-- <div class="form-group row" id="formSpacing">
-                            <label for="email" class="col-sm-6 col-form-label">Email</label>
-                            <label for="password" class="col-sm-6 col-form-label">Password</label>
-                        </div> --}}
-                        {{!-- <div class="form-group row">
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" name="email" id="email"
-                                    value="{{petOwner.email}}" placeholder="email"></input>
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="password" class="form-control" name="password" id="password"
-                                    value="{{petOwner.password}}" placeholder="password"></input>
-                            </div>
-                        </div> --}}
-
                         <div class="form-group row" id="formSpacing">
-                            <label for="email" class="col-sm-4 col-form-label">Email</label>
+                            <label for="email" class="col-sm-4 col-form-label">Username</label>
                             <label for="firstname" class="col-sm-4 col-form-label">Firstname</label>
                             <label for="lastname" class="col-sm-4 col-form-label">Lastname</label>
                             {{!-- <label for="username" class="col-sm-6 col-form-label">username</label> --}}
@@ -86,11 +77,11 @@
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="firstName" id="firstName"
-                                    value="{{petOwner.fullName.firstName}}" placeholder="firstname"></input>
+                                    value="{{petOwner.fullName.firstName}}" placeholder="firstname" required></input>
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="lastName" id="lastName"
-                                    value="{{petOwner.fullName.lastName}}" placeholder="lastname"></input>
+                                    value="{{petOwner.fullName.lastName}}" placeholder="lastname" required></input>
                             </div>
                         </div>
 
@@ -103,15 +94,15 @@
                         <div class="form-group row">
                             <div class="col-sm-4">
                                 <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth"
-                                    value="{{petOwner.dateOfBirth}}" placeholder="Date Of Birth"></input>
+                                    value="{{petOwner.dateOfBirth}}" placeholder="Date Of Birth" required></input>
                             </div>
                             <div class="col-sm-4">
-                                <input type="number" class="form-control" name="phoneNumber" id="phoneNumber"
-                                    value="{{petOwner.phoneNumber}}" placeholder="Phone Number" size="10"></input>
+                                <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required></input>
                             </div>
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" name="zipCode" id="zipCode"
-                                    value="{{petOwner.zipCode}}" placeholder="Zip Code" size="5"></input>
+                                    value="{{petOwner.zipCode}}" placeholder="Eg. 07307" min="00501" max="99950" required></input>
                             </div>
                         </div>
 
@@ -200,7 +191,7 @@
         </div>
     </div>
 
-    <div class="row spacing">
+    {{!-- <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
                 <h5 class="card-header" id="info">Reported Posts</h5>
@@ -225,6 +216,6 @@
                 <div class="card-body"> </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 </div>

@@ -1,3 +1,4 @@
+
 const mongoCollections = require("../config/mongoCollections");
 let { ObjectId } = require("mongodb");
 const shelterAndRescue = mongoCollections.shelterAndRescue;
@@ -70,12 +71,14 @@ const exportedMethods = {
 
     let parsedId = ObjectId(id);
 
-    const sheltersCollection = await shelterAndRescue();
-    let shelter = await sheltersCollection.findOne({ _id: parsedId });
 
-    // If the no shelter exists with that id, the method should throw
-    if (shelter === null) throw "Shelter not found";
+    };
 
+    const insertInfo = await sheltersCollection.insertOne(newShelter);
+    if (insertInfo.insertedCount === 0) throw 'Could not add shelter';
+
+    const newId = insertInfo.insertedId;
+    let shelter = await this.getShelterByID(newId.toString());
     shelter._id = shelter._id.toString();
 
     return shelter;
@@ -126,5 +129,6 @@ const exportedMethods = {
     return shelterDetails;
   }
 };
+
 
 module.exports = exportedMethods;

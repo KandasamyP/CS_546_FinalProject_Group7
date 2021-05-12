@@ -114,9 +114,15 @@ app.use("/pets", (req, res, next) => {
   }
 });
 //Middleware: Check if user is already signed in on shelters route
+
 app.use("/shelters", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
+
+app.use("/sheltersAndRescue", (req, res, next) => {
+  if (!req.cookies.AuthCookie) {
+    return res.redirect("/");
+
   } else {
     next();
   }
@@ -142,6 +148,22 @@ app.use("/petOwner", (req, res, next) => {
 
 app.use("/logout", (req, res, next) => {
   if (!req.session.user) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
+//Middleware: Check if user is already signed in on feedback route
+app.use("/feedback", (req, res, next) => {
+  if (!req.cookies.AuthCookie) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
+//Middleware: Check if user is already signed in on helppage route
+app.use("/helppage", (req, res, next) => {
+  if (!req.cookies.AuthCookie) {
     return res.redirect("/");
   } else {
     next();
