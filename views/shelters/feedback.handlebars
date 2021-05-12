@@ -1,52 +1,22 @@
 <br>
 <title> {{title}}</title>
-
 <div id="error">
     <ul id="errorList"></ul>
 </div>
-
 <form method="POST" id="feedback-form">
-    <div id="rating">
-        <label for="exampleFormControlInput1">How would you rate our website? (1 being the lowest & 5 being the
+    <div>
+        <label for="rating">How would you rate our website? (1 being the lowest & 5 being the
             highest)</label><br>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
-                value="option1">
-            <label class="form-check-label" for="inlineRadio1">1</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
-                value="option2">
-            <label class="form-check-label" for="inlineRadio2">2</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
-                value="option3">
-            <label class="form-check-label" for="inlineRadio3">3</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
-                value="option4">
-            <label class="form-check-label" for="inlineRadio4">4</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadioOptions"
-                value="option5">
-            <label class="form-check-label" for="inlineRadio5">5</label>
-        </div>
+        <input type="text" id="rating" name="rating"><br><br>
     </div><br>
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Tell us about your experience.</label>
         <textarea class="form-control" id="experience" rows="7" name="experience"></textarea>
         <div id="error">
         </div>
-
     </div><br>
-    <div class="form-group">
-        {{#if success}}
-        <p class="success">{{success}}</p>
-        {{/if}}
+    <div class="form-group" id="successForm">
+        {{!-- <h3 id="success" hidden>Feedback Sent</h3> --}}
     </div>
     <div class="form-group">
         <button id="submit-button" type="submit" class="btn btn-success">Submit</button>

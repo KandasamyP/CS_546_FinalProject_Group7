@@ -189,9 +189,31 @@ async function updatePetOwner(updatedData) {
   return await getPetOwnerById(existingUserData._id);
 }
 
+async function updatePetOwnerFeedbackById(req) {
+  const petOwnerCollection = await petOwnerData();
+  let petOwner = await this.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
+
+  const addFeedback = {
+    date: new Date(),
+    rating: req.body.rating,
+    feedback: req.body.experience,
+  };
+  addFeedback._id = ObjectId();
+
+  petOwner.websiteFeedbackGiven.push(addFeedback);
+
+  petOwner._id = ObjectId(petOwner._id);
+
+  const updateInfo = await petOwnerCollection.updateOne({ _id: ObjectId(petOwner._id) }, { $set: petOwner });
+  if (updateInfo.modifiedCount === 0)
+    throw "Not able to update db";
+
+}
+
 module.exports = {
   addPetOwner,
   getPetOwnerById,
   updatePetOwner,
   getPetOwnerByUserEmail,
+  updatePetOwnerFeedbackById,
 };

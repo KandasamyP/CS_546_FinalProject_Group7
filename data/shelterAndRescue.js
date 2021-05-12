@@ -33,6 +33,75 @@ let exportedMethods = {
 
     return shelter;
   },
+  // async addFeedback(feedbackdata) {
+  //   try {
+  //     if (!feedbackdata.rating || feedbackdata.rating === undefined || feedbackdata.rating.trim() === "") {
+  //       throw {
+  //         status: 400,
+  //         error: "Please provide a proper rating.",
+  //       };
+  //     }
+  //     if (!feedbackdata.experience || feedbackdata.experience === undefined || feedbackdata.experience.trim() === "") {
+  //       throw {
+  //         status: 400,
+  //         error: "Pease provide a feedback.",
+  //       };
+  //     }
+  //   } catch (e) {
+  //     res.status(e.status).send({ title: "Error", error: e.error });
+  //     return;
+  //   }
+  //   try {
+  //     const sheltersCollection = await shelterAndRescue();
+  //     const userid = await sheltersCollection.findOne({ id: feedbackdata.id })
+
+  //     if (userid) {
+
+  //     } else {
+  //       throw {
+  //         status: 500,
+  //         error:
+  //           "No such user exists with this id",
+  //       };
+  //     }
+  //   } catch (e) {
+  //     throw { status: e.status, error: e.error };
+  //   }
+  // },
+
+  async updateShelterFeedbackById(req) {
+    const sheltersColl = await shelterAndRescue();
+    let shelter = await this.getPetShelterByEmail(req.cookies.AuthCookie.email);
+
+    const addFeedback = {
+      date: new Date(),
+      rating: req.body.rating,
+      feedback: req.body.experience,
+    };
+    addFeedback._id = ObjectId();
+
+    shelter.websiteFeedbackGiven.push(addFeedback);
+
+    shelter._id = ObjectId(shelter._id);
+
+    const updateInfo = await sheltersColl.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter });
+    if (updateInfo.modifiedCount === 0)
+      throw "Not able to update db";
+
+  },
+
+  async getUserByEmail(userEmail) {
+    const sheltersCollection = await shelterAndRescue();
+    let userDetails = await sheltersCollection.findOne({
+      email: userEmail,
+    });
+
+    if (userDetails == null || !userDetails) throw "User not found.";
+
+    userDetails._id = userDetails._id.toString();
+
+    return userDetails
+  },
 
   async getAll() {
     const sheltersCollection = await shelterAndRescue();
@@ -168,21 +237,6 @@ let exportedMethods = {
     // shelter._id = shelter._id.toString();
     return shelter;
   },
-  // async searchShelter(search) {
-  //     if (!search) throw "Please provide a proper Search term "
-  //     if (id.trim().length === 0) throw "Input search term cannot be blank"
-  //     const sheltersCollection = await shelterscoll();
-
-  //     const shelterResults = await sheltersCollection.find({ 'name': search }).toArray();
-  //     let shelterIds = [];
-
-  //     for (let i = 0; i < shelterResults.length; i++) {
-  //         shelterIds.push(shelterIds[i]._id.toString());
-  //     }
-  //     return shelterIds;
-  // }
-
-
 }
 
 module.exports = exportedMethods;
