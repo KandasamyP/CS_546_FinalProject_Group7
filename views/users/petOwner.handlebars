@@ -2,21 +2,41 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="user-photo">Photo</h5>
+                <h5 class="card-header" id="user-photo">Profile Picture</h5>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-2">
                             {{#if petOwner.profilePicture}}
-                                <img class="profile-picture rounded-circle" src="../public/images/popaUsers/{{petOwner.profilePicture}}" alt="{{petOwner.fullName.firstName}}" />
+                                <img class="profile-picture rounded-circle" src="../public/images/users/{{petOwner.profilePicture}}" alt="{{petOwner.fullName.firstName}}" />
                             {{else}}
-                                <img class="profile-picture rounded-circle" src="../public/images/popaUsers/no_image.png" alt="{{petOwner.fullName.firstName}}" />
+                                <img class="profile-picture rounded-circle" src="../public/images/users/no_image.png" alt="{{petOwner.fullName.firstName}}" />
                             {{/if}}
                         </div>
-                        <div class="col-sm-10">
+                        {{!-- <div class="col-sm-10">
                             <p>Choose an image from your computer</p>
                             <button class="btn">Change</button>
-                            {{!-- <button class="btn">Delete</button> --}}
-                        </div>
+                            <button class="btn">Delete</button>
+                        </div> --}}
+
+                        <form id="imageForm" method="POST" action="/petOwner/changeProfileImage" enctype="multipart/form-data">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label for="image" class="col-form-label">Choose an image from your computer</label>
+                                    <input class = "form-control" type="file" id="profilePicture" name="profilePicture" accept="image/*"/>
+                                </div> 
+                            </div>
+                             <div class="form-group row">
+                                <div class="col-sm-10">
+                                     <button class="btn" type="submit">Change</button>
+                                </div>
+                             </div>       
+                        </form> 
+                         <div class="form-group row">
+                             <div class="col-sm-12">
+                                 <p>{{alertMessage}}</p>
+                             </div>
+                        </div> 
+
                     </div>
                 </div>
                 {{!-- alt="{{petOwner.fullName.firstName}}" --}}
@@ -45,12 +65,11 @@
                                 <button class="btn btn-success" id="savePassword" type="submit">Save</button>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        {{!-- <div class="form-group row">
                              <div class="col-sm-12">
                                  <p>{{alertMessage}}</p>
-    
                              </div>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
                 {{!-- alt="{{petOwner.fullName.firstName}}" --}}
@@ -97,8 +116,11 @@
                                     value="{{petOwner.dateOfBirth}}" placeholder="Date Of Birth" required></input>
                             </div>
                             <div class="col-sm-4">
-                                <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber"
-                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required></input>
+                            {{!-- <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></input> --}}
+                            <input type="number" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" required></input>
+   
                             </div>
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" name="zipCode" id="zipCode"
@@ -136,10 +158,13 @@
             <div class="card">
                 <h5 class="card-header" id="info">Favorite Pets</h5>
                 <div class="card-body">
-                    {{#if petOwner.favoritedPets.length}}
+                    {{#if petOwner.favoritedPetsArray.length}}
                     <ul>
-                        {{#each petOwner.favoritedPets}}
-                        <li>{{this}}</li>
+                        {{#each petOwner.favoritedPetsArray}}
+                        <li class="favPets">
+                            <p>{{this.name}}</p>
+                            <img class="profile-picture rounded-circle" src="../public/images/pets/{{this.image}}" alt="{{this.name}}" />
+                        </li>
                         {{/each}}
                     </ul>
                     {{else}}
@@ -155,10 +180,15 @@
             <div class="card">
                 <h5 class="card-header" id="info">Shelter Reviews</h5>
                 <div class="card-body">
-                    {{#if petOwner.shelterReviewsGiven.length}}
+                    {{#if petOwner.shelterReviewsGivenArray.length}}
                     <ul>
-                        {{#each petOwner.shelterReviewsGiven}}
-                        <li>{{this}}</li>
+                        {{#each petOwner.shelterReviewsGivenArray}}
+                        <li>
+                            <p>Shleter Name: {{this.name}}</p>
+                            <p>Review Posted On: {{this.reviews.reviewDate}}</p>
+                            <p>Shelter Rating: {{this.reviews.rating}}/5</p>
+                            <p>Your Comments: {{this.reviews.reviewBody}}</p>
+                        </li>
                         {{/each}}
                     </ul>
                     {{else}}
@@ -174,18 +204,19 @@
             <div class="card">
                 <h5 class="card-header" id="info">Feedback</h5>
                 <div class="card-body">
-                    {{#if petOwner.websiteFeedbackGiven}}
-
-                    {{#each petOwner.websiteFeedbackGiven}}
-                    <p>Description: {{this.description}}</p>
-                    <p>Date: {{this.date}}</p>
-                    <p>Rating: {{this.rating}}/5</p>
-                    {{/each}}
-
+                    {{#if petOwner.websiteFeedbackGiven.length}}
+                        <ul>
+                            {{#each petOwner.websiteFeedbackGiven}}
+                                <li>
+                                    <p>Website Rating: {{this.rating}}/5</p>
+                                    <p>Feedback Given On: {{this.date}}</p>
+                                    <p>Your Comments: {{this.description}}</p>
+                                </li>
+                            {{/each}}
+                        </ul>
                     {{else}}
                     <p>You haven't given feedback yet.</p>
                     {{/if}}
-
                 </div>
             </div>
         </div>

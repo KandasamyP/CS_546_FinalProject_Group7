@@ -9,7 +9,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "seedPets": "node ./tasks/seedPets.js",
-    "seedPetOwner":"node  ./tasks/seedPetOwner.js"
+    "seedPetOwner": "node  ./tasks/seedPetOwner.js"
   },
   "repository": {
     "type": "git",

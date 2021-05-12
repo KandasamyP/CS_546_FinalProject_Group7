@@ -1,13 +1,13 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require("../data");
-const shelters = data.shelterAndRescueData
+const shelters = data.shelterAndRescueData;
 const ObjectId = require('mongodb').ObjectID;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
 
 async function main() {
     const db = await dbConnection();
-    await db.dropDatabase();
+    //await db.dropDatabase();
     const hashedPassword1 = await bcrypt.hash("micheal123", saltRounds);
     const michealanimalrescue = await shelters.create("Micheal Scott Adoption Company",
         "littleanimallover@gmail.com",
@@ -32,7 +32,7 @@ async function main() {
             reviewDate: Date("2021-02-29T06:01:17.171Z"),
             rating: 5,
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
-            reviewer: ObjectId("609ae47dd71757333c314314")
+            reviewer: ObjectId("609b5ec0739d660c38ded3a2")
         },
         {
             _id: ObjectId("6063d536f6ab4b941689879f"),
@@ -70,11 +70,11 @@ async function main() {
         ["6063d472f5a17f32a5cbdc24", "6064a5d02f56e4da24413ab3"],
         ["6064a5f081004bcfbc33d6c5"],
         [{
-            _id: ObjectId("6063d5103833261e97e0920b"),
+            _id: ObjectId("6063d5103833261e97e0930b"),
             reviewDate: Date("2020-04-01T06:01:17.171Z"),
             rating: 5,
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
-            reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
+            reviewer: ObjectId("609b5ec0739d660c38ded3a2")
         }],
         '/public/images/shelters/DSwithcat.jpg',
         [{

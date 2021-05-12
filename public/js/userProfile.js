@@ -106,25 +106,27 @@ function validateForm() {
     return false;
   }
 
-  // const phoneNumberRegex = /^\d{10}$/;  //regex to check phone Number
+  const phoneNumberRegex = /^\d{10}$/;  //regex to check phone Number
 
-  // if (!phoneNumberRegex.test($("#phoneNumber").val())) {
-  //   alert("You must enter a valid Phone Number.");
-  //   $("#phoneNumber").focus();
-  //   return false;
-  // }
-
+  if (!phoneNumberRegex.test($("#phoneNumber").val())) {
+    alert("You must enter a valid Phone Number.");
+    $("#phoneNumber").focus();
+    return false;
+  }
+ 
   return true;
 }
-// function changePasswordSection(){
-
-// }
 
 if (pathname === "/petOwner") {
   userProfile();
 }
 
 if( pathname === "/petOwner/changePassword") {
+  window.location.pathname = "/petOwner";
+  userProfile();
+}
+
+if( pathname === "/petOwner/changeProfileImage") {
   window.location.pathname = "/petOwner";
   userProfile();
 }

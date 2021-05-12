@@ -52,9 +52,6 @@ router.get("/profile", async (req, res) => {
     if (req.body.userData.userType === "popaUser") {
       res.status(200).redirect("/petOwner");
     } else if (req.body.userData.userType === "srUser") {
-      res.status(200).send("Shelter Owner Profile Page");
-    }
-    if (req.cookies.AuthCookie.userType === "srUser") {
       res.status(200).redirect("/shelterUser");
     }
   } else {

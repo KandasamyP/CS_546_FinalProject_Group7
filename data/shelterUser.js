@@ -2,7 +2,9 @@ const mongoCollections = require("../config/mongoCollections");
 const { ObjectId } = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
-const shelterAndRescue = mongoCollections.shelterAndRescue;
+const petOwnerData = mongoCollections.petOwner;
+const shelterAndRescueData = mongoCollections.shelterAndRescue;
+const petData = mongoCollections.pets;
 
 //returns a petOwner user searches by petOwner Email/Username
 async function getPetShelterByEmail(shelterEmail) {
@@ -11,6 +13,9 @@ async function getPetShelterByEmail(shelterEmail) {
     const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
 
     if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
+
+    // return _id as string
+    shelterDetails._id = shelterDetails._id.toString();
 
     return shelterDetails;
 }
@@ -176,9 +181,29 @@ async function updatePassword(userId, plainTextPassword){
     return await getShelterById(userId);    
 }
 
+async function updateShelterProfileImage(email, picture){
+  if (!email) throw "email must be provided";
+  if (!picture) throw "picture must be provided";
+ 
+  const userDetails = await getPetShelterByEmail(email);
+ 
+  const sheltersCollection = await shelterAndRescue();
+  const updateInfo = await sheltersCollection.updateOne(
+    {_id: ObjectId(userDetails._id)},
+    {$set: {"profilePicture": picture}}
+  );
+ 
+  if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
+  throw "Could not update profile picture";
+  
+  return await getShelterById(ObjectId(userDetails._id));  
+
+}
+
 module.exports = {
   updatePassword,
   getPetShelterByEmail,
   updateShelter,
-  getShelterById
+  getShelterById,
+  updateShelterProfileImage
 };

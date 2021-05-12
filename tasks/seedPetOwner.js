@@ -17,7 +17,7 @@ async function main() {
     2011234567,
     "07030",
     "I love animals and I’m searching for a dog or cat sibling for my current dog.",
-    Date(),
+    "2021-05-11",
     ["6063d472f5a17f32a5cbdc24"],
     [
       {
@@ -43,7 +43,7 @@ async function main() {
     2011234568,
     "07307",
     "I love animals and I’m searching for a dog or cat sibling for my current dog.",
-    Date(),
+    "2021-05-11",
     ["6063d472f5a17f32a5cbdc24"],
     [
       {

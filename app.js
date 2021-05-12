@@ -21,49 +21,58 @@ app.use(express.urlencoded({ extended: true }));
 
 //Setup Express View Engine as Express Handlebars
 //Formats for moment.js can be found here: https://momentjs.com/
-app.engine("handlebars", exphbs({ 
-  defaultLayout: "main" ,
-  helpers: {
-    formatDate: function (date, format) {
-      return moment(date).format(format);
-    },
-    ifUserIsSender: function(senderId, userId) {
-      return senderId === userId ? "user" : "recipient";
-    },
-    ifMessageSent: function(recipient, participant) {
-      if (recipient === participant) {
-        return "reloaded";
-      }
-      return;
-    },
-    setSenderName: function(senderId, userId, petOwnerName, shelterName, isUserShelter) {
-      if (senderId === userId) {
-        return "You";
-      } else {
-        if (isUserShelter) {
-          return petOwnerName;
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main",
+    helpers: {
+      formatDate: function (date, format) {
+        return moment(date).format(format);
+      },
+      ifUserIsSender: function (senderId, userId) {
+        return senderId === userId ? "user" : "recipient";
+      },
+      ifMessageSent: function (recipient, participant) {
+        if (recipient === participant) {
+          return "reloaded";
+        }
+        return;
+      },
+      setSenderName: function (
+        senderId,
+        userId,
+        petOwnerName,
+        shelterName,
+        isUserShelter
+      ) {
+        if (senderId === userId) {
+          return "You";
         } else {
-          return shelterName;
+          if (isUserShelter) {
+            return petOwnerName;
+          } else {
+            return shelterName;
+          }
         }
-      }
-    },
-    prefillRadioButton: function(originalValue, formValue) {
-      if (originalValue === formValue) {
-        return "checked";
-      } else {
-        return "unchecked";
-      }
-    },
-    prefillCheckboxes: function(originalValues, formValue) {
-      for (let val of originalValues) {
-        if (val === formValue) {
+      },
+      prefillRadioButton: function (originalValue, formValue) {
+        if (originalValue === formValue) {
           return "checked";
+        } else {
+          return "unchecked";
         }
-      }
-      return;
-    }
-  }
-}));
+      },
+      prefillCheckboxes: function (originalValues, formValue) {
+        for (let val of originalValues) {
+          if (val === formValue) {
+            return "checked";
+          }
+        }
+        return;
+      },
+    },
+  })
+);
 app.set("view engine", "handlebars");
 
 //Create Express Session
@@ -73,7 +82,7 @@ app.use(
     secret: "the quick brown fox jumps over the lazy dog",
     saveUninitialized: true,
     resave: false,
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 6000000 },
   })
 );
 
@@ -118,11 +127,12 @@ app.use("/pets", (req, res, next) => {
 app.use("/shelters", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
+  }
+});
 
 app.use("/sheltersAndRescue", (req, res, next) => {
   if (!req.cookies.AuthCookie) {
     return res.redirect("/");
-
   } else {
     next();
   }

@@ -1,11 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const shelterUserData = require("../data/shelterUser");
+const multer = require("multer");
+
+/* required for multer --> */
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images/popaUsers");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+/* <-- required for multer */
 
 router.get("/", async (req, res) => {
   try {
-    if (req.cookies.AuthCookie) {
-      var email = req.cookies.AuthCookie.email;
+    if (req.session.user) {
+      var email = req.body.userData.email;
       const shelterUser = await shelterUserData.getPetShelterByEmail(email);
       res.status(200).render("users/shelterUser", { shelterUser });
     }
@@ -13,6 +27,22 @@ router.get("/", async (req, res) => {
     res.status(404).json({ error: "Shelter User not found." });
     return;
   }
+});
+
+//POST --> Updates the shelter's user profile picture
+router.post("/changeProfileImage", upload.single("profilePicture"), async(req,res)=>{
+  const imageData = req.body;
+ 
+  imageData.profilePicture = req.file.filename;
+  console.log(req.session.user);
+  // let email = req.session.user.email;
+  // let shelterUserDetails;
+  // try{
+  //   shelterUserDetails = await petOwnerData.updateShelterProfileImage(email, imageData.profilePicture);
+  //    res.status(200).render("users/shelterUser", { petOwner:shelterUserDetails, status: "success", alertMessage: "Profile Picture Updated Successfully." });  
+  // }catch(e){
+  //   res.status(500).render("users/shelterUser", { petOwner:shelterUserDetails, status: "failed", alertMessage: "Profile Picture Update Failed. Please try again."});
+  // }
 });
 
 //handles change password request

@@ -2,22 +2,41 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="user-photo">Photo</h5>
+                   <h5 class="card-header" id="user-photo">Profile Picture</h5>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-2">
                             {{#if shelterUser.profilePicture}}
-                                {{!-- <img class="profile-picture rounded-circle" src="../public/images/shelters/{{shelterUser.profilePicture}}" alt="{{shelterUser.fullName.firstName}}" /> --}}
-                                <img class="profile-picture rounded-circle" src="{{shelterUser.profilePicture}}" alt="{{shelterUser.name}}" />
+                                <img class="profile-picture rounded-circle" src="../public/images/popaUsers/{{shelterUser.profilePicture}}" alt="{{shelterUser.name}}" />
                             {{else}}
-                                <img class="profile-picture rounded-circle" src="../public/images/shelters/no_image.png" alt="{{shelterUser.name}}" />
+                                <img class="profile-picture rounded-circle" src="../public/images/popaUsers/no_image.png" alt="{{shelterUser.name}}" />
                             {{/if}}
                         </div>
-                        <div class="col-sm-10">
+                        {{!-- <div class="col-sm-10">
                             <p>Choose an image from your computer</p>
                             <button class="btn">Change</button>
-                            {{!-- <button class="btn">Delete</button> --}}
-                        </div>
+                            <button class="btn">Delete</button>
+                        </div> --}}
+
+                        <form id="shleterImageForm" method="POST" action="/shelterUser/changeProfileImage" enctype="multipart/form-data">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label for="image" class="col-form-label">Choose an image from your computer</label>
+                                    <input class = "form-control" type="file" id="profilePicture" name="profilePicture" accept="image/*"/>
+                                </div> 
+                            </div>
+                             <div class="form-group row">
+                                <div class="col-sm-10">
+                                     <button class="btn" type="submit">Change</button>
+                                </div>
+                             </div>       
+                        </form> 
+                         <div class="form-group row">
+                             <div class="col-sm-12">
+                                 <p>{{alertMessage}}</p>
+                             </div>
+                        </div> 
+
                     </div>
                 </div>
             </div>
@@ -29,7 +48,7 @@
             <div class="card">
                 <h5 class="card-header" id="user-photo">Change Password</h5>
                 <div class="card-body">
-                    <form id="passwordForm" method="POST" action="/shelterUser/changePassword">
+                    <form id="shelterPasswordForm" method="POST" action="/shelterUser/changePassword">
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <label for="password" class="col-form-label">Enter New Password</label>
@@ -45,13 +64,14 @@
                                 <button class="btn btn-success" id="savePassword" type="submit">Save</button>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        {{!-- <div class="form-group row">
                              <div class="col-sm-12">
                                  <p>{{alertMessage}}</p>
                              </div>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
+                {{!-- alt="{{petOwner.fullName.firstName}}" --}}
             </div>
         </div>
     </div>
