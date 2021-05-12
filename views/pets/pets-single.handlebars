@@ -1,7 +1,31 @@
 <main>
     <div class="pet_info">
-        <h1 class="text-centery">Meet {{pet.petName}}!</h1>
-        <section class="pet-carousel-bg w-50">
+        <br>
+        <h1>Meet {{pet.petName}}!</h1>
+        {{#if isThisShelterLoggedIn}}
+        <div class="btn-toolbar">
+            <form id="remove-pet" method="POST" action="/pets/delete">
+                <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
+                <input type="hidden" id="shelterId" name="shelterId" value="{{pet.associatedShelter}}">
+                <input type="submit" class="btn btn-danger mx-2" value="Remove Pet"/>
+            </form>
+            <a href="/pets/pet/{{pet._id}}/update" class="btn btn-warning mx-2">Update Pet</a>
+        </div>
+        {{/if}}
+        {{#if isAuthenticated}}
+        {{!--todo once routes/methods are made, add javascript here so that it shows favorite button when not favorited
+        and shows unfavorite button when pet is favorited--}}
+        <form id="favorite-pet" method="POST" action="/pets/favorite">
+            <input type="hidden" id="favoritedPet" name="favoritedPet" value="{{pet._id}}">
+            <input type="submit" class="btn btn-info" value="&hearts; Add to Favorites"/>
+        </form>
+        <form id="unfavorite-pet" method="POST" action="/pets/unfavorite">
+            <input type="hidden" id="unfavoritedPet" name="unfavoritedPet" value="{{pet._id}}">
+            <input type="submit" class="btn btn-danger" value="&hearts; Remove from Favorites"/>
+        </form>
+        {{/if}}
+        <br>
+        <section class="pet-carousel-bg w-100">
             <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     {{#each pet.petPictures}}
@@ -26,26 +50,84 @@
                 </a>
             </div>
         </section>
-        <!--<span class="fas fa-heart"></span>-->
-        <h3>Animal Type</h3>
-        <h5>{{pet.animalType}}</h5>
-        <h3>Breeds</h3>
-        <h5>{{#each pet.breeds}}{{this}}{{#unless @last}} / {{/unless}}{{/each}}</h5>
-        <h3>Sex</h3>
-        <h5>{{pet.sex}}</h5>
-        <h3>Age Group</h3>
-        <h5>{{pet.ageGroup}}</h5>
-        <h3>Physical Characteristics</h3>
-        <h5>{{#each physicalCharacteristics}}<span class="badge badge-success">{{this}}</span> {{/each}}</h5>
-        <h3>Behavior and Lifestyle</h3>
-        <h5>{{#each otherFilters}}<span class="badge badge-success">{{this}}</span> {{/each}}</h5>
-        <h3>Currently Located</h3>
-        <h5>{{pet.currentLocation}}</h5>
-        <h3>Biography</h3>
-        <h5>{{pet.biography}}</h5>
-        <h3>Posted By</h3>
-        <h5>{{shelterName}}</h5>
-        <h3>Adoption Fee</h3>
-        <h5>${{pet.adoptionFee}}</h5>
+        <br>
+        <div class="card-deck">
+            <div class="card text-center">
+                <div class="card-block px-3 py-3">
+                <h3 class="card-header bg-card-header" id="info">Basic Information About This {{pet.animalType}}</h5>
+                    <div class="card-body">
+                        <h5>Breed(s)</h5> 
+                        <p>{{#each pet.breeds}}{{this}}{{#unless @last}} / {{/unless}}{{/each}}</p>
+                        <h5>Sex</h5> 
+                        <p>{{pet.sex}}<p>
+                        <h5>Age Group</h5> 
+                        <p>{{pet.ageGroup}}</p>
+                        <h5>Managed By</h5>
+                        <p><a href="/shelters/{{shelter._id}}">{{shelter.name}}</a></p>
+                        <h5>Adoption Fee</h5>
+                        <p>{{pet.adoptionFee}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-block px-3 py-3">
+                <h3 class="card-header bg-card-header" id="location">General Location</h5>
+                    <div class="card-body">
+                        <p>Somewhere in {{pet.currentLocation}}</p>
+                        <p class="small">This is the general location where the pet is currently being cared for. Please message {{shelter.name}} for more information.</p>
+                        <iframe src="https://maps.google.com/maps?q={{latLong}}&z=15&output=embed" width="360" height="270" frameborder="0" style="border:0"></iframe>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row spacing">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card text-center">
+                        <h3 class="card-header bg-card-header" id="bio">Biography</h5>
+                        <div class="card-body">
+                            {{pet.biography}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row spacing">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card text-center">
+                        <h3 class="card-header bg-card-header" id="details">Details</h5>
+                        <div class="card-body">
+                            <h5>Physical Characteristics</h5>
+							{{#each physicalCharacteristics}}<span class="badge badge-success">{{this}}</span> {{/each}}
+							<br>
+							<h5>Behavior and Lifestyle</h5>
+							{{#each otherFilters}}<span class="badge badge-success">{{this}}</span> {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <br>
+    <h3>Are you interested in this pet? Let {{shelter.name}} know!</h3>
+    {{#if isAuthenticated}}
+    <form id="send-message-form" method="POST" action="/pets/inquire">
+        <input type="hidden" id="recipient" name="recipient" value="{{shelter._id}}">
+        <input type="hidden" id="user" name="user" value="{{userId}}">
+        <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
+        <textarea id="type-message" class="form-control" name="reply"class="fill-width">Hello! I'm interested in learning more about {{pet.petName}}.</textarea>
+        <br>
+        <div class="text-center">
+            <input type="submit" class="btn btn-success" value="Inquire"/>
+        </div>
+    </form>
+    {{#if messageSent}}
+    <h3>Inquiry sent! Make sure to check your <a href="/messages">messages</a> for a reply.</h3>
+    {{/if}}
+    {{else}}
+    <h5>You must be logged in to a pet owner account to send a message! <a href="/login">Log in here.</a></h5>
+    {{/if}}
+    <br><br>
 </main>
+<script src='../../public/js/pet-single.js'></script>
