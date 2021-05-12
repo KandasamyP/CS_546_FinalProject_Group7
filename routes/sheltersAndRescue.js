@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const sheltersData = require("../data/shelterAndRescue");
 const petsData = require("../data/pets");
 const zipcodes = require('zipcodes');
@@ -12,6 +13,16 @@ async function getGeoLocation(zip) {
   });
   return zips;
 }
+
+router.get('/', async (req, res) => {
+  try {
+    const shelter = await shelterAndRescueData.getAll();
+    // console.log(shelter)
+    res.status(200).render("shelters/allShelters", { shelter, title: "List of shelters" });
+  } catch (error) {
+    res.render('shelters/error', { title: "No Data Found" });
+  }
+});
 
 router.get("/:id", async (req, res) => {
   if (!req.params.id) {
@@ -53,17 +64,16 @@ router.get("/:id", async (req, res) => {
         reviewDetail: reviewDetail
       });
     } else {
-
       res
         .status(200)
         .render("sheltersAndRescue/individual-shelter", { shelterDetails: shelter, petsDetails: petsDetailsArray });
     }
-
   } catch (e) {
     console.log(e);
     res.status(404).send(e);
   }
 });
+
 
 router.post("/addReviews/:id", async (req, res) => {
     try {

@@ -3,65 +3,65 @@ const { ObjectId } = require("mongodb").ObjectId;
 
 const petOwnerData = mongoCollections.petOwner;
 
-// //creates a petOwner user
-// async function addPetOwner(
-//   profilePicture,
-//   fullName,
-//   email,
-//   password,
-//   phoneNumber,
-//   zipCode,
-//   biography,
-//   dateOfBirth,
-//   favoritedPets,
-//   websiteFeedbackGiven,
-//   shelterReviewsGiven,
-//   reportedPosts,
-//   donatedItems,
-//   isVolunteerCandidate
-// ) {
-//   //add profilePicture when that functionality is added
-//   //favoritedPets, websiteFeedbackGiven, shelterReviewsGiven, reportedPosts, donatedItems, isVolunteerCandidate are not mandatory fields while creating a user.
-//   if (
-//     !fullName ||
-//     !email ||
-//     !password ||
-//     !phoneNumber ||
-//     !zipCode ||
-//     !biography
-//   ) {
-//     throw "There is atleast one field missing.";
-//   }
-//   let newPetOwner = {
-//     _id: ObjectId(),
-//     profilePicture: profilePicture, //The path or URL to user’s profile picture
-//     fullName: fullName, //object containing firstName and lastName of the user
-//     email: email, //string
-//     password: password, //string hashed pwd
-//     phoneNumber: phoneNumber, //number
-//     zipCode: zipCode, //string
-//     biography: biography, //string
-//     dateOfBirth: dateOfBirth, //Date
-//     favoritedPets: favoritedPets, //[]
-//     websiteFeedbackGiven: websiteFeedbackGiven, //subdoc
-//     shelterReviewsGiven: shelterReviewsGiven, //[]
-//     reportedPosts: reportedPosts, //[]
-//     donatedItems: donatedItems, //[]
-//     isVolunteerCandidate: isVolunteerCandidate, //boolean
-//   };
+//creates a petOwner user
+async function addPetOwner(
+  profilePicture,
+  fullName,
+  email,
+  password,
+  phoneNumber,
+  zipCode,
+  biography,
+  dateOfBirth,
+  favoritedPets,
+  websiteFeedbackGiven,
+  shelterReviewsGiven,
+  reportedPosts,
+  donatedItems,
+  isVolunteerCandidate
+) {
+  //add profilePicture when that functionality is added
+  //favoritedPets, websiteFeedbackGiven, shelterReviewsGiven, reportedPosts, donatedItems, isVolunteerCandidate are not mandatory fields while creating a user.
+  if (
+    !fullName ||
+    !email ||
+    !password ||
+    !phoneNumber ||
+    !zipCode ||
+    !biography
+  ) {
+    throw "There is atleast one field missing.";
+  }
+  let newPetOwner = {
+    _id: ObjectId(),
+    profilePicture: profilePicture, //The path or URL to user’s profile picture
+    fullName: fullName, //object containing firstName and lastName of the user
+    email: email, //string
+    password: password, //string hashed pwd
+    phoneNumber: phoneNumber, //number
+    zipCode: zipCode, //string
+    biography: biography, //string
+    dateOfBirth: dateOfBirth, //Date
+    favoritedPets: favoritedPets, //[]
+    websiteFeedbackGiven: websiteFeedbackGiven, //subdoc
+    shelterReviewsGiven: shelterReviewsGiven, //[]
+    reportedPosts: reportedPosts, //[]
+    donatedItems: donatedItems, //[]
+    isVolunteerCandidate: isVolunteerCandidate, //boolean
+  };
 
-//   const petOwnerCollection = await petOwnerData();
+  const petOwnerCollection = await petOwnerData();
 
-//   const insertInfo = await petOwnerCollection.insertOne(newPetOwner);
+  const insertInfo = await petOwnerCollection.insertOne(newPetOwner);
 
-//   if (insertInfo.insertedCount === 0) throw "Could not add user";
+  if (insertInfo.insertedCount === 0) throw "Could not add user";
 
-//   const newId = insertInfo.insertedId;
+  const newId = insertInfo.insertedId;
 
-//   const petOwnerDetails = await getPetOwnerById(newId);
+  const petOwnerDetails = await getPetOwnerById(newId);
 
-//   return petOwnerDetails;
-// }
+  return petOwnerDetails;
+}
 
 //returns a petOwner user searches by petOwner Email/Username
 async function getPetOwnerByUserEmail(petOwnerEmail) {
@@ -192,9 +192,31 @@ async function updatePetOwner(updatedData) {
   return await getPetOwnerById(existingUserData._id);
 }
 
+async function updatePetOwnerFeedbackById(req) {
+  const petOwnerCollection = await petOwnerData();
+  let petOwner = await this.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
+
+  const addFeedback = {
+    date: new Date(),
+    rating: req.body.rating,
+    feedback: req.body.experience,
+  };
+  addFeedback._id = ObjectId();
+
+  petOwner.websiteFeedbackGiven.push(addFeedback);
+
+  petOwner._id = ObjectId(petOwner._id);
+
+  const updateInfo = await petOwnerCollection.updateOne({ _id: ObjectId(petOwner._id) }, { $set: petOwner });
+  if (updateInfo.modifiedCount === 0)
+    throw "Not able to update db";
+
+}
+
 module.exports = {
-  // addPetOwner,
+  addPetOwner,
   getPetOwnerById,
   updatePetOwner,
   getPetOwnerByUserEmail,
+  updatePetOwnerFeedbackById,
 };
