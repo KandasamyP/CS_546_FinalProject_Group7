@@ -31,7 +31,7 @@ async function main() {
     [
       {
         reviewDate: new Date("3/26/21"),
-        rating: "5",
+        rating: 5,
         reviewBody:
           "They were very nice and helpful when I was looking for a new pet to adopt!",
         reviewer: ObjectId("6063d0e4be26b8a5128c59e1"),

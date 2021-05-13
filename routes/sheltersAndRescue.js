@@ -56,8 +56,11 @@ router.get("/:id", async (req, res) => {
     if (shelter.location && shelter.location.zipCode) {
       let avgReviews = 0, totalReviews = 0;
       for (let i = 0; i < shelter.reviews.length; ++i) {
+        console.log("totalReviews"+totalReviews + "rating" + shelter.reviews[i].rating);
         totalReviews = totalReviews + shelter.reviews[i].rating;
       }
+      console.log(totalReviews);
+      console.log(shelter.reviews.length);
 
       avgReviews = totalReviews / shelter.reviews.length;
 
@@ -102,19 +105,19 @@ router.post("/addReviews/:id", async (req, res) => {
         for(let i=0; i< shelter.reviews.length; ++i) {
           totalReviews += shelter.reviews[i].rating;
         }
+        console.log(totalReviews);
         avgReviews = totalReviews/shelter.reviews.length;
   
         let reviewDetail = {
           avgReviews: avgReviews,
           totalReviews: shelter.reviews.length
         };
-        console.log(shelter);
         let recentReview = shelter.reviews[shelter.reviews.length - 1];
 
         //res.status(200).json(recentReview);
         res
           .status(200)
-          .render("partials/add-review", { recentReview});
+          .json(recentReview);
       } else {
   
         res
