@@ -76,7 +76,7 @@ router.get("/pet/:id", async (req, res) => {
 
         userId = userInfo._id;
       } else {
-        const userInfo = await shelterData.getShelterAndRescueByUserEmail(sessionInfo.email);
+        const userInfo = await shelterData.getPetShelterByEmail(sessionInfo.email);
         userId = userInfo._id;
         if (userId === pet.associatedShelter) {
           isUserThisShelter = true;
@@ -115,6 +115,8 @@ router.get("/pet/:id", async (req, res) => {
         petBehavior.push(pet.filters[i]);
       }
     }
+
+    //console.log(isUserThisShelter)
 
     res.status(200).render("pets/pets-single", {
       pet: pet,
@@ -579,7 +581,7 @@ router.get("/new", async (req, res) => {
         fs.readFileSync("data/petInformation/behaviors.csv")
       )[0];
 
-      const shelter = await shelterData.getShelterAndRescueByUserEmail(sessionInfo.email);
+      const shelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
   
       res.status(200).render("pets/pet-add", {
         dogBreeds: dogBreeds,
@@ -662,22 +664,22 @@ router.get("/pet/:id/update", async (req, res) => {
 
 router.post('/delete', async (req, res) => {
   if (!req.body.petId) {
-      res.status(400).json({ error: 'You must supply an ID to delete' });
+      res.status(400).render("pets/error", {title: "Error", error: 'You must supply an ID to delete' });
       return;
   }
 
   try {
       await petsData.getPetById(req.body.petId);
   } catch (e) {
-      res.status(404).json({ error: 'Pet not found' });
+      res.status(404).render("pets/error", {title: "Error", error: e });
       return;
   }
 
   try {
-      const deleted = await petsData.delete(req.body.petId);
+      const deleted = await petsData.delete(req.body.petId, req.body.shelterId);
       res.redirect(`/shelters/${req.body.shelterId}`);
   } catch (e) {
-      res.status(500).json({ error: e });
+      res.status(500).render("pets/error", {title: "Error", error: e });
   }
 });
 
@@ -688,7 +690,7 @@ router.post('/delete', async (req, res) => {
       const sessionInfo = req.cookies.AuthCookie;
       let shelter;
     if (sessionInfo && sessionInfo.userAuthenticated && sessionInfo.userType === "srUser") {
-      shelter = await shelterData.getShelterAndRescueByUserEmail(sessionInfo.email);
+      shelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
     }
 
     let imgArray = [];
