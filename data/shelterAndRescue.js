@@ -27,7 +27,7 @@ let exportedMethods = {
     if (insertInfo.insertedCount === 0) throw 'Could not add shelter';
 
     const newId = insertInfo.insertedId;
-    let shelter = await this.getShelterByID(newId.toString());
+    let shelter = await this.getShelterById(newId.toString());
     shelter._id = shelter._id.toString();
 
     return shelter;
@@ -42,9 +42,14 @@ let exportedMethods = {
   async getPetShelterByEmail(shelterEmail) {
     const sheltersCollection = await shelterAndRescue();
 
-    const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
+    let shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
 
     if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
+
+    console.log(shelterDetails)
+    // must return this as a string!
+    shelterDetails._id = shelterDetails._id.toString();
+    console.log(typeof shelterDetails._id)
 
     return shelterDetails;
   },
@@ -153,9 +158,9 @@ let exportedMethods = {
     if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
       throw "Could not update user";
 
-    return await this.getShelterByID(existingUserData._id);
+    return await this.getShelterById(existingUserData._id);
   },
-  async getShelterByID(id) {
+  async getShelterById(id) {
     if (!id) throw "Please provide a proper ID "
     if (typeof id != "string") throw "Please provide a String based ID"
     if (id.trim().length === 0) throw "Input ID cannot be blank"
@@ -164,7 +169,7 @@ let exportedMethods = {
     let shelter = await sheltersCollection.findOne({ _id: parsedId })
 
     if (shelter === null) throw "shelter not found";
-    // shelter._id = shelter._id.toString();
+    shelter._id = shelter._id.toString();
     return shelter;
   },
 
@@ -234,16 +239,6 @@ let exportedMethods = {
     return getAllShelters;
   },
 
-  async getPetShelterByEmail(shelterEmail) {
-    const sheltersCollection = await shelterAndRescue();
-
-    const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
-
-    if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
-
-    return shelterDetails;
-  },
-
   async updateShelter(updatedData) {
     let modifiedData = {
       name: String,
@@ -348,7 +343,7 @@ let exportedMethods = {
     if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
       throw "Could not update user";
 
-    return await this.getShelterByID(existingUserData._id);
+    return await this.getShelterById(existingUserData._id);
   },
 }
 module.exports = exportedMethods;

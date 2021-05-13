@@ -318,6 +318,27 @@ async function getUserFavoritePets(favoritePetArray) {
   //   console.log(favoritePetsDetails[index]);
   return favoritePetsDetails;
 }
+
+async function getAllUsersWithFavoritePet(id) {
+  if (!id) throw "The input id is missing.";
+  // If the id provided is not a string, or is an  empty string, the method should throw
+  if (typeof id !== "string") throw "The input must be a string.";
+  if (id.trim().length === 0) throw "The input must not be empty.";
+  // If the id provided is not a valid ObjectId, the method should throw
+  // if it cannot be converted to ObjectId, it will automatically throw an error
+  let parsedId = ObjectId(id);
+
+  const userCollection = await petOwnerData();
+  let userResults = await userCollection.find( { favoritedPets: id } ).toArray();
+  let userIds = [];
+
+  for (let user of userResults) {
+    userIds.push(user._id.toString());
+  }
+  
+  return userIds;
+}
+
 module.exports = {
   addPetOwner,
   getPetOwnerById,
@@ -327,5 +348,6 @@ module.exports = {
   updatePassword,
   getShelterReviews,
   updateProfileImage,
-  getUserFavoritePets
+  getUserFavoritePets,
+  getAllUsersWithFavoritePet
 };
