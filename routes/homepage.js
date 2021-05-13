@@ -52,7 +52,7 @@ router.get("/profile", async (req, res) => {
     if (req.body.userData.userType === "popaUser") {
       res.status(200).redirect("/petOwner");
     } else if (req.body.userData.userType === "srUser") {
-      res.status(200).send("Shelter Owner Profile Page");
+      res.status(200).redirect("/shelterUser");
     }
   } else {
     res.status(200).render("homepage/login");

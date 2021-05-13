@@ -148,3 +148,7 @@ input[type="number"] {
 .bg-recipient {
   background-color: #e6e8eb!important;
 }
+
+li.favPets{
+  float: left;
+}
