@@ -26,52 +26,7 @@ app.engine(
   "handlebars",
   exphbs({
     defaultLayout: "main",
-    helpers: {
-      formatDate: function (date, format) {
-        return moment(date).format(format);
-      },
-      ifUserIsSender: function (senderId, userId) {
-        return senderId === userId ? "user" : "recipient";
-      },
-      ifMessageSent: function (recipient, participant) {
-        if (recipient === participant) {
-          return "reloaded";
-        }
-        return;
-      },
-      setSenderName: function (
-        senderId,
-        userId,
-        petOwnerName,
-        shelterName,
-        isUserShelter
-      ) {
-        if (senderId === userId) {
-          return "You";
-        } else {
-          if (isUserShelter) {
-            return petOwnerName;
-          } else {
-            return shelterName;
-          }
-        }
-      },
-      prefillRadioButton: function (originalValue, formValue) {
-        if (originalValue === formValue) {
-          return "checked";
-        } else {
-          return "unchecked";
-        }
-      },
-      prefillCheckboxes: function (originalValues, formValue) {
-        for (let val of originalValues) {
-          if (val === formValue) {
-            return "checked";
-          }
-        }
-        return;
-      },
-    },
+    helpers: require("./config/handlebars-helpers"),
   })
 );
 app.set("view engine", "handlebars");
@@ -90,9 +45,11 @@ app.use(
 //Middleware: Check if user is already signed in on signup route
 app.use("/", (req, res, next) => {
   if (req.session.user) {
+    req.body.isLoggedIn = true;
     req.body.userData = req.session.user;
     next();
   } else {
+    req.body.isLoggedIn = false;
     next();
   }
 });
@@ -102,6 +59,7 @@ app.use("/signup", (req, res, next) => {
   if (req.session.user) {
     return res.redirect("/");
   } else {
+    req.body.isLoggedIn = false;
     next();
   }
 });
@@ -111,6 +69,7 @@ app.use("/login", (req, res, next) => {
   if (req.session.user) {
     return res.redirect("/");
   } else {
+    req.body.isLoggedIn = false;
     next();
   }
 });
@@ -149,7 +108,6 @@ app.use("/sheltersAndRescue", (req, res, next) => {
 app.use("/sheltersAndRescue", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
-
   } else {
     next();
   }
@@ -170,7 +128,7 @@ app.use("/shelters", (req, res, next) => {
     return res.redirect("/login");
   } else {
     req.body.userData = req.session.user;
-   // console.log(req.body.userData)
+    // console.log(req.body.userData)
     next();
   }
 });
@@ -203,7 +161,6 @@ app.use("/feedback", (req, res, next) => {
 app.use("/helppage", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
-
   } else {
     next();
   }
@@ -217,4 +174,4 @@ configRoutes(app);
 app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
-})
+});

@@ -1,0 +1,91 @@
+<h1>Shelter & Rescue Sign Up Page</h1>
+
+<div id="error">
+  <ul id="errorList"></ul>
+</div>
+
+{{#if error}}
+  <div id="errorFromRoutes">{{{error}}}</div>
+{{/if}}
+
+<p>(*) - Mandatory Field</p>
+<form
+  method="POST"
+  id="shelterRescue-signupForm"
+  action="/signup/sr"
+  enctype="multipart/form-data"
+>
+  <label for="email">Email Address: (*)</label><br />
+  <input type="email" id="email" name="email" value="{{email}}" /><br />
+
+  <label for="password">Password: (*)</label><br />
+  <input type="password" id="password" name="password" /><br />
+
+  <label for="name">Shelter or Rescue Name: (*)</label><br />
+  <input type="text" id="name" name="name" value="{{name}}" /><br />
+
+  <label for="profilePicture">Profile Picture: (*)</label><br />
+  <input
+    type="file"
+    id="profilePicture"
+    name="profilePicture"
+    accept="image/*"
+  /><br />
+
+  <div>
+    <p>Location: (*)</p>
+    <input type="hidden" name="country" id="countryId" value="US" />
+    <select name="state" class="states order-alpha" id="stateId">
+      <option value="">Select State</option>
+    </select>
+    <select name="city" class="cities order-alpha" id="cityId">
+      <option value="">Select City</option>
+    </select>
+    <input
+      type="text"
+      id="streetId1"
+      name="streetAddress1"
+      placeholder="Street Address 1"
+    />
+    <input
+      type="text"
+      id="streetId2"
+      name="streetAddress2"
+      placeholder="Street Address 2 (Optional)"
+    />
+    <input type="text" id="zipCodeId" name="zipCode" placeholder="Zip Code" />
+  </div>
+
+  <label for="biography">Biography: (*)</label><br />
+  <input type="text" id="biography" name="biography" value="{{biography}}" /><br
+  />
+
+  <label for="phoneNumber">Phone Number: (*)</label><br />
+  <input
+    type="number"
+    id="phoneNumber"
+    name="phoneNumber"
+    value="{{phoneNumber}}"
+  /><br />
+
+  <label for="website">Web Site:</label><br />
+  <input type="url" id="website" name="website" value="{{website}}" /><br />
+
+  <p>Social Media (Enter Username):</p>
+  <div>
+    <label for="facebook">Facebook:</label><br />
+    <input type="text" id="facebook" name="facebook" value="{{facebook}}" /><br
+    />
+    <label for="instagram">Instagram:</label><br />
+    <input
+      type="text"
+      id="instagram"
+      name="instagram"
+      value="{{instagram}}"
+    /><br />
+    <label for="twitter">Twitter:</label><br />
+    <input type="text" id="twitter" name="twitter" value="{{twitter}}" /><br />
+  </div>
+
+  <button type="submit">Sign Up</button>
+</form>
