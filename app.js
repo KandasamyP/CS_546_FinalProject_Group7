@@ -106,13 +106,13 @@ app.use("/login", (req, res, next) => {
 });
 
 //Middleware: Check if user is already signed in on pet search route
-app.use("/pets", (req, res, next) => {
+/*app.use("/pets", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
   } else {
     next();
   }
-});
+}); // SH people should be able to do a search without creating an account
 //Middleware: Check if user is already signed in on shelters route
 app.use("/shelters", (req, res, next) => {
   if (!req.session.user) {
@@ -120,7 +120,7 @@ app.use("/shelters", (req, res, next) => {
   } else {
     next();
   }
-});
+});*/
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {
   if (!req.session.user) {
