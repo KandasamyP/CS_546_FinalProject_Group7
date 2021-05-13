@@ -38,6 +38,68 @@ const exportedMethods = {
     )
       throw "There is at least one missing input argument.";
 
+    // petName must be a non-empty string
+    if (typeof petName !== "string" || petName.trim().length === 0)
+      throw "Pet name cannot be empty.";
+    // animalType must be a dog or cat
+    if (animalType !== "Dog" && animalType !== "Cat")
+      throw "Animal type must be cat or dog.";
+    // breeds must have an array of strings
+    if (!Array.isArray(breeds)) 
+      throw "Breeds must be an array.";
+    for (let breed of breeds) {
+      if (typeof breed !== "string" || breed.trim().length ===0)
+        throw "A breed must be a string.";
+    }
+    // petPictures are file names and the array must have between 1 and 5
+    if (!Array.isArray(petPictures))
+      throw "Pet pictures must be an array.";
+    for (let pic of petPictures) {
+      if (typeof pic !== "string" || pic.trim().length === 0)
+        throw "Each picture file name must be a string.";
+    }
+    if (petPictures.length < 1 || petPictures.length > 5)
+      throw "There must be between 1 and 5 pet pictures.";
+    // sex must be male or female
+    if (sex !== "Female" && sex !== "Male")
+      throw "Sex must be male or female.";
+    // current location must be a valid zip code
+    if (zipcodes.lookup(info.currentLocation) === undefined)
+      throw "That is not a valid zip code.";
+    // availableForAdoption should be true or false
+    if (typeof availableForAdoption !== "boolean")
+      throw "Available for adoption must be a boolean.";
+    // ageGroup is only a specific set of strings
+    if (animalType === "Dog") {
+      if (ageGroup !== "Puppy" && ageGroup !== "Young" && 
+        ageGroup !== "Adult" && ageGroup !== "Senior")
+        throw "Age group for dogs must be valid";
+    } else {
+      if (ageGroup !== "Kitten" && ageGroup !== "Young" && 
+        ageGroup !== "Adult" && ageGroup !== "Senior")
+        throw "Age group for cats must be valid";
+    }
+    // biography is a string
+    if (typeof biography !== "string" || biography.trim().length === 0) 
+      throw "Biography cannot be empty";
+    // associatedShelter is a string that represents an objectid
+    if (typeof associatedShelter !== "string" || associatedShelter.trim().length === 0)
+      throw "Associated shelter must be a non-empty string";
+    let parsedShelterId = ObjectId(associatedShelter);
+    // adoptionFee is a number between 0 and 1000
+    if (isNaN(adoptionFee))
+      throw "Adoption fee must be a number";
+    if (adoptionFee < 0 || adoptionFee > 1000) {
+      throw "Adoption fee must be between $0 and $1000.";
+    }
+    // filters must be an array
+    if (!Array.isArray(filters))
+      throw "Filters must be an array";
+    for (let filter of filters) {
+      if (typeof filter !== "string" || filter.trim().length === 0)
+        throw "Individual filters must be strings.";
+    }
+
     const petCollection = await pets();
     let today = new Date();
 
@@ -65,7 +127,6 @@ const exportedMethods = {
     // If the pet was created, add its id to the availablePets array in shelters
     const newId = insertInfo.insertedId;
     const shelterRescueCollection = await sheltersRescues();
-    const parsedShelterId = ObjectId(associatedShelter);
     const shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: parsedShelterId }, { $push: { reviews: newId.toString() } });
 
     // If the shelter cannot be updated, the method should throw
@@ -235,6 +296,10 @@ const exportedMethods = {
     // if it cannot be converted to ObjectId, it will automatically throw an error
     let parsedId = ObjectId(id);
 
+    // If any inputs are missing, the method should throw
+    if (!info.petName || !info.animalType || !info.breeds || !info.petPictures || !info.sex || !info.currentLocation || info.availableForAdoption === undefined || !info.ageGroup || !info.biography || !info.associatedShelter || !info.adoptionFee || !info.filters) 
+		  throw "There is at least one missing input argument.";
+
     const petCollection = await pets();
     const updatedData = {};
 
@@ -246,13 +311,24 @@ const exportedMethods = {
       throw "You must choose either cat or dog!";
     updatedData.animalType = info.animalType;
     
-    if (!Array.isArray(info.breeds))
-      throw "Breeds must be an array"
+    // breeds must have an array of strings
+    if (!Array.isArray(info.breeds)) 
+      throw "Breeds must be an array.";
+    for (let breed of info.breeds) {
+      if (typeof breed !== "string" || breed.trim().length ===0)
+        throw "A breed must be a string.";
+    }
     updatedData.breeds = info.breeds;
 
-    /*if (typeof info.petPictures !== "string" || info.petPictures.trim().length === 0)  
-      throw "Pet picture locations must be non-empty strings.";
-    updatedData.petPictures = info.petPictures;*/ // todo fix this so that it's an array and also don't throw if empty
+    if (!Array.isArray(info.petPictures)) 
+      throw "Pet pictures must be an array.";
+    for (let pic of info.petPictures) {
+      if (typeof pic !== "string" || pic.trim().length === 0)
+        throw "Each picture file name must be a string.";
+    }
+    if (info.petPictures.length < 1 || info.petPictures.length > 5)
+      throw "There must be between 1 and 5 pet pictures.";
+    updatedData.petPictures = info.petPictures;
 
     if (info.sex !== "Female" && info.sex !== "Male")
       throw "Pet must be male or female!"
@@ -262,8 +338,9 @@ const exportedMethods = {
       throw "Please enter a valid zip code";
     updatedData.currentLocation = info.currentLocation;
 
-    if (info.availableForAdoption === undefined)
-      throw "You must enter whether or not this pet is available for adoption";
+    // availableForAdoption should be true or false
+    if (typeof info.availableForAdoption !== "boolean")
+      throw "Available for adoption must be a boolean.";
     updatedData.availableForAdoption = info.availableForAdoption;
 
     if (info.animalType === "Dog") {
@@ -278,7 +355,7 @@ const exportedMethods = {
     updatedData.ageGroup = info.ageGroup;
 
     if (typeof info.biography !== "string" || info.biography.trim().length === 0) 
-      throw "Biography cannot be empty"
+      throw "Biography cannot be empty";
     updatedData.biography = info.biography;
 
     if (typeof info.associatedShelter !== "string" || info.associatedShelter.trim().length === 0)
@@ -287,15 +364,25 @@ const exportedMethods = {
 
     if (isNaN(info.adoptionFee))
       throw "Adoption fee must be a number";
+    if (info.adoptionFee < 0 || info.adoptionFee > 1000) {
+      throw "Adoption fee must be between $0 and $1000.";
+    }
     updatedData.adoptionFee = info.adoptionFee;
 
     if (!Array.isArray(info.appearance))
-      throw "Filters must be an array"
+      throw "Filters must be an array";
+    for (let filter of info.appearance) {
+      if (typeof filter !== "string" || filter.trim().length === 0)
+        throw "Individual filters must be strings.";
+    }
 
     if (!Array.isArray(info.behaviors))
-      throw "Filters must be an array"
+      throw "Filters must be an array";
+    for (let filter of info.behaviors) {
+      if (typeof filter !== "string" || filter.trim().length === 0)
+        throw "Individual filters must be strings.";
+    }
 
-    
     updatedData.filters = info.appearance.concat(info.behaviors);
 
     await petCollection.updateOne({ _id: parsedId }, { $set: updatedData });
