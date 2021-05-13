@@ -218,80 +218,80 @@ async function updatePetOwnerFeedbackById(req) {
     throw "Not able to update db";
 }
 
-async function updatePassword(userId, plainTextPassword){
-    //check for type of ID and password
-    if(!userId){
-      throw "User id must be provided.";
-    }
+async function updatePassword(userId, plainTextPassword) {
+  //check for type of ID and password
+  if (!userId) {
+    throw "User id must be provided.";
+  }
 
-    if(!plainTextPassword){
-      throw "Password must be provided";
-    }
+  if (!plainTextPassword) {
+    throw "Password must be provided";
+  }
 
-    const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
-    const petOwnerCollection = await petOwnerData();
+  const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
+  const petOwnerCollection = await petOwnerData();
 
-    const updateInfo = await petOwnerCollection.updateOne(
-      {_id: ObjectId(userId)},
-      {$set: {"password": hashedPassword}}
-    );
+  const updateInfo = await petOwnerCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $set: { "password": hashedPassword } }
+  );
 
-    if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
-        throw "Could not update password";
+  if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
+    throw "Could not update password";
 
-    return await getPetOwnerById(userId);    
+  return await getPetOwnerById(userId);
 }
 
 //this function updates the profile picture
-async function updateProfileImage(email, picture){
+async function updateProfileImage(email, picture) {
   if (!email) throw "email must be provided";
   if (!picture) throw "picture must be provided";
- 
+
   const userDetails = await getPetOwnerByUserEmail(email);
- 
+
   const petOwnerCollection = await petOwnerData();
   const updateInfo = await petOwnerCollection.updateOne(
-    {_id: ObjectId(userDetails._id)},
-    {$set: {"profilePicture": picture}}
+    { _id: ObjectId(userDetails._id) },
+    { $set: { "profilePicture": picture } }
   );
- 
+
   if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
-  throw "Could not update profile picture";
-  
-  return await getPetOwnerById(ObjectId(userDetails._id));  
+    throw "Could not update profile picture";
+
+  return await getPetOwnerById(ObjectId(userDetails._id));
 
 }
 
 //this function returns the data
-async function getShelterReviews(shelterReviewsArray, userId){
+async function getShelterReviews(shelterReviewsArray, userId) {
   let shelterReviewDetails = [];
   //console.log(typeof userId);
   if (!Array.isArray(shelterReviewsArray)) throw "Parameter must be an array";
 
   const shelterAndRescueCollection = await shelterAndRescueData();
 
-  for (let index = 0; index < shelterReviewsArray.length; index++){
-    const parsedId = ObjectId (shelterReviewsArray[index]);
+  for (let index = 0; index < shelterReviewsArray.length; index++) {
+    const parsedId = ObjectId(shelterReviewsArray[index]);
     //console.log(parsedId);
-    const reviewData = await shelterAndRescueCollection.findOne({"reviews._id": parsedId}, {projection: {_id:0, reviews:1, name:1}});
+    const reviewData = await shelterAndRescueCollection.findOne({ "reviews._id": parsedId }, { projection: { _id: 0, reviews: 1, name: 1 } });
 
-    if(reviewData === null)  throw `No review found`;
-    
+    if (reviewData === null) throw `No review found`;
+
     shelterReviewDetails.push(reviewData);
     //console.log(shelterReviewDetails);
 
   }
   let shelterReviewArray = [];
 
-  for (let i = 0; i < shelterReviewDetails.length; i++){
-     for (let j = 0; j < shelterReviewDetails[i].reviews.length; j++){
-        if ( shelterReviewDetails[i].reviews[j].reviewer == userId){
-            shelterReviewArray.push({
-              name: shelterReviewDetails[i].name,
-              reviews: shelterReviewDetails[i].reviews[j]
-            });
-        }
-     }
+  for (let i = 0; i < shelterReviewDetails.length; i++) {
+    for (let j = 0; j < shelterReviewDetails[i].reviews.length; j++) {
+      if (shelterReviewDetails[i].reviews[j].reviewer == userId) {
+        shelterReviewArray.push({
+          name: shelterReviewDetails[i].name,
+          reviews: shelterReviewDetails[i].reviews[j]
+        });
+      }
+    }
   }
 
   // for (let index = 0; index < shelterReviewArray.length; index++)
@@ -299,15 +299,15 @@ async function getShelterReviews(shelterReviewsArray, userId){
   return shelterReviewArray;
 }
 
-async function getUserFavoritePets(favoritePetArray){
-  
+async function getUserFavoritePets(favoritePetArray) {
+
   if (!Array.isArray(favoritePetArray)) throw "Parameter must be an array";
 
   const petCollection = await petData();
   let favoritePetsDetails = [];
-  for (let i = 0; i < favoritePetArray.length; i++){
-  
-    const petDetails = await petCollection.findOne({_id: ObjectId(favoritePetArray[i])});
+  for (let i = 0; i < favoritePetArray.length; i++) {
+
+    const petDetails = await petCollection.findOne({ _id: ObjectId(favoritePetArray[i]) });
     if (petDetails == null) throw "pet not found";
     favoritePetsDetails.push({
       name: petDetails.petName,
@@ -317,7 +317,7 @@ async function getUserFavoritePets(favoritePetArray){
   // for (let index = 0; index < favoritePetsDetails.length; index++)
   //   console.log(favoritePetsDetails[index]);
   return favoritePetsDetails;
-
+}
 module.exports = {
   addPetOwner,
   getPetOwnerById,
