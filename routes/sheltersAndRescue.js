@@ -7,6 +7,7 @@ const zipcodes = require('zipcodes');
 let { ObjectId } = require('mongodb');
 const xss = require('xss');
 
+
 async function getGeoLocation(zip) {
   let zips = zipcodes.lookup(15211, {
     datafile: "./public/zipcodes.csv",
@@ -35,6 +36,7 @@ router.get("/:id", async (req, res) => {
   }
 
   try {
+
     const shelter = await sheltersData.getShelterById(req.params.id);
     let petsDetailsArray = [];
 
@@ -70,6 +72,7 @@ router.get("/:id", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
+
     res.status(404).send(e);
   }
 });
@@ -118,4 +121,5 @@ router.post("/addReviews/:id", async (req, res) => {
     res.status(404).send(e);
   }
 });
+
 module.exports = router;

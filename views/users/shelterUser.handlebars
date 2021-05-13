@@ -1,0 +1,271 @@
+<div class="user-bg container-fluid">
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="user-photo">Profile Picture</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            {{#if shelterUser.profilePicture}}
+                                <img class="profile-picture rounded-circle" src="../public/images/users/{{shelterUser.profilePicture}}" alt="{{shelterUser.name}}" />
+                            {{else}}
+                                <img class="profile-picture rounded-circle" src="../public/images/users/no_image.png" alt="{{shelterUser.name}}" />
+                            {{/if}}
+                        </div>
+                        
+                        <form id="shleterImageForm" method="POST" action="/shelterUser/changeProfileImage" enctype="multipart/form-data">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label for="image" class="col-form-label">Choose an image from your computer</label>
+                                    <input class = "form-control" type="file" id="profilePicture" name="profilePicture" accept="image/*"/>
+                                </div> 
+                            </div>
+                             <div class="form-group row">
+                                <div class="col-sm-10">
+                                     <button class="btn" type="submit">Change</button>
+                                </div>
+                             </div>       
+                        </form> 
+                         {{!-- <div class="form-group row">
+                             <div class="col-sm-12">
+                                 <p>{{alertMessage}}</p>
+                             </div>
+                        </div>  --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="user-photo">Change Password</h5>
+                <div class="card-body">
+                    <form id="shelterPasswordForm" method="POST" action="/shelterUser/changePassword" onsubmit="return(validatePassword());">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label for="password" class="col-form-label">Enter New Password</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" name="password" id="password"
+                                    value="{{shelterUser.password}}" placeholder="Enter New Password"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary" id="editPassword">Edit</button>
+                                <button class="btn btn-success" id="savePassword" type="submit">Save</button>
+                            </div>
+                        </div>
+                        {{!-- <div class="form-group row">
+                             <div class="col-sm-12">
+                                 <p>{{alertMessage}}</p>
+                             </div>
+                        </div> --}}
+                    </form>
+                </div>
+                {{!-- alt="{{petOwner.fullName.firstName}}" --}}
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Information</h5>
+                <div class="card-body">
+                    <form id="shelterUserInfo" method="POST" action="/shelterUser" onsubmit="return(validateShelterUserForm());">
+                        <div class="form-group row" id="formSpacing">
+                            <label for="email" class="col-sm-4 col-form-label">Username</label>
+                            <label for="name" class="col-sm-4 col-form-label">Name</label>
+                            <label for="phoneNumber" class="col-sm-4 col-form-label">Phone Number</label>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="email" id="email" value="{{shelterUser.email}}" placeholder="Email"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="name" id="name" value="{{shelterUser.name}}" placeholder="Name"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="phoneNumber" id="phoneNumber" value="{{shelterUser.phoneNumber}}" placeholder="Phone Number" ></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="formSpacing">
+                            <label for="streetAddress1" class="col-sm-4 col-form-label">Street Address Line 1</label>
+                            <label for="streetAddress2" class="col-sm-4 col-form-label">Street Address Line 2</label>
+                            <label for="city" class="col-sm-4 col-form-label">City</label>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                {{!-- <input type="text" class="form-control" name="streetAddress1" id="streetAddress1" value="{{streetAddress1.location.street}}" placeholder="Street"></input> --}}
+                                <input type="text" class="form-control" name="streetAddress1" id="streetAddress1" value="{{shelterUser.location.streetAddress1}}" placeholder="Street Address Line 1"></input>
+                            </div>
+                             <div class="col-sm-4">
+                                <input type="text" class="form-control" name="streetAddress2" id="streetAddress2" value="{{shelterUser.location.streetAddress2}}" placeholder="Street Address Line 2"></input>
+                            </div>
+                             <div class="col-sm-4">
+                                <input type="text" class="form-control" name="city" id="city" value="{{shelterUser.location.city}}" placeholder="City"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="formSpacing">
+                            <label for="stateCode" class="col-sm-4 col-form-label">State</label>
+                            <label for="zipCode" class="col-sm-4 col-form-label">Zipcode</label>
+                             <label for="website" class="col-sm-4 col-form-label">Website</label>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="stateCode" id="stateCode" value="{{shelterUser.location.stateCode}}" placeholder="State Code"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="zipCode" id="zipCode" value="{{shelterUser.location.zipCode}}"  min="00501" max="99950" placeholder="Zip Code" required></input>
+                            </div>
+                             <div class="col-sm-4">
+                                <input type="text" class="form-control" name="website" id="website" value="{{shelterUser.website}}" placeholder="Website"></input>
+                            </div>
+                        </div>
+
+                        {{!-- <div class="form-group row">
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth"
+                                    value="{{shelterUser.dateOfBirth}}" placeholder="Date Of Birth"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    value="{{shelterUser.phoneNumber}}" placeholder="Phone Number" ></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="zipCode" id="zipCode"
+                                    value="{{shelterUser.zipCode}}" placeholder="Zip Code" ></input>
+                            </div>
+                        </div> --}}
+                        
+
+                        <div class="form-group row" id="formSpacing">
+                            <label for="twitter" class="col-sm-4 col-form-label">Twitter</label>
+                            <label for="facebook" class="col-sm-4 col-form-label">Facebook</label>
+                            <label for="instagram" class="col-sm-4 col-form-label">Instagram</label>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="twitter" id="twitter" value="{{shelterUser.socialMedia.twitter}}" placeholder="Twitter"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="facebook" id="facebook" value="{{shelterUser.socialMedia.facebook}}" placeholder="Facebook"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="instagram" id="instagram" value="{{shelterUser.socialMedia.instagram}}" placeholder="Instagram" ></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="formSpacing">
+                            <label for="biography" class="col-sm-12 col-form-label">Biography</label>
+                        </div>
+
+                        <div class="form-group row">
+                           
+                            <div class="col-sm-12">
+                                {{!-- <textarea type="text" class="form-control" name="biography" id="biography"
+                                    value="{{shelterUser.biography}}" placeholder="biography"></textarea> --}}
+                                <input type="text" class="form-control" name="biography" id="biography"
+                                    value="{{shelterUser.biography}}" placeholder="biography"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary" id="editData">Edit</button>
+                                <button class="btn btn-success" id="saveData" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Available Pets</h5>
+                <div class="card-body">
+                    {{#if shelterUser.availablePets.length}}
+                    <ul>
+                        {{#each shelterUser.availablePets}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{else}}
+                    <p>You don't have any pets available.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Adopted Pets</h5>
+                <div class="card-body">
+                    {{#if shelterUser.adoptedPets.length}}
+                    <ul>
+                        {{#each shelterUser.adoptedPets}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{else}}
+                    <p>You don't have any adopted pets.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Reviews</h5>
+                <div class="card-body">
+                    {{#if shelterUser.reviews.length}}
+                    <ul>
+                        {{#each shelterUser.reviews}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{else}}
+                    <p>You don't have any shelter reviews.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Feedback</h5>
+                <div class="card-body">
+                    {{#if shelterUser.websiteFeedbackGiven}}
+                        {{#each shelterUser.websiteFeedbackGiven}}
+                        <p>Description: {{this.feedback}}</p>
+                        <p>Date: {{this.date}}</p>
+                        <p>Rating: {{this.rating}}/5</p>
+                        {{/each}}
+                    {{else}}
+                        <p>You haven't given feedback yet.</p>
+                    {{/if}}
+
+                </div>
+            </div>
+        </div>
+    </div> 
+
+ 
+
+</div>

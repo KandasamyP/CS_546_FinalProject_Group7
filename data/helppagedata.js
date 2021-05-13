@@ -40,7 +40,6 @@ const helpcarddata = [
         },
         image: "/public/images/helppage/petstore.png"
     }
-
 ]
 
 const helpfaqdata = [

@@ -17,17 +17,17 @@ async function main() {
     2011234567,
     "07030",
     "I love animals and I’m searching for a dog or cat sibling for my current dog.",
-    "02/23/1998",
+    "2021-05-11",
     ["6063d472f5a17f32a5cbdc24"],
     [
       {
         _id: ObjectId(),
         description: "Adopting through this site is great!",
-        date: "3/25/21",
+        date: Date("2021-02-29T06:01:17.171Z"),
         rating: 5,
       },
     ],
-    ["6063d5103833261e97e0920b"],
+    ["6063d5103833261e97e0920b", "6063d536f6ab4b941689879f"],
     ["6063d536f6ab4b941689879d"],
     ["Food", "$10"],
     true
@@ -43,13 +43,13 @@ async function main() {
     2011234568,
     "07307",
     "I love animals and I’m searching for a dog or cat sibling for my current dog.",
-    "01/12/1997",
+    "2021-05-11",
     ["6063d472f5a17f32a5cbdc24"],
     [
       {
         _id: ObjectId(),
         description: "This site is great resource to adopt a pet.",
-        date: "4/20/21",
+        date: Date("2021-02-29T06:01:17.171Z"),
         rating: 4.2,
       },
     ],

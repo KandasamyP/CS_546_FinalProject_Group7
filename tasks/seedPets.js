@@ -77,7 +77,7 @@ async function main() {
     "Butterscotch",
     "Cat",
     ["Domestic Short Hair"],
-    ["butterscotch.jpg"],
+    ["butterscotch1.jpg"],
     "Female",
     "07047",
     true,
