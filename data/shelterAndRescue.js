@@ -201,7 +201,7 @@ let exportedMethods = {
     }     
 
     const sheltersCollection = await shelterAndRescue();
-    let shelter = await this.getShelterByID(req.params.id);
+    let shelter = await this.getShelterById(req.params.id);
 
     const addReview = {
       reviewDate: new Date(),
@@ -217,7 +217,7 @@ let exportedMethods = {
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
     
-    return await this.getShelterByID(shelter._id.toString());
+    return await this.getShelterById(shelter._id.toString());
   },
   
   async getUserByEmail(userEmail) {
