@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const feedbackdata = req.body
     //const session = req.session.user;
-    //console.log(session)
+    //console.log(req)
     if (!feedbackdata.rating || feedbackdata.rating === undefined || feedbackdata.rating.trim() === "") {
         throw {
             status: 400,
@@ -35,8 +35,11 @@ router.post('/', async (req, res) => {
         };
     }
     try {
-        await shelterAndRescueData.updateShelterFeedbackById(req);
-        // await petOwnerData.updatePetOwnerFeedbackById(req)
+        if (req.session.user.userType === "srUser") {
+            await shelterAndRescueData.updateShelterFeedbackById(req);
+        } if (req.session.user.userType === "popaUser") {
+            await petOwnerData.updatePetOwnerFeedbackById(req)
+        }
         res.status(200).render("shelters/feedback", { title: "Feedback" });
 
     } catch (e) {
