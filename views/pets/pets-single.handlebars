@@ -13,16 +13,21 @@
         </div>
         {{/if}}
         {{#if isAuthenticated}}
-        {{!--todo once routes/methods are made, add javascript here so that it shows favorite button when not favorited
-        and shows unfavorite button when pet is favorited--}}
-        <form id="favorite-pet" method="POST" action="/pets/favorite">
+        {{#if favorited}}
+        <form id="unfavorite-pet" method="POST" action="/pets/favorite">
             <input type="hidden" id="favoritedPet" name="favoritedPet" value="{{pet._id}}">
-            <input type="submit" class="btn btn-info" value="&hearts; Add to Favorites"/>
-        </form>
-        <form id="unfavorite-pet" method="POST" action="/pets/unfavorite">
-            <input type="hidden" id="unfavoritedPet" name="unfavoritedPet" value="{{pet._id}}">
+            <input type="hidden" id="userId" name="userId" value="{{userId}}">
+            <input type="hidden" id="favoriteTrueFalse" name="favoriteTrueFalse" value="false">
             <input type="submit" class="btn btn-danger" value="&hearts; Remove from Favorites"/>
         </form>
+        {{else}}
+        <form id="favorite-pet" method="POST" action="/pets/favorite">
+            <input type="hidden" id="favoritedPet" name="favoritedPet" value="{{pet._id}}">
+            <input type="hidden" id="userId" name="userId" value="{{userId}}">
+            <input type="hidden" id="favoriteTrueFalse" name="favoriteTrueFalse" value="true">
+            <input type="submit" class="btn btn-info" value="&hearts; Add to Favorites"/>
+        </form>
+        {{/if}}
         {{/if}}
         <br>
         <section class="pet-carousel-bg w-100">

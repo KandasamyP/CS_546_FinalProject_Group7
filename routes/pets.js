@@ -35,6 +35,7 @@ router.get("/pet/:id", async (req, res) => {
     let authenticatedPetOwner = false;
     let userId;
     let isUserThisShelter = false;
+    let isPetFavorited = false;
     const sessionInfo = req.cookies.AuthCookie;
 
     // This endpoint returns an object that has all the details for a pet with that ID
@@ -44,6 +45,11 @@ router.get("/pet/:id", async (req, res) => {
       if (sessionInfo.userType === "popaUser") {
         authenticatedPetOwner = true;
         const userInfo = await petOwnerData.getPetOwnerByUserEmail(sessionInfo.email);
+        
+        if (userInfo.favoritedPets.includes(req.params.id)) {
+          isPetFavorited = true;
+        }
+
         userId = userInfo._id;
       } else {
         const userInfo = await shelterData.getShelterAndRescueByUserEmail(sessionInfo.email);
@@ -92,7 +98,8 @@ router.get("/pet/:id", async (req, res) => {
       latLong: latLong,
       isAuthenticated: authenticatedPetOwner,
       userId: userId,
-      isThisShelterLoggedIn: isUserThisShelter
+      isThisShelterLoggedIn: isUserThisShelter,
+      favorited: isPetFavorited
     });
   } catch (e) {
     res.status(400).render("pets/error", { title: "Error", error: e });
@@ -656,5 +663,54 @@ router.post('/delete', async (req, res) => {
       });
     }
   }); 
+
+router.post("/favorite", async (req, res) => {
+    if (!req.body.favoritedPet) {
+      res.status(400).render("pets/error", {title: "400 Error", error: "No pet id supplied."});
+      return;
+    }
+	
+	if (!req.body.userId) {
+      res.status(400).render("pets/error", {title: "400 Error", error: "No user id supplied."});
+      return;
+    }
+	
+	if (!req.body.favoriteTrueFalse) {
+      res.status(400).render("pets/error", {title: "400 Error", error: "Can't determine if pet is being favorited or unfavorited."});
+      return;
+    }
+	
+    try {
+        const sessionInfo = req.cookies.AuthCookie;
+        let user;
+		if (sessionInfo && sessionInfo.userAuthenticated && sessionInfo.userType === "popaUser") {
+		  user = await petOwnerData.getPetOwnerByUserEmail(sessionInfo.email);
+		} else {
+			res.redirect("/"); // todo redirect or error?
+			return;
+		}
+		
+		let isAdding;
+		
+		if (req.body.favoriteTrueFalse === "true") {
+			isAdding = true;
+		} else if (req.body.favoriteTrueFalse === "false") {
+			isAdding = false;
+		} else {
+			res.status(400).render("pets/error", {title: "400 Error", error: "Can't determine if pet is being favorited or unfavorited."});
+			return;
+		}
+		
+		const updated = await petsData.updateFavoritedPets(req.body.userId, req.body.favoritedPet, isAdding);
+
+		res.redirect(`/pets/pet/${req.body.favoritedPet}`);
+		return;
+    } catch (e) {
+      res.render("pets/error", { 
+        title: "Something went wrong!",
+        error: e,
+      });
+    }
+  });
 
 module.exports = router;
