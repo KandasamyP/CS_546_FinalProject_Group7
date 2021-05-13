@@ -1,0 +1,230 @@
+<div class="user-bg container-fluid">
+    <div class="row card-header" id="profile-title">
+        <h5>Profile</h5>
+    </div>
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="user-photo">Photo</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img class="profile-picture rounded-circle"
+                                src="../public/images/popaUsers/{{petOwner.profilePicture}}"
+                                alt="{{petOwner.fullName.firstName}}" />
+                        </div>
+                        <div class="col-sm-10">
+                            <p>Choose an image from your computer</p>
+                            <button class="btn">Upload</button>
+                            <button class="btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                {{!-- alt="{{petOwner.fullName.firstName}}" --}}
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="user-photo">Change Password</h5>
+                <div class="card-body">
+                    <form id="passwordForm" method="POST" action="">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label for="password" class="col-form-label">Enter New Password</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" name="password" id="password"
+                                    value="{{petOwner.password}}" placeholder="password"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="savePassword" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                {{!-- alt="{{petOwner.fullName.firstName}}" --}}
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Information</h5>
+                <div class="card-body">
+                    <form id="userInfo" method="POST" action="/petOwner" onsubmit="return(validateForm());">
+                        {{!-- <div class="form-group row" id="formSpacing">
+                            <label for="email" class="col-sm-6 col-form-label">Email</label>
+                            <label for="password" class="col-sm-6 col-form-label">Password</label>
+                        </div> --}}
+                        {{!-- <div class="form-group row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="email" id="email"
+                                    value="{{petOwner.email}}" placeholder="email"></input>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" name="password" id="password"
+                                    value="{{petOwner.password}}" placeholder="password"></input>
+                            </div>
+                        </div> --}}
+
+                        <div class="form-group row" id="formSpacing">
+                            <label for="email" class="col-sm-4 col-form-label">Email</label>
+                            <label for="firstname" class="col-sm-4 col-form-label">Firstname</label>
+                            <label for="lastname" class="col-sm-4 col-form-label">Lastname</label>
+                            {{!-- <label for="username" class="col-sm-6 col-form-label">username</label> --}}
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="email" id="email"
+                                    value="{{petOwner.email}}" placeholder="email" type="email"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="firstName" id="firstName"
+                                    value="{{petOwner.fullName.firstName}}" placeholder="firstname"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="lastName" id="lastName"
+                                    value="{{petOwner.fullName.lastName}}" placeholder="lastname"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="formSpacing">
+                            <label for="dateOfBirth" class="col-sm-4 col-form-label">Date Of Birth</label>
+                            <label for="phoneNumber" class="col-sm-4 col-form-label">Phone Number</label>
+
+                            <label for="zipCode" class="col-sm-4 col-form-label">Zipcode</label>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth"
+                                    value="{{petOwner.dateOfBirth}}" placeholder="Date Of Birth"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    value="{{petOwner.phoneNumber}}" placeholder="Phone Number" size="10"></input>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="zipCode" id="zipCode"
+                                    value="{{petOwner.zipCode}}" placeholder="Zip Code" size="5"></input>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="formSpacing">
+                            <label for="biography" class="col-sm-12 col-form-label">Biography</label>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="biography" id="biography"
+                                    value="{{petOwner.biography}}" placeholder="biography"></input>
+                            </div>
+                        </div>
+                        {{!-- <div>
+                            <label for="userid">User id</label>
+                            <input type="text" name="userid" id="userid" value="{{petOwner._id}}"></input>
+                        </div> --}}
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary" id="editData">Edit</button>
+                                <button class="btn btn-success" id="saveData" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Favorite Pets</h5>
+                <div class="card-body">
+                    {{#if petOwner.favoritedPets.length}}
+                    <ul>
+                        {{#each petOwner.favoritedPets}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{else}}
+                    <p>You don't have any favorite pets yet.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Shelter Reviews</h5>
+                <div class="card-body">
+                    {{#if petOwner.shelterReviewsGiven.length}}
+                    <ul>
+                        {{#each petOwner.shelterReviewsGiven}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{else}}
+                    <p>You don't have any shelter reviews.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Feedback</h5>
+                <div class="card-body">
+                    {{#if petOwner.websiteFeedbackGiven}}
+
+                    {{#each petOwner.websiteFeedbackGiven}}
+                    <p>Description: {{this.description}}</p>
+                    <p>Date: {{this.date}}</p>
+                    <p>Rating: {{this.rating}}/5</p>
+                    {{/each}}
+
+                    {{else}}
+                    <p>You haven't given feedback yet.</p>
+                    {{/if}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Reported Posts</h5>
+                <div class="card-body"> </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Donations </h5>
+                <div class="card-body"> </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row spacing">
+        <div class="container-fluid">
+            <div class="card">
+                <h5 class="card-header" id="info">Volunteer</h5>
+                <div class="card-body"> </div>
+            </div>
+        </div>
+    </div>
+
+</div>
