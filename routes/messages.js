@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
                 isUserShelter: isUserShelter
             });
         } else {
-            res.redirect("login");
+            res.redirect("/login");
         }
     } catch (e) {
         res.render("pets/error", {

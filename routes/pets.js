@@ -38,6 +38,30 @@ router.get("/pet/:id", async (req, res) => {
     let isPetFavorited = false;
     const sessionInfo = req.cookies.AuthCookie;
 
+    const dogPhysicalCharacteristics = csvsync.parse(
+      fs.readFileSync("data/petInformation/dogPhysical.csv")
+    )[0];
+    const dogBreeds = csvsync.parse(
+      fs.readFileSync("data/petInformation/dogBreeds.csv")
+    )[0];
+    const catPhysicalCharacteristics = csvsync.parse(
+      fs.readFileSync("data/petInformation/catPhysical.csv")
+    )[0];
+    const catBreeds = csvsync.parse(
+      fs.readFileSync("data/petInformation/catBreeds.csv")
+    )[0];
+    const behaviors = csvsync.parse(
+      fs.readFileSync("data/petInformation/behaviors.csv")
+    )[0];
+
+    const dropdownData = {
+      dogPhysicalCharacteristics: dogPhysicalCharacteristics,
+      dogBreeds: dogBreeds,
+      catPhysicalCharacteristics: catPhysicalCharacteristics,
+      catBreeds: catBreeds,
+      behaviors: behaviors
+    };
+
     // This endpoint returns an object that has all the details for a pet with that ID
     let pet = await petsData.getPetById(req.params.id);
 
@@ -73,10 +97,12 @@ router.get("/pet/:id", async (req, res) => {
       physicalCharacteristics = csvsync.parse(
         fs.readFileSync("data/petInformation/dogPhysical.csv")
       );
+      dropdownData.animalIsDog = true;
     } else {
       physicalCharacteristics = csvsync.parse(
         fs.readFileSync("data/petInformation/catPhysical.csv")
       );
+      dropdownData.animalIsDog = false;
     }
 
     let petPhys = [];
@@ -99,7 +125,8 @@ router.get("/pet/:id", async (req, res) => {
       isAuthenticated: authenticatedPetOwner,
       userId: userId,
       isThisShelterLoggedIn: isUserThisShelter,
-      favorited: isPetFavorited
+      favorited: isPetFavorited,
+      dropdownData: dropdownData
     });
   } catch (e) {
     res.status(400).render("pets/error", { title: "Error", error: e });
@@ -157,6 +184,63 @@ router.post("/inquire", async (req, res) => {
     });
   }
 });
+
+router.post("/corrections", async (req, res) => {
+  try {
+    // check if a thread already exists between these two users
+    let thread = await messagesData.getThreadByParticipants([req.body.user, req.body.recipient]);
+
+    let message = `I propose making these changes for ${req.body.petName}: `;
+
+    if (req.body.addBreeds) {
+      message = message + `Add breeds: (${req.body.addBreeds.toString()}). `;
+    }
+
+    if (req.body.correctSex) {
+      message = message + `Correct sex: ${req.body.correctSex}. `;
+    }
+
+    if (req.body.correctAgeGroup) {
+      message = message + `Correct age: ${req.body.correctAgeGroup}. `;
+    }
+
+    if (req.body.addAppearance) {
+      message = message + `Add appearances: (${req.body.addAppearance.toString()}). `;
+    }
+
+    if (req.body.addBehaviors) {
+      message = message + `Add behaviors/lifestyle: (${req.body.addBehaviors.toString()}). `;
+    }
+
+    if (req.body.removeBreeds) {
+      message = message + `Remove breeds: (${req.body.removeBreeds.toString()}). `;
+    }
+
+    if (req.body.removeAppearance) {
+      message = message + `Remove appearances: (${req.body.removeAppearance.toString()}). `;
+    }
+
+    if (req.body.removeBehaviors) {
+      message = message + `Remove behaviors/lifestyle: (${req.body.removeBehaviors.toString()}). `;
+    }
+    
+    if (thread === null) {	 
+      // if no thread exists yet, create one 
+      thread = await messagesData.addNewThread(req.body.user, req.body.recipient, message);
+    } else {
+      // if a thread does exist, add a new message to it
+      thread = await messagesData.addMessage(thread._id, req.body.user, message);
+    }
+      
+    res.redirect(`pet/${req.body.petId}`);
+  } catch (e) {
+    res.render("pets/error", { 
+      title: "Something went wrong!",
+      error: e,
+    });
+  }
+});
+
 
 router.post("/search", async (req, res) => {
   // the only required inputs are animalType and zipCode, so don't check for existence of other params
