@@ -2,19 +2,19 @@
     <h1>Add new pet</h1>
     <form method="POST" action="/pets/add" enctype="multipart/form-data">
         <label for="petName">Pet name:</label>
-        <input type="text" id="petName" name="petName">
+        <input type="text" id="petName" name="petName" required>
         <br>
         <label for="animalType">Animal type:</label>
-        <input type="radio" id="dog" name="animalType" value="Dog">
+        <input type="radio" id="dog" name="animalType" value="Dog" required>
         <label for="dog">Dog</label>
         <input type="radio" id="cat" name="animalType" value="Cat">
         <label for="cat">Cat</label>
         <br>
         <label for="petPictures">Pet pictures (maximum 5):</label>
-        <input type="file" id="petPictures" name="petPictures" accept="image/*" multiple>
+        <input type="file" id="petPictures" name="petPictures" accept="image/*" multiple required>
         <br>
         <label for="sex">Sex:</label>
-        <input type="radio" id="female" name="sex" value="Female">
+        <input type="radio" id="female" name="sex" value="Female" required>
         <label for="female">Female</label>
         <input type="radio" id="male" name="sex" value="Male">
         <label for="male">Male</label>
@@ -29,10 +29,10 @@
         <br>
         <label for="biography">Give us more details about this pet. Do you know its birthday, its parents, its exact
             breed mix? What does this pet like or dislike? Explain why someone would fall in love with it!</label>
-        <textarea id="biography" name="biography" rows="7" cols="100"></textarea>
+        <textarea id="biography" name="biography" rows="7" cols="100" required></textarea>
         <br>
         <label for="availableForAdoption">Is this pet currently adoptable?</label>
-        <input type="radio" id="yes" name="availableForAdoption" value="true">
+        <input type="radio" id="yes" name="availableForAdoption" value="true" required>
         <label for="yes">Yes</label>
         <input type="radio" id="no" name="availableForAdoption" value="false">
         <label for="no">No</label>
@@ -70,7 +70,7 @@
         </div>
         <br class="dog-chosen cat-chosen">
         <label for="ageGroup" class="dog-chosen cat-chosen">Approximate age group:</label>
-        <input type="radio" id="baby" class="dog-chosen" name="ageGroup" value="Puppy">
+        <input type="radio" id="baby" class="dog-chosen" name="ageGroup" value="Puppy" required>
         <label for="baby" class="dog-chosen">Puppy</label>
         <input type="radio" id="baby" class="cat-chosen" name="ageGroup" value="Kitten">
         <label for="baby" class="cat-chosen">Kitten</label>
@@ -117,7 +117,7 @@
         </div>
         <br>
         <br>
-        <label for="appearance">Select anything from this list that describes the pet's behaviors or lifestyle:</label>
+        <label for="behaviors">Select anything from this list that describes the pet's behaviors or lifestyle:</label>
         <div class="dropdown btn-group">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -141,6 +141,4 @@
     <br>
 </main>
 
-{{!--
-<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script> --}}
 <script src='../../public/js/pet-add.js'></script>

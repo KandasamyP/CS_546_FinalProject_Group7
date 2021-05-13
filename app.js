@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //Setup Express View Engine as Express Handlebars
 //Formats for moment.js can be found here: https://momentjs.com/
+
 app.engine(
   "handlebars",
   exphbs({
@@ -128,6 +129,7 @@ app.use("/login", (req, res, next) => {
 }); // SH people should be able to do a search without creating an account
 
 //Middleware: Check if user is already signed in on shelters route
+
 app.use("/shelters", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
@@ -142,9 +144,16 @@ app.use("/sheltersAndRescue", (req, res, next) => {
   } else {
     next();
   }
-});
-
 });*/
+
+app.use("/sheltersAndRescue", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+
+  } else {
+    next();
+  }
+});
 
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {
@@ -184,16 +193,17 @@ app.use("/logout", (req, res, next) => {
 });
 //Middleware: Check if user is already signed in on feedback route
 app.use("/feedback", (req, res, next) => {
-  if (!req.cookies.AuthCookie) {
-    return res.redirect("/");
+  if (!req.session.user) {
+    return res.redirect("/login");
   } else {
     next();
   }
 });
 //Middleware: Check if user is already signed in on helppage route
 app.use("/helppage", (req, res, next) => {
-  if (!req.cookies.AuthCookie) {
-    return res.redirect("/");
+  if (!req.session.user) {
+    return res.redirect("/login");
+
   } else {
     next();
   }
@@ -207,4 +217,4 @@ configRoutes(app);
 app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
-});
+})

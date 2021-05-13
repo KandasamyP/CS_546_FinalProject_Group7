@@ -1,6 +1,7 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require("../data");
 const shelters = data.shelterAndRescueData;
+
 const ObjectId = require('mongodb').ObjectID;
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
@@ -32,7 +33,8 @@ async function main() {
             reviewDate: Date("2021-02-29T06:01:17.171Z"),
             rating: 5,
             reviewBody: "They were very nice and helpful when I was looking for a new pet to adopt!",
-            reviewer: ObjectId("609b5ec0739d660c38ded3a2")
+            reviewer: ObjectId("6063d0e4be26b8a5128c59e1")
+        }],
         },
         {
             _id: ObjectId("6063d536f6ab4b941689879f"),
@@ -43,6 +45,7 @@ async function main() {
           
         }
         ],
+
         '/public/images/shelters/MSwithcat.png',
         [{
             _id: ObjectId("507f1f77bcf86cd799439011"),

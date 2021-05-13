@@ -149,6 +149,9 @@ input[type="number"] {
   background-color: #e6e8eb!important;
 }
 
+.pet-search-container {
+  width: 75%;
+
 li.favPets{
   float: left;
 }
