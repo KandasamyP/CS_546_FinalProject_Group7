@@ -6,6 +6,7 @@ const petsData = require("../data/pets");
 const zipcodes = require('zipcodes');
 let { ObjectId } = require('mongodb');
 const xss = require('xss');
+const petOwnerData  = require("../data/petOwner");
 
 
 async function getGeoLocation(zip) {
@@ -54,10 +55,18 @@ router.get("/:id", async (req, res) => {
 
 
     if (shelter.location && shelter.location.zipCode) {
-      let avgReviews = 0, totalReviews = 0;
+      let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
       for (let i = 0; i < shelter.reviews.length; ++i) {
-        console.log("totalReviews"+totalReviews + "rating" + shelter.reviews[i].rating);
-        totalReviews = totalReviews + shelter.reviews[i].rating;
+        const petOwnerInfo = await petOwnerData.findOne({_id: ObjectId(shelter.reviews[i].reviewer)});
+
+        userReviewDetail.push({
+          rating: shelter.reviews[i].rating,
+          reviewerName: "John",// petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+          reviewBody: shelter.reviews[i].reviewBody,
+          reviewDate: shelter.reviews[i].reviewDate,
+          reviewer: shelter.reviews[i].rating
+        });
+        totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
       }
       console.log(totalReviews);
       console.log(shelter.reviews.length);
@@ -68,12 +77,14 @@ router.get("/:id", async (req, res) => {
         avgReviews: avgReviews,
         totalReviews: shelter.reviews.length
       };
+
       res.status(200).render("sheltersAndRescue/individual-shelter", {
         shelterDetails: shelter,
         geoLocation: await getGeoLocation(shelter.location.zipCode),
         availablePet: petsDetailsArray,
         adoptedPet: adoptedPetsDetailsArray,
-        reviewDetail: reviewDetail
+        reviewDetail: reviewDetail,
+        userReviewDetail: userReviewDetail
       });
     } else {
       res
@@ -101,9 +112,18 @@ router.post("/addReviews/:id", async (req, res) => {
      
       const recentlyAddedReview = shelter.reviews[shelter.reviews.length-1];
       if (shelter.location && shelter.location.zipCode) {
-        let avgReviews = 0, totalReviews = 0;
-        for(let i=0; i< shelter.reviews.length; ++i) {
-          totalReviews += shelter.reviews[i].rating;
+        let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
+        for (let i = 0; i < shelter.reviews.length; ++i) {
+         // const petOwnerInfo = await petOwnerData.findOne({_id: ObjectId(shelter.reviews[i].reviewer)});
+  
+          userReviewDetail.push({
+            rating: shelter.reviews[i].rating,
+            reviewerName: "John",// petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+            reviewBody: shelter.reviews[i].reviewBody,
+            reviewDate: shelter.reviews[i].reviewDate,
+            reviewer: shelter.reviews[i].rating
+          });
+          totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
         }
         console.log(totalReviews);
         avgReviews = totalReviews/shelter.reviews.length;
