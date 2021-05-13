@@ -1,5 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const zipcodes = require("zipcodes");
+const userMethods = require("./petOwner");
 let { ObjectId } = require("mongodb");
 const pets = mongoCollections.pets;
 const sheltersRescues = mongoCollections.shelterAndRescue;
@@ -265,15 +266,16 @@ const exportedMethods = {
   },
 
   // Deletes the specified pet
-  async delete(id) {
+  async delete(id, shelterId) {
     // If no id is provided, the method should throw
-    if (!id) throw "The input argument 'id' is missing.";
+    if (!id || !shelterId) throw "The input arguments are missing.";
     // If the id provided is not a string, or is an  empty string, the method should throw
-    if (typeof id != "string") throw "The input 'id' must be a string.";
-    if (id.trim().length === 0) throw "The input 'id' must not be empty.";
+    if (typeof id !== "string" || typeof shelterId !== "string") throw "The inputs must be strings.";
+    if (id.trim().length === 0 || shelterId.trim().length === 0) throw "The inputs must not be empty.";
     // If the id provided is not a valid ObjectId, the method should throw
     // if it cannot be converted to ObjectId, it will automatically throw an error
     let parsedId = ObjectId(id);
+    let parsedShelterId = ObjectId(shelterId);
 
     const petCollection = await pets();
     const pet = await petCollection.findOne({ _id: parsedId });
@@ -282,8 +284,20 @@ const exportedMethods = {
     // If the pet cannot be removed (does not exist), the method should throw
     if (deletionInfo.deletedCount === 0) throw `The pet with an id of ${id} could not be removed as it does not exist.`;
 
-    // If the removal succeeds, return a message stating that.
-    return `${pet.petName} has been removed.`;
+    const shelterCollection = await sheltersRescues();
+    const shelterInfo = await shelterCollection.updateOne({ _id: parsedShelterId }, { $pull: { availablePets: id } });
+    if (shelterInfo.insertedCount === 0) throw "The available pets array could not be updated.";
+
+    const petOwnerCollection = await users();
+    const usersWithPetAsFavorite = await userMethods.getAllUsersWithFavoritePet(id);
+
+    for (let userId of usersWithPetAsFavorite) {
+      let parsedUserId = ObjectId(userId);
+      let userInfo = await petOwnerCollection.updateOne({ _id: parsedUserId }, { $pull: { favoritedPets: id } });
+      if (userInfo.insertedCount === 0) throw "The favorited pets array could not be updated.";
+    }
+
+    return;
   },
 
   async update(id, info) {
