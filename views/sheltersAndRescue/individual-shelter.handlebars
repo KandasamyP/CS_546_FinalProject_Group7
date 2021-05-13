@@ -10,7 +10,7 @@
                     <label>Email:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.emailAddress}}
+                    {{shelterDetails.email}}
                 </span>
             </div>
         </div>
@@ -20,7 +20,7 @@
                     <label>Phone:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.phonenumber}}
+                    {{shelterDetails.phoneNumber}}
                 </span>
             </div>
         </div>
@@ -48,31 +48,83 @@
                     <label>Website:</label>
                 </span>
                 <span class="col-md-9">
-                    {{#each shelterDetails.website}}
-                        <a> {{this}} </a>
-                    {{/each}}
+                   <a> {{shelterDetails.website}} </a>
+                    {{#if shelterDetails.socialMedia.facebook}}
+                      <p>Facebook: <a> {{shelterDetails.socialMedia.facebook}} </a> </p>
+                    {{/if}}
+                    {{#if shelterDetails.socialMedia.instagram}}
+                       <p>Instagram: <a> {{shelterDetails.socialMedia.instagram}} </a> </p>
+                    {{/if}}
+                    {{#if shelterDetails.socialMedia.twitter}}
+                       <p>Twitter: <a> {{shelterDetails.socialMedia.twitter}} </a> </p>
+                    {{/if}}
                 </span>
             </div>
         </div>
     </div>
     <hr />
+          
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h1>Available Pets for adoption</h1>
             <section class="pet-carousel-bg">
                 <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        {{#each pet}}
-                        <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
-                            {{/if}}></li>
+                        {{#each availablePet}}
+                            <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
+                                {{/if}}></li>
                         {{/each}}
                     </ol>
                     <div class="carousel-inner">
-                        {{#each pet}}
+                        {{#each availablePet}}
                             <div class="carousel-item{{#if @first}} active{{/if}}">
-                                {{#each pet.petPictures}}
-                                    <img class="img-fluid" src="../../public/images/pets/{{this}}" alt="{{pet.petName}}">
-                                {{/each}}
+                                {{!-- {{#each availablePet.petPictures}} --}}
+                                    <img class="img-fluid" src="../../public/images/pets/{{availablePet.petPictures.[0]}}" alt="{{availablePet.petName}}">
+                                {{!-- {{/each}} --}}
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h3>{{this.petName}}</h3>
+                                    Age group: {{this.ageGroup}}; SEX: {{this.sex}}
+                                    <h6>Adoption Fee: {{this.adoptionFee}}</h6>
+                                </div>
+                            </div>                    
+                        {{/each}}
+                    </div>
+                    {{!-- <div class="item">
+                        <h3>{{this.petName}}</h3>
+                        Age group: {{this.ageGroup}}; SEX: {{this.sex}}
+                        <h6>Adoption Fee: {{this.adoptionFee}}</h6>
+                    </div> --}}
+                    <a class="carousel-control-prev" href="#carousel-indicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-indicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <hr />
+     <div class="row">
+        <div class="col-md-7">
+            <h1>Adopted Pets in {{shelterDetails.name}}</h1>
+            <section class="pet-carousel-bg">
+                <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {{#each adoptedPet}}
+                            <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
+                                {{/if}}></li>
+                        {{/each}}
+                    </ol>
+                    <div class="carousel-inner">
+                        {{#each adoptedPet}}
+                            <div class="carousel-item{{#if @first}} active{{/if}}">
+                                {{!-- {{#each availablePet.petPictures}} --}}
+                                    <img class="img-fluid" src="../../public/images/pets/{{adoptedPet.petPictures.[0]}}" alt="{{adoptedPet.petName}}">
+                                {{!-- {{/each}} --}}
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3>{{this.petName}}</h3>
                                     Age group: {{this.ageGroup}}; SEX: {{this.sex}}
@@ -98,16 +150,16 @@
             </section>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-5">
             <form class="form-horizontal" id="addReviewForm">
                 <fieldset>
             
                     <!-- Message body -->
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="col-md-3 control-label" for="reviewBody">Your review on this shelter/rescue</label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <textarea class="form-control" id="reviewBody" name="reviewBody" placeholder="Please enter your review here..." rows="3"></textarea>
                         </div>
                     </div>
@@ -115,10 +167,10 @@
 
                     <!-- Rating -->
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                     <label class="control-label" for="rating">Your rating</label>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <input class="form-control" type="number" min="0" max="5" id="rating" name="rating"> 
                     </div>
                     </div>
@@ -134,7 +186,6 @@
             <div class="error" id="reviewError" hidden>All input in form is mandatory !!</div>
         </div>
     </div>
-        
    
 
     <hr>
@@ -150,26 +201,29 @@
         <vr></vr>
         <div class="row col-md-9">
 
-            {{#each shelterDetails.reviews}}
+            
 
-            <div>
-                <div class="row">
-                    <div>
-                        <h3>Reviewer name comes here</h3>
-                        <div>
-                            <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
-                            </p>
+            <div id="shelter-review-container">
+                {{#each userReviewDetail}}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>{{this.reviewerName}}</h3>
+                            <div>
+                                <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="">{{this.reviewDate}}</p>
                         </div>
                     </div>
-                    <div class="">
-                        <p class="">{{this.reviewDate}}</p>
+                    <div class="row text-left">
+                        <p class="content">{{this.reviewBody}}</p>
                     </div>
-                </div>
-                <div class="row text-left">
-                    <p class="content">{{this.reviewBody}}</p>
-                </div>
+                    <hr/>
+                {{/each}}
+
             </div>
-            {{/each}}
 
         </div>
     </div>

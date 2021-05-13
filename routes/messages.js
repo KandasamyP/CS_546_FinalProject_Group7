@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
                 userInfo = await petOwnerData.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
                 isUserShelter = false;
             } else {
-                userInfo = await shelterAndRescueData.getShelterAndRescueByUserEmail(req.cookies.AuthCookie.email);
+                userInfo = await shelterAndRescueData.getPetShelterByEmail(req.cookies.AuthCookie.email);
                 isUserShelter = true;
             }
 
@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
                 isUserShelter: isUserShelter
             });
         } else {
-            res.redirect("login");
+            res.redirect("/login");
         }
     } catch (e) {
         res.render("pets/error", {
@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
                 userInfo = await petOwnerData.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
                 isUserShelter = false;
             } else {
-                userInfo = await shelterAndRescueData.getShelterAndRescueByUserEmail(req.cookies.AuthCookie.email);
+                userInfo = await shelterAndRescueData.getPetShelterByEmail(req.cookies.AuthCookie.email);
                 isUserShelter = true;
             }
 

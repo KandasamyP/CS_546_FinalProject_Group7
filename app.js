@@ -21,49 +21,59 @@ app.use(express.urlencoded({ extended: true }));
 
 //Setup Express View Engine as Express Handlebars
 //Formats for moment.js can be found here: https://momentjs.com/
-app.engine("handlebars", exphbs({ 
-  defaultLayout: "main" ,
-  helpers: {
-    formatDate: function (date, format) {
-      return moment(date).format(format);
-    },
-    ifUserIsSender: function(senderId, userId) {
-      return senderId === userId ? "user" : "recipient";
-    },
-    ifMessageSent: function(recipient, participant) {
-      if (recipient === participant) {
-        return "reloaded";
-      }
-      return;
-    },
-    setSenderName: function(senderId, userId, petOwnerName, shelterName, isUserShelter) {
-      if (senderId === userId) {
-        return "You";
-      } else {
-        if (isUserShelter) {
-          return petOwnerName;
+
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main",
+    helpers: {
+      formatDate: function (date, format) {
+        return moment(date).format(format);
+      },
+      ifUserIsSender: function (senderId, userId) {
+        return senderId === userId ? "user" : "recipient";
+      },
+      ifMessageSent: function (recipient, participant) {
+        if (recipient === participant) {
+          return "reloaded";
+        }
+        return;
+      },
+      setSenderName: function (
+        senderId,
+        userId,
+        petOwnerName,
+        shelterName,
+        isUserShelter
+      ) {
+        if (senderId === userId) {
+          return "You";
         } else {
-          return shelterName;
+          if (isUserShelter) {
+            return petOwnerName;
+          } else {
+            return shelterName;
+          }
         }
-      }
-    },
-    prefillRadioButton: function(originalValue, formValue) {
-      if (originalValue === formValue) {
-        return "checked";
-      } else {
-        return "unchecked";
-      }
-    },
-    prefillCheckboxes: function(originalValues, formValue) {
-      for (let val of originalValues) {
-        if (val === formValue) {
+      },
+      prefillRadioButton: function (originalValue, formValue) {
+        if (originalValue === formValue) {
           return "checked";
+        } else {
+          return "unchecked";
         }
-      }
-      return;
-    }
-  }
-}));
+      },
+      prefillCheckboxes: function (originalValues, formValue) {
+        for (let val of originalValues) {
+          if (val === formValue) {
+            return "checked";
+          }
+        }
+        return;
+      },
+    },
+  })
+);
 app.set("view engine", "handlebars");
 
 //Create Express Session
@@ -73,7 +83,7 @@ app.use(
     secret: "the quick brown fox jumps over the lazy dog",
     saveUninitialized: true,
     resave: false,
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 6000000 },
   })
 );
 
@@ -106,27 +116,61 @@ app.use("/login", (req, res, next) => {
 });
 
 //Middleware: Check if user is already signed in on pet search route
-app.use("/pets", (req, res, next) => {
+/*app.use("/pets", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
   } else {
     next();
   }
+
 });
+
+
+}); // SH people should be able to do a search without creating an account
+
 //Middleware: Check if user is already signed in on shelters route
+
 app.use("/shelters", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
   } else {
+    req.body.userData = req.session.user;
+    next();}
+});
+
+app.use("/sheltersAndRescue", (req, res, next) => {
+  if (!req.cookies.AuthCookie) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});*/
+
+app.use("/sheltersAndRescue", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+
+  } else {
     next();
   }
 });
+
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
   } else {
     req.body.userData = req.session.user;
+    next();
+  }
+});
+
+app.use("/shelters", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  } else {
+    req.body.userData = req.session.user;
+   // console.log(req.body.userData)
     next();
   }
 });
@@ -147,6 +191,23 @@ app.use("/logout", (req, res, next) => {
     next();
   }
 });
+//Middleware: Check if user is already signed in on feedback route
+app.use("/feedback", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  } else {
+    next();
+  }
+});
+//Middleware: Check if user is already signed in on helppage route
+app.use("/helppage", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+
+  } else {
+    next();
+  }
+});
 
 //Setup Routes
 configRoutes(app);
@@ -156,4 +217,4 @@ configRoutes(app);
 app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
-});
+})

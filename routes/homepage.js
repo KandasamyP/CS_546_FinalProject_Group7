@@ -50,18 +50,21 @@ router.get("/", async (req, res) => {
 router.get("/profile", async (req, res) => {
   if (req.session.user) {
     if (req.body.userData.userType === "popaUser") {
-      res.status(200).redirect("/petOwner");
+      return res.status(200).redirect("/petOwner");
     } else if (req.body.userData.userType === "srUser") {
-      res.status(200).send("Shelter Owner Profile Page");
+      return res.status(200).redirect("/shelterUser");
+    }
+    if (req.cookies.AuthCookie.userType === "srUser") {
+      return res.status(200).redirect("/petOwner");
     }
   } else {
-    res.status(200).render("homepage/login");
+    return res.status(200).render("homepage/login");
   }
 });
 
 //GET '/login'
 router.get("/login", async (req, res) => {
-  res.status(200).render("homepage/login");
+  return res.status(200).render("homepage/login");
 });
 
 //POST '/login'
@@ -124,13 +127,16 @@ router.post("/login", async (req, res) => {
         userType: logInData.userType,
       });
       res.redirect("/");
+      return;
     } else {
       res.render("homepage/login", {
         message: "Wrong Username or Password!",
       });
+      return;
     }
   } catch (e) {
     res.status(e.status).json({ error: e.error });
+    return;
   }
 });
 

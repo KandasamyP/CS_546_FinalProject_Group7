@@ -27,11 +27,11 @@ async function main() {
       "twitter.com/furiendsanimalrescuehoboken",
     ],
     ["609832cf96d17d6a645b0911"],
-    ["6064a5f081004bcfbc33d6c5"],
+    ["609832cf96d17d6a645b0911"],
     [
       {
         reviewDate: new Date("3/26/21"),
-        rating: "5",
+        rating: 5,
         reviewBody:
           "They were very nice and helpful when I was looking for a new pet to adopt!",
         reviewer: ObjectId("6063d0e4be26b8a5128c59e1"),
@@ -77,7 +77,7 @@ async function main() {
     "Butterscotch",
     "Cat",
     ["Domestic Short Hair"],
-    ["butterscotch.jpg"],
+    ["butterscotch1.jpg"],
     "Female",
     "07047",
     true,

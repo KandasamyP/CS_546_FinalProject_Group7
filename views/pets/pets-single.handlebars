@@ -13,16 +13,21 @@
         </div>
         {{/if}}
         {{#if isAuthenticated}}
-        {{!--todo once routes/methods are made, add javascript here so that it shows favorite button when not favorited
-        and shows unfavorite button when pet is favorited--}}
-        <form id="favorite-pet" method="POST" action="/pets/favorite">
+        {{#if favorited}}
+        <form id="unfavorite-pet" method="POST" action="/pets/favorite">
             <input type="hidden" id="favoritedPet" name="favoritedPet" value="{{pet._id}}">
-            <input type="submit" class="btn btn-info" value="&hearts; Add to Favorites"/>
-        </form>
-        <form id="unfavorite-pet" method="POST" action="/pets/unfavorite">
-            <input type="hidden" id="unfavoritedPet" name="unfavoritedPet" value="{{pet._id}}">
+            <input type="hidden" id="userId" name="userId" value="{{userId}}">
+            <input type="hidden" id="favoriteTrueFalse" name="favoriteTrueFalse" value="false">
             <input type="submit" class="btn btn-danger" value="&hearts; Remove from Favorites"/>
         </form>
+        {{else}}
+        <form id="favorite-pet" method="POST" action="/pets/favorite">
+            <input type="hidden" id="favoritedPet" name="favoritedPet" value="{{pet._id}}">
+            <input type="hidden" id="userId" name="userId" value="{{userId}}">
+            <input type="hidden" id="favoriteTrueFalse" name="favoriteTrueFalse" value="true">
+            <input type="submit" class="btn btn-info" value="&hearts; Add to Favorites"/>
+        </form>
+        {{/if}}
         {{/if}}
         <br>
         <section class="pet-carousel-bg w-100">
@@ -122,11 +127,193 @@
             <input type="submit" class="btn btn-success" value="Inquire"/>
         </div>
     </form>
-    {{#if messageSent}}
-    <h3>Inquiry sent! Make sure to check your <a href="/messages">messages</a> for a reply.</h3>
-    {{/if}}
     {{else}}
     <h5>You must be logged in to a pet owner account to send a message! <a href="/login">Log in here.</a></h5>
+    {{/if}}
+    {{#if isAuthenticated}}
+    <br>
+    <h3>Do you see anything in this pet's description that seems off? Let {{shelter.name}} know so that the search for this pet can be improved!</h3>
+    <h5>You don't need to select everything; only what you think needs to change!</h5>
+    <form id="send-corrections" method="POST" action="/pets/corrections">
+        <div class="dropdown btn-group">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add Breeds
+            </button>
+            {{#if dropdownData.animalIsDog}}
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each dropdownData.dogBreeds}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="addBreeds" name="addBreeds" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+            {{else}}
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each dropdownData.catBreeds}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctBreeds" name="correctBreeds" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Correct Sex
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctSex" name="correctSex" value="Female">Female
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctSex" name="correctSex" value="Male">Male
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Correct Age
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#if dropdownData.animalIsDog}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctAgeGroup" name="correctAgeGroup" value="Puppy">Puppy
+                    </label>
+                </div>
+                {{else}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctAgeGroup" name="correctAgeGroup" value="Kitten">Kitten
+                    </label>
+                </div>
+                {{/if}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctAgeGroup" name="correctAgeGroup" value="Young">Young
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctAgeGroup" name="correctAgeGroup" value="Adult">Adult
+                    </label>
+                </div>
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="correctAgeGroup" name="correctAgeGroup" value="Senior">Senior
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add Physical Appearance
+            </button>
+            {{#if dropdownData.animalIsDog}}
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each dropdownData.dogPhysicalCharacteristics}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="addAppearance" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+            {{else}}
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each dropdownData.catPhysicalCharacteristics}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="addAppearance" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add Behaviors and Lifestyle
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each dropdownData.behaviors}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="addBehaviors" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <br><br>
+        <div class="dropdown btn-group">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Remove Breeds
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each pet.breeds}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" class="removeBreeds" name="removeBreeds" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Remove Physical Appearance
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each physicalCharacteristics}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="removeAppearance" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="dropdown btn-group">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Remove Behaviors and Lifestyle
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {{#each otherFilters}}
+                <div class="dropdown-item checkbox">
+                    <label>
+                        <input type="checkbox" name="removeBehaviors" value="{{this}}">{{this}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <input type="hidden" id="recipient" name="recipient" value="{{shelter._id}}">
+        <input type="hidden" id="user" name="user" value="{{userId}}">
+        <input type="hidden" id="petName" name="petName" value="{{pet.petName}}">
+        <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
+        <br>
+        <br>
+        <div class="text-center">
+            <input type="submit" class="btn btn-success" value="Suggest Edits"/>
+        </div>
+    </form>
     {{/if}}
     <br><br>
 </main>
