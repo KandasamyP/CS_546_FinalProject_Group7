@@ -194,26 +194,29 @@
         <vr></vr>
         <div class="row col-md-9">
 
-            {{#each shelterDetails.reviews}}
+            
 
-            <div>
-                <div class="row">
-                    <div>
-                        <h3>Reviewer name comes here</h3>
-                        <div>
-                            <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
-                            </p>
+            <div id="shelter-review-container">
+                {{#each shelterDetails.reviews}}
+                    <div class="row">
+                        <div class="">
+                            <h3>Reviewer name comes here</h3>
+                            <div>
+                                <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="">{{this.reviewDate}}</p>
                         </div>
                     </div>
-                    <div class="">
-                        <p class="">{{this.reviewDate}}</p>
+                    <div class="row text-left">
+                        <p class="content">{{this.reviewBody}}</p>
                     </div>
-                </div>
-                <div class="row text-left">
-                    <p class="content">{{this.reviewBody}}</p>
-                </div>
+                    <hr/>
+                {{/each}}
+
             </div>
-            {{/each}}
 
         </div>
     </div>
