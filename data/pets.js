@@ -278,7 +278,7 @@ const exportedMethods = {
     let parsedShelterId = ObjectId(shelterId);
 
     const petCollection = await pets();
-    const pet = await petCollection.findOne({ _id: parsedId });
+    const pet = await this.getPetById(id);
     const deletionInfo = await petCollection.deleteOne({_id: parsedId});
 
     // If the pet cannot be removed (does not exist), the method should throw

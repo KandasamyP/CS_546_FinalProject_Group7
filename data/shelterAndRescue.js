@@ -46,10 +46,8 @@ let exportedMethods = {
 
     if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
 
-    console.log(shelterDetails)
     // must return this as a string!
     shelterDetails._id = shelterDetails._id.toString();
-    console.log(typeof shelterDetails._id)
 
     return shelterDetails;
   },
