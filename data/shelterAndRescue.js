@@ -194,6 +194,32 @@ let exportedMethods = {
 
   },
 
+  async updateShelterReviewById(req) {
+    if (req && req.params.id) {
+      let reviewBody = req.body.reviewBody;
+      let rating = req.body.rating;
+    }     
+
+    const sheltersCollection = await shelterAndRescue();
+    let shelter = await this.getShelterByID(req.params.id);
+
+    const addReview = {
+      reviewDate: new Date(),
+      rating: parseInt(req.body.rating),
+      reviewBody: req.body.reviewBody
+    };
+    addReview._id = ObjectId();
+   shelter.reviews.push(addReview);
+
+    shelter._id = ObjectId(shelter._id);
+
+    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter});
+    if (updateInfo.modifiedCount === 0)
+      throw "Not able to update db";
+    
+    return await this.getShelterByID(shelter._id.toString());
+  },
+  
   async getUserByEmail(userEmail) {
     const sheltersCollection = await shelterAndRescue();
     let userDetails = await sheltersCollection.findOne({
