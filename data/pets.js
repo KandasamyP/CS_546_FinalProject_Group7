@@ -3,6 +3,7 @@ const zipcodes = require("zipcodes");
 let { ObjectId } = require("mongodb");
 const pets = mongoCollections.pets;
 const sheltersRescues = mongoCollections.shelterAndRescue;
+const users = mongoCollections.petAdopterAndOwner;
 
 const exportedMethods = {
   // This async function will return the newly created pet object
@@ -299,15 +300,41 @@ const exportedMethods = {
 
     await petCollection.updateOne({ _id: parsedId }, { $set: updatedData });
     return await this.getPetById(id);
-  }
-};
+  },
 
-async function getDistance(zip, dist) {
-  let metersPerMile = 1609.34;
-  let zips = zipcodes.near(zip, dist * metersPerMile, {
-    datafile: "./public/zipcodes.csv",
-  });
-  return zips;
-}
+  // adds/removes pet to the user's favoritedPets array
+  // if isAdding is true, pet gets added; if false, pet gets removed
+  async updateFavoritedPets(userId, petId, isAdding) {
+    // If no id is provided, the method should throw
+    if (!userId || !petId || isAdding === undefined) throw "There is an input argument missing.";
+    // If the id provided is not a string, or is an  empty string, the method should throw
+    if (typeof userId !== "string" || typeof petId !== "string") throw "The id inputs must be strings.";
+    if (userId.trim().length === 0 || petId.trim().length === 0) throw "The id inputs must not be empty.";
+    // isAdding must be a boolean
+    if (typeof isAdding !== "boolean") throw "The input isAdding must be a boolean.";
+    // If the id provided is not a valid ObjectId, the method should throw
+    // if it cannot be converted to ObjectId, it will automatically throw an error
+    let parsedUserId = ObjectId(userId);
+    let parsedPetId = ObjectId(petId);
+
+    const userCollection = await users();
+    let userInfo;
+
+    // check to make sure petId exists
+    const pet = await this.getPetById(petId);
+
+    // if adding, push pet id into array; if adding is false, pull pet id from array
+    if (isAdding) {
+      userInfo = await userCollection.updateOne({ _id: parsedUserId }, { $push: { favoritedPets: petId } } );
+    } else {
+      userInfo = await userCollection.updateOne({ _id: parsedUserId }, { $pull: { favoritedPets: petId } } );
+    }
+    
+    // If the favorited pets array cannot be updated, the method should throw
+    if (userInfo.insertedCount === 0) throw "The favorited pets array could not be updated.";
+
+    return;
+  },
+};
 
 module.exports = exportedMethods;
