@@ -1,4 +1,4 @@
-module.exports = [
+const helpcarddata = [
     {
         _id: "1",
         name: "Stevens Park",
@@ -40,5 +40,31 @@ module.exports = [
         },
         image: "/public/images/helppage/petstore.png"
     }
-
 ]
+
+const helpfaqdata = [
+    {
+        question: "What is this website about?",
+        answer: "this website is about letting adopters adopt pets.",
+        collapse: "collapse"
+    },
+    {
+        question: "WHo is batman?",
+        answer: "bruce wayne",
+        collapse: "collapse"
+    },
+    {
+        question: "who is Superman?",
+        answer: "Clark Kent",
+        collapse: "collapse"
+    },
+    {
+        question: "who is Wonder Woman?",
+        answer: "Diana Prince",
+        collapse: "collapse"
+    }
+]
+module.exports = {
+    helpcarddata,
+    helpfaqdata
+}
