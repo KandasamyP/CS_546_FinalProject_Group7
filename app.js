@@ -122,12 +122,14 @@ app.use("/pets", (req, res, next) => {
     next();
   }
 });
-//Middleware: Check if user is already signed in on shelters route
 
+//Middleware: Check if user is already signed in on shelters route
 app.use("/shelters", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
-  }
+  } else {
+    req.body.userData = req.session.user;
+    next();}
 });
 
 app.use("/sheltersAndRescue", (req, res, next) => {
@@ -137,12 +139,23 @@ app.use("/sheltersAndRescue", (req, res, next) => {
     next();
   }
 });
+
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {
   if (!req.session.user) {
     return res.redirect("/login");
   } else {
     req.body.userData = req.session.user;
+    next();
+  }
+});
+
+app.use("/shelters", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  } else {
+    req.body.userData = req.session.user;
+   // console.log(req.body.userData)
     next();
   }
 });

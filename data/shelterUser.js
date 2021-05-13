@@ -8,7 +8,7 @@ const petData = mongoCollections.pets;
 
 //returns a petOwner user searches by petOwner Email/Username
 async function getPetShelterByEmail(shelterEmail) {
-    const sheltersCollection = await shelterAndRescue();
+    const sheltersCollection = await shelterAndRescueData();
 
     const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
 
@@ -21,123 +21,41 @@ async function getPetShelterByEmail(shelterEmail) {
 }
 
 //returns updated shelter data
-async function updateShelter(updatedData) {
-    let modifiedData = {
-      name: String,
-      phoneNumber: String,
-      profilePicture: String,
-      biography: String,
-      location: {
-        streetAddress1: String,
-        streetAddress2: String,
-        city: String,
-        stateCode: String,
-        zipCode: String,
-      },
-      socialMedia: Array,
-      availablePets: Array
-    }
-    let existingUserData = await this.getPetShelterByEmail(updatedData.email);
+async function updateShelter(updatedData, email) {
+ 
+    // let modifiedData = {
+    //   name: String,
+    //   phoneNumber: String,
+    //   biography: String,
+    //   location: {
+    //     streetAddress1: String,
+    //     streetAddress2: String,
+    //     city: String,
+    //     stateCode: String,
+    //     zipCode: String,
+    //   },
+    //   socialMedia: {
+    //     twitter: String,
+    //     facebook: String,
+    //     instagram: String
+    //   },
+    //   availablePets: Array
+    // }
+    
+    const sheltersCollection = await shelterAndRescueData();
 
-    if (updatedData.name) {
-      modifiedData.name = updatedData.name;
-    } else {
-      modifiedData.name = existingUserData.name;
-    }
-    if (updatedData.phoneNumber) {
-      modifiedData.phoneNumber = updatedData.phoneNumber;
-    } else {
-      modifiedData.phoneNumber = existingUserData.phoneNumber;
-    }
-    if (updatedData.profilePicture) {
-      modifiedData.profilePicture = updatedData.profilePicture;
-    } else {
-      modifiedData.profilePicture = existingUserData.profilePicture;
-    }
-    if (updatedData.biography) {
-      modifiedData.biography = updatedData.biography;
-    } else {
-      modifiedData.biography = existingUserData.biography;
-    }
+    const userDetails = await getPetShelterByEmail(email);
 
-    if (updatedData.location) {
-      if (
-        updatedData.location.hasOwnProperty("streetAddress1") &&
-        updatedData.location.streetAddress1.trim() != ""
-      ) {
-
-        modifiedData.location["streetAddress1"] = updatedData.location.streetAddress1;
-      } else {
-
-        modifiedData.location["streetAddress1"] = existingUserData.location.streetAddress1;
-      }
-      if (
-        updatedData.location.hasOwnProperty("streetAddress2") &&
-        updatedData.location.streetAddress2.trim() != ""
-      ) {
-
-        modifiedData.location["streetAddress2"] = updatedData.location.streetAddress2;
-      } else {
-
-        modifiedData.location["streetAddress2"] = existingUserData.location.streetAddress2;
-      }
-      if (
-        updatedData.location.hasOwnProperty("city") &&
-        updatedData.location.city.trim() != ""
-      ) {
-
-        modifiedData.location["city"] = updatedData.location.city;
-      } else {
-
-        modifiedData.location["city"] = existingUserData.location.city;
-      }
-      if (
-        updatedData.location.hasOwnProperty("stateCode") &&
-        updatedData.location.stateCode.trim() != ""
-      ) {
-
-        modifiedData.location["stateCode"] = updatedData.location.stateCode;
-      } else {
-
-        modifiedData.location["stateCode"] = existingUserData.location.stateCode;
-      }
-      if (
-        updatedData.location.hasOwnProperty("zipCode") &&
-        updatedData.location.stateCode.trim() != ""
-      ) {
-
-        modifiedData.location["zipCode"] = updatedData.location.zipCode;
-      } else {
-
-        modifiedData.location["zipCode"] = existingUserData.location.zipCode;
-      }
-    } else {
-      modifiedData.location = existingUserData.location;
-    }
-    const sheltersCollection = await shelterAndRescue();
     const updateInfo = await sheltersCollection.updateOne(
-      { _id: existingUserData._id },
-      { $set: modifiedData }
+      { _id: ObjectId(userDetails._id) },
+      { $set: updatedData }
     );
 
     if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
       throw "Could not update user";
-
-    return await this.getShelterByID(existingUserData._id);
+     
+    return await getShelterById(userDetails._id);
   }
-
-//   async function getShelterByID(id) {
-//     if (!id) throw "Please provide a proper ID "
-//     if (typeof id != "string") throw "Please provide a String based ID"
-//     if (id.trim().length === 0) throw "Input ID cannot be blank"
-//     let parsedId = ObjectId(id);
-//     const sheltersCollection = await shelterAndRescue();
-//     let shelter = await sheltersCollection.findOne({ _id: parsedId })
-
-//     if (shelter === null) throw "shelter not found";
-//     //shelter._id = shelter._id.toString();
-//     return shelter;
-//   }
 
 // return a petOwner searches by pet Owner id
 async function getShelterById(shelterId) {
@@ -146,7 +64,7 @@ async function getShelterById(shelterId) {
     throw "Invalid shelter user id.";
   }
 
-  const sheltersCollection = await shelterAndRescue();
+  const sheltersCollection = await shelterAndRescueData();
 
   const shelterUserDetails = await sheltersCollection.findOne({
     _id: ObjectId(shelterId),
@@ -168,10 +86,10 @@ async function updatePassword(userId, plainTextPassword){
     }
 
     const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
-    const petOwnerCollection = await petOwnerData();
+    const sheltersCollection = await shelterAndRescueData();
 
-    const updateInfo = await petOwnerCollection.updateOne(
-      {_id: userId},
+    const updateInfo = await sheltersCollection.updateOne(
+      {_id: ObjectId(userId)},
       {$set: {"password": hashedPassword}}
     );
 
@@ -184,10 +102,10 @@ async function updatePassword(userId, plainTextPassword){
 async function updateShelterProfileImage(email, picture){
   if (!email) throw "email must be provided";
   if (!picture) throw "picture must be provided";
- 
+  
   const userDetails = await getPetShelterByEmail(email);
  
-  const sheltersCollection = await shelterAndRescue();
+  const sheltersCollection = await shelterAndRescueData();
   const updateInfo = await sheltersCollection.updateOne(
     {_id: ObjectId(userDetails._id)},
     {$set: {"profilePicture": picture}}
@@ -200,10 +118,31 @@ async function updateShelterProfileImage(email, picture){
 
 }
 
+async function getAvailablePets(email, availablePetsArray){
+  const sheltersCollection = await shelterAndRescueData();
+
+  const shelterDetails = await getPetShelterByEmail(email);
+
+  for (let index = 0; index < availablePetsArray.length; index++){
+    
+  }
+}
+
+async function getAdoptedPets(){
+
+}
+
+async function getReviews(){
+
+}
+
 module.exports = {
   updatePassword,
   getPetShelterByEmail,
   updateShelter,
   getShelterById,
-  updateShelterProfileImage
+  updateShelterProfileImage,
+  getAvailablePets,
+  getAdoptedPets,
+  getReviews
 };
