@@ -671,7 +671,7 @@ router.post('/delete', async (req, res) => {
   try {
       await petsData.getPetById(req.body.petId);
   } catch (e) {
-      res.status(404).render("pets/error", {title: "Error", error: 'Pet not found' });
+      res.status(404).render("pets/error", {title: "Error", error: e });
       return;
   }
 
