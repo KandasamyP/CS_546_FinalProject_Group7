@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 let { ObjectId } = require("mongodb");
 const shelterAndRescue = mongoCollections.shelterAndRescue;
 
+
 let exportedMethods = {
   async create(name, email, password, location, biography, phoneNumber, website, socialMedia, availablePets, adoptedPets, reviews, profilePicture, websiteFeedbackGiven) {
     if (!name || !email || !password || !location || !biography || !phoneNumber || !website || !socialMedia || !availablePets || !adoptedPets || !reviews || !profilePicture || !websiteFeedbackGiven) throw "One of the input paramertes are missing"
@@ -32,13 +33,13 @@ let exportedMethods = {
 
     return shelter;
   },
-  
+
   async getAll() {
     const sheltersCollection = await shelterAndRescue();
     const getAllShelters = sheltersCollection.find({}).toArray();
     return getAllShelters;
   },
-  
+
   async getPetShelterByEmail(shelterEmail) {
     const sheltersCollection = await shelterAndRescue();
 
@@ -174,13 +175,15 @@ let exportedMethods = {
   async updateShelterFeedbackById(req) {
     const sheltersColl = await shelterAndRescue();
     let shelter = await this.getPetShelterByEmail(req.cookies.AuthCookie.email);
-
+    //console.log(req)
     const addFeedback = {
       date: new Date(),
       rating: req.body.rating,
       feedback: req.body.experience,
+      feedbackGivenBy: shelter._id
     };
     addFeedback._id = ObjectId();
+    //console.log(req.session.user.userType)
 
     shelter.websiteFeedbackGiven.push(addFeedback);
 
@@ -189,7 +192,6 @@ let exportedMethods = {
     const updateInfo = await sheltersColl.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter });
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
-
   },
 
   async updateShelterReviewById(req) {
