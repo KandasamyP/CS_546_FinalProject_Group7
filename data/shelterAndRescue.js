@@ -125,7 +125,7 @@ let exportedMethods = {
       if (
         updatedData.location.hasOwnProperty("stateCode") &&
         updatedData.location.stateCode.trim() != ""
-      ) {
+      ) { 
 
         modifiedData.location["stateCode"] = updatedData.location.stateCode;
       } else {
