@@ -146,14 +146,14 @@ app.use("/sheltersAndRescue", (req, res, next) => {
   }
 });*/
 
-app.use("/sheltersAndRescue", (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
+// app.use("/sheltersAndRescue", (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect("/login");
 
-  } else {
-    next();
-  }
-});
+//   } else {
+//     next();
+//   }
+// });
 
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {
@@ -170,7 +170,7 @@ app.use("/shelters", (req, res, next) => {
     return res.redirect("/login");
   } else {
     req.body.userData = req.session.user;
-   // console.log(req.body.userData)
+    // console.log(req.body.userData)
     next();
   }
 });
