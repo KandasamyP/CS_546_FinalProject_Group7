@@ -117,13 +117,14 @@ app.use("/sheltersAndRescue", (req, res, next) => {
   }
 });*/
 
-app.use("/sheltersAndRescue", (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  } else {
-    next();
-  }
-});
+// app.use("/sheltersAndRescue", (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect("/login");
+
+//   } else {
+//     next();
+//   }
+// });
 
 //Middleware: Check if user is already signed in on profile route
 app.use("/profile", (req, res, next) => {

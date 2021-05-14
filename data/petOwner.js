@@ -206,6 +206,7 @@ async function updatePetOwnerFeedbackById(req) {
     date: new Date(),
     rating: req.body.rating,
     feedback: req.body.experience,
+    feedbackGivenBy: petOwner._id
   };
   addFeedback._id = ObjectId();
 
