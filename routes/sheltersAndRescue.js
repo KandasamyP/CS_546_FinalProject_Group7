@@ -9,7 +9,7 @@ const xss = require("xss");
 const petOwnerData = require("../data/petOwner");
 
 async function getGeoLocation(zip) {
-  let zips = zipcodes.lookup(15211, {
+  let zips = zipcodes.lookup(zip, {
     datafile: "./public/zipcodes.csv",
   });
   return zips;
@@ -44,9 +44,7 @@ router.get("/:id", async (req, res) => {
 
   try {
     const shelter = await sheltersData.getShelterById(req.params.id);
-    let petsDetailsArray = [],
-      adoptedPetsDetailsArray = [];
-
+    let petsDetailsArray = [], adoptedPetsDetailsArray = [];
     for (let i = 0; i < shelter.availablePets.length; ++i) {
       const petsDetails = await petsData.getPetById(shelter.availablePets[i]);
       petsDetailsArray.push(petsDetails);
@@ -60,23 +58,19 @@ router.get("/:id", async (req, res) => {
     if (shelter.location && shelter.location.zipCode) {
 
       let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
-      console.log(shelter.reviews)
       for (let i = 0; i < shelter.reviews.length; ++i) {
         const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);
-
+        
 
         userReviewDetail.push({
           rating: shelter.reviews[i].rating,
-          reviewerName: "John", // petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+          reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
           reviewBody: shelter.reviews[i].reviewBody,
           reviewDate: shelter.reviews[i].reviewDate,
           reviewer: shelter.reviews[i].rating,
         });
         totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
       }
-      console.log(totalReviews);
-      console.log(shelter.reviews.length);
-
       avgReviews = totalReviews / shelter.reviews.length;
 
       let reviewDetail = {
@@ -139,30 +133,49 @@ router.post("/addReviews/:id", async (req, res) => {
         });
         totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
       }
-      console.log(totalReviews);
-      avgReviews = totalReviews / shelter.reviews.length;
+     
+      const recentlyAddedReview = shelter.reviews[shelter.reviews.length-1];
 
-      let reviewDetail = {
-        avgReviews: avgReviews,
-        totalReviews: shelter.reviews.length,
-      };
-      let recentReview = shelter.reviews[shelter.reviews.length - 1];
+      if (shelter.location && shelter.location.zipCode) {
+        let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
+        for (let i = 0; i < shelter.reviews.length; ++i) {
+         // const petOwnerInfo = await petOwnerData.findOne({_id: ObjectId(shelter.reviews[i].reviewer)});
+  
+          userReviewDetail.push({
+            rating: shelter.reviews[i].rating,
+            reviewerName: "John",// petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+            reviewBody: shelter.reviews[i].reviewBody,
+            reviewDate: shelter.reviews[i].reviewDate,
+            reviewer: shelter.reviews[i].rating
+          });
+          totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
+        }
+        avgReviews = totalReviews/shelter.reviews.length;
+  
+        let reviewDetail = {
+          avgReviews: avgReviews,
+          totalReviews: shelter.reviews.length
+        };
+        let recentReview = shelter.reviews[shelter.reviews.length - 1];
 
-      //res.status(200).json(recentReview);
-      res.status(200).json(recentReview);
-    } else {
-      res.status(200).render("partials/add-review", {
-        shelterDetails: shelter,
-        petsDetails: petsDetailsArray,
-        pageTitle: "Shelter/Rescue",
-        isLoggedIn: req.body.isLoggedIn,
-      });
+        //res.status(200).json(recentReview);
+        res
+          .status(200)
+          .json(recentReview);
+      } else {
+  
+        res
+          .status(200)
+          .render("partials/add-review", { shelterDetails: shelter, petsDetails: petsDetailsArray ,
+            pageTitle: "Shelter/Rescue",
+            isLoggedIn: req.body.isLoggedIn});
+        }
     }
-  } catch (e) {
-    console.log("error" + e);
+  }catch (e) {
+    console.log("error" + e)
 
     res.status(404).send(e);
-  }
+  } 
 });
 
 module.exports = router;

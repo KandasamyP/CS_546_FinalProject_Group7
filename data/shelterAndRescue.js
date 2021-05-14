@@ -1,6 +1,11 @@
 const mongoCollections = require('../config/mongoCollections');
 let { ObjectId } = require("mongodb");
 const shelterAndRescue = mongoCollections.shelterAndRescue;
+const users = mongoCollections.petAdopterAndOwner;
+const userMethods = require("./petOwner");
+
+
+
 
 let exportedMethods = {
   async create(name, email, password, location, biography, phoneNumber, website, socialMedia, availablePets, adoptedPets, reviews, profilePicture, websiteFeedbackGiven) {
@@ -32,13 +37,13 @@ let exportedMethods = {
 
     return shelter;
   },
-  
+
   async getAll() {
     const sheltersCollection = await shelterAndRescue();
     const getAllShelters = sheltersCollection.find({}).toArray();
     return getAllShelters;
   },
-  
+
   async getPetShelterByEmail(shelterEmail) {
     const sheltersCollection = await shelterAndRescue();
 
@@ -125,7 +130,7 @@ let exportedMethods = {
       if (
         updatedData.location.hasOwnProperty("stateCode") &&
         updatedData.location.stateCode.trim() != ""
-      ) { 
+      ) {
 
         modifiedData.location["stateCode"] = updatedData.location.stateCode;
       } else {
@@ -159,6 +164,7 @@ let exportedMethods = {
     return await this.getShelterById(existingUserData._id);
   },
   async getShelterById(id) {
+
     if (!id) throw "Please provide a proper ID "
     if (typeof id != "string") throw "Please provide a String based ID"
     if (id.trim().length === 0) throw "Input ID cannot be blank"
@@ -173,14 +179,16 @@ let exportedMethods = {
 
   async updateShelterFeedbackById(req) {
     const sheltersColl = await shelterAndRescue();
-    let shelter = await this.getPetShelterByEmail(req.cookies.AuthCookie.email);
-
+    let shelter = await this.getPetShelterByEmail(req.session.user.email);
+    //console.log(req)
     const addFeedback = {
       date: new Date(),
       rating: req.body.rating,
       feedback: req.body.experience,
+      feedbackGivenBy: shelter._id
     };
     addFeedback._id = ObjectId();
+    //console.log(req.session.user.userType)
 
     shelter.websiteFeedbackGiven.push(addFeedback);
 
@@ -189,14 +197,13 @@ let exportedMethods = {
     const updateInfo = await sheltersColl.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter });
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
-
   },
 
   async updateShelterReviewById(req) {
     if (req && req.params.id) {
       let reviewBody = req.body.reviewBody;
       let rating = req.body.rating;
-    }     
+    }
 
     const sheltersCollection = await shelterAndRescue();
     let shelter = await this.getShelterById(req.params.id);
@@ -206,18 +213,29 @@ let exportedMethods = {
       rating: parseInt(req.body.rating),
       reviewBody: req.body.reviewBody
     };
+
+    if (req.session.user) {
+      var email = req.session.user.email;
+      const petOwnerCollection = await users();
+      const petOwner = await userMethods.getPetOwnerByUserEmail(email);
+
+      addReview.reviewer = ObjectId(petOwner._id);
+    }
     addReview._id = ObjectId();
+
    shelter.reviews.push(addReview);
+   console.log(shelter);
+
 
     shelter._id = ObjectId(shelter._id);
 
-    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter});
+    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter });
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
-    
+
     return await this.getShelterById(shelter._id.toString());
   },
-  
+
   async getUserByEmail(userEmail) {
     const sheltersCollection = await shelterAndRescue();
     let userDetails = await sheltersCollection.findOne({
