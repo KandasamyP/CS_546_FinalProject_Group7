@@ -5,13 +5,13 @@
   var rating = $('#rating');
   var reviewError = $('#reviewError');
   var successMessage = $('#successMessage');
-  var avgReviews = $("avgReviews");
-  var totalReviews = $("totalReviews");
+  var avgReviews = $("#avgReviews");
+  var totalReviews = $("#totalReviews");
 
   console.log("form is called");
 
   addReviewForm.submit(function(event) {
-    event.preventDefault();
+   event.preventDefault();
     var mainContainer = $("main-container");
     console.log("Add review submit btn is clicked");
 
@@ -24,12 +24,11 @@
 
     if (urlGetId.split("/").length == 3) {
       linkToId = url[2];
-      console.log(linkToId);
     }
 
     var requestConfig = {
       method: 'POST',
-      url: `/shelters/addReviews/${linkToId}`,
+      url: `/sheltersAndRescue/addReviews/${linkToId}`,
       contentType: 'application/json',
       data: JSON.stringify({
         reviewBody: reviewBody.val(),
@@ -44,8 +43,17 @@
         successMessage.attr("hidden", true);
       }, 5000);
       var shelterReviewContainer = $("#shelter-review-container");
-      rating.innerHTML = "";
-      reviewBody.innerHTML = "";
+      rating.val = "";
+      reviewBody.val = "";
+      $("#reviewBody").val("");
+
+      console.log(responseMessage.totalReviews);
+     // $("#avgReviews").val(responseMessage.avgReviews);
+
+      avgReviews.value = responseMessage.avgReviews;
+     // $("#totalReviews").val(responseMessage.totalReviews);
+
+      totalReviews.value = responseMessage.totalReviews;
       
       // <div class="row">
       //     <div class="col-md-6">
@@ -80,9 +88,9 @@
       outerDiv.append(thirdInnerdiv);
       outerDiv.append(document.createElement('hr'));
 
-
       shelterReviewContainer.append(outerDiv);
 
+      location.reload();
     });
     
   });
