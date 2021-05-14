@@ -126,7 +126,7 @@ let exportedMethods = {
       if (
         updatedData.location.hasOwnProperty("stateCode") &&
         updatedData.location.stateCode.trim() != ""
-      ) { 
+      ) {
 
         modifiedData.location["stateCode"] = updatedData.location.stateCode;
       } else {
@@ -174,7 +174,7 @@ let exportedMethods = {
 
   async updateShelterFeedbackById(req) {
     const sheltersColl = await shelterAndRescue();
-    let shelter = await this.getPetShelterByEmail(req.cookies.AuthCookie.email);
+    let shelter = await this.getPetShelterByEmail(req.session.user.email);
     //console.log(req)
     const addFeedback = {
       date: new Date(),
@@ -198,7 +198,7 @@ let exportedMethods = {
     if (req && req.params.id) {
       let reviewBody = req.body.reviewBody;
       let rating = req.body.rating;
-    }     
+    }
 
     const sheltersCollection = await shelterAndRescue();
     let shelter = await this.getShelterById(req.params.id);
@@ -209,17 +209,17 @@ let exportedMethods = {
       reviewBody: req.body.reviewBody
     };
     addReview._id = ObjectId();
-   shelter.reviews.push(addReview);
+    shelter.reviews.push(addReview);
 
     shelter._id = ObjectId(shelter._id);
 
-    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter});
+    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter });
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
-    
+
     return await this.getShelterById(shelter._id.toString());
   },
-  
+
   async getUserByEmail(userEmail) {
     const sheltersCollection = await shelterAndRescue();
     let userDetails = await sheltersCollection.findOne({
