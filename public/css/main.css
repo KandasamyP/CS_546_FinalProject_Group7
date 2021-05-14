@@ -258,3 +258,7 @@ body {
   width: 100%;
   height: 35px;
 }
+
+.carouselLabel, .noShelterPets {
+  color: #ffa500;
+}
