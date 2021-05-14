@@ -6,6 +6,7 @@ const axios = require("axios").default;
 const data = require("../data");
 const petsData = data.pets;
 const homepageData = data.homepageData;
+const petOwnerData = data.petOwnerData;
 
 /* required for multer --> */
 const storage = multer.diskStorage({
@@ -26,17 +27,32 @@ router.get("/", async (req, res) => {
   try {
     var pets = await petsData.getPetHomepage();
 
+    var petTotalCount = await petOwnerData.getPetCount();  //gets the total number of
+    //console.log("Homepage"+petTotalCount);
     res.status(200).render("homepage/homepage", {
       defaultTitle: true,
       isLoggedIn: req.body.isLoggedIn,
       username: req.body.isLoggedIn ? req.body.userData.email : false,
       pet: pets,
-      script: "homepage/homepage",
+      petCount: petTotalCount,
+      script: "homepage",
     });
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
+
+// router.get('/petCount', async(req,res)=>{
+//   // console.log(" in routes call successfull");
+//   let petCount;
+//   try{
+     
+//   }catch(e){
+
+//   }
+//  return {"count": petCount};
+//  //return "call success";
+// });
 
 // GET '/login'
 
@@ -443,7 +459,8 @@ router.post(
 
 // GET '/logout'
 router.get("/logout", async (req, res) => {
-  res.clearCookie("AuthCookie");
   req.session.destroy();
+  res.clearCookie("getAPet");
+  res.clearCookie("AuthCookie");
   res.status(200).redirect("/");
 });

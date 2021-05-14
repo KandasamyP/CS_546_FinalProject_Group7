@@ -253,18 +253,5 @@ router.post("/changeVolunteer", async(req,res)=>{
   }
 });
 
-router.get('/petCount', async(req,res)=>{
-  // console.log(" in routes call successfull");
-  let petCount;
-  try{
-     petCount = await petOwnerData.getPetCount();
-     console.log(petCount);
-  }catch(e){
-
-  }
- return {"count": petCount};
- //return "call success";
-});
-
 module.exports = router;
 
