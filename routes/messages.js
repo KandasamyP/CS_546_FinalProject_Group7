@@ -7,17 +7,17 @@ const petOwnerData = require("../data/petOwner");
 router.get("/", async (req, res) => {
   try {
     // if user is authenticated, render messages; if not, redirect to login
-    if (req.cookies.AuthCookie && req.cookies.AuthCookie.userAuthenticated) {
+    if (req.session.user && req.session.user.userAuthenticated) {
       let userInfo;
       let isUserShelter;
-      if (req.cookies.AuthCookie.userType === "popaUser") {
+      if (req.session.user.userType === "popaUser") {
         userInfo = await petOwnerData.getPetOwnerByUserEmail(
-          req.cookies.AuthCookie.email
+          req.session.user.email
         );
         isUserShelter = false;
       } else {
         userInfo = await shelterAndRescueData.getPetShelterByEmail(
-          req.cookies.AuthCookie.email
+          req.session.user.email
         );
         isUserShelter = true;
       }
@@ -52,17 +52,17 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     // if user is authenticated, render messages; if not, redirect to login
-    if (req.cookies.AuthCookie && req.cookies.AuthCookie.userAuthenticated) {
+    if (req.session.user && req.session.user.userAuthenticated) {
       let userInfo;
       let isUserShelter;
-      if (req.cookies.AuthCookie.userType === "popaUser") {
+      if (req.session.user.userType === "popaUser") {
         userInfo = await petOwnerData.getPetOwnerByUserEmail(
-          req.cookies.AuthCookie.email
+          req.session.user.email
         );
         isUserShelter = false;
       } else {
         userInfo = await shelterAndRescueData.getPetShelterByEmail(
-          req.cookies.AuthCookie.email
+          req.session.user.email
         );
         isUserShelter = true;
       }
