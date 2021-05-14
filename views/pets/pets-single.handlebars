@@ -59,24 +59,24 @@
         <div class="card-deck">
             <div class="card text-center">
                 <div class="card-block px-3 py-3">
-                <h3 class="card-header bg-card-header" id="info">Basic Information About This {{pet.animalType}}</h5>
+                <h2 class="card-header bg-card-header" id="info">Basic Information About This {{pet.animalType}}</h2>
                     <div class="card-body">
-                        <h5>Breed(s)</h5> 
+                        <h3>Breed(s)</h3> 
                         <p>{{#each pet.breeds}}{{this}}{{#unless @last}} / {{/unless}}{{/each}}</p>
-                        <h5>Sex</h5> 
+                        <h3>Sex</h3> 
                         <p>{{pet.sex}}<p>
-                        <h5>Age Group</h5> 
+                        <h3>Age Group</h3> 
                         <p>{{pet.ageGroup}}</p>
-                        <h5>Managed By</h5>
-                        <p><a href="/shelters/{{shelter._id}}">{{shelter.name}}</a></p>
-                        <h5>Adoption Fee</h5>
+                        <h3>Managed By</h3>
+                        <p><a class="link-on-pet-page" href="/shelters/{{shelter._id}}">{{shelter.name}}</a></p>
+                        <h3>Adoption Fee</h3>
                         <p>${{pet.adoptionFee}}</p>
                     </div>
                 </div>
             </div>
             <div class="card text-center">
                 <div class="card-block px-3 py-3">
-                <h3 class="card-header bg-card-header" id="location">General Location</h5>
+                <h2 class="card-header bg-card-header" id="location">General Location</h2>
                     <div class="card-body">
                         <p>Somewhere in {{pet.currentLocation}}</p>
                         <p class="small">This is the general location where the pet is currently being cared for. Please message {{shelter.name}} for more information.</p>
@@ -89,7 +89,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card text-center">
-                        <h3 class="card-header bg-card-header" id="bio">Biography</h5>
+                        <h2 class="card-header bg-card-header" id="bio">Biography</h2>
                         <div class="card-body">
                             {{pet.biography}}
                         </div>
@@ -101,12 +101,12 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card text-center">
-                        <h3 class="card-header bg-card-header" id="details">Details</h5>
+                        <h2 class="card-header bg-card-header" id="details">Details</h2>
                         <div class="card-body">
-                            <h5>Physical Characteristics</h5>
+                            <h3>Physical Characteristics</h3>
 							{{#each physicalCharacteristics}}<span class="badge badge-success">{{this}}</span> {{/each}}
 							<br>
-							<h5>Behavior and Lifestyle</h5>
+							<h3>Behavior and Lifestyle</h3>
 							{{#each otherFilters}}<span class="badge badge-success">{{this}}</span> {{/each}}
                         </div>
                     </div>
@@ -115,7 +115,7 @@
         </div>
     </div>
     <br>
-    <h3>Are you interested in this pet? Let {{shelter.name}} know!</h3>
+    <h2>Are you interested in this pet? Let {{shelter.name}} know!</h2>
     {{#if isAuthenticated}}
     <form id="send-message-form" method="POST" action="/pets/inquire">
         <input type="hidden" id="recipient" name="recipient" value="{{shelter._id}}">
@@ -128,12 +128,12 @@
         </div>
     </form>
     {{else}}
-    <h5>You must be logged in to a pet owner account to send a message! <a href="/login">Log in here.</a></h5>
+    <h3>You must be logged in to a pet owner account to send a message! <a href="/login">Log in here.</a></h3>
     {{/if}}
     {{#if isAuthenticated}}
     <br>
-    <h3>Do you see anything in this pet's description that seems off? Let {{shelter.name}} know so that the search for this pet can be improved!</h3>
-    <h5>You don't need to select everything; only what you think needs to change!</h5>
+    <h2>Do you see anything in this pet's description that seems off? Let {{shelter.name}} know so that the search for this pet can be improved!</h2>
+    <h3>You don't need to select everything; only what you think needs to change!</h3>
     <form id="send-corrections" method="POST" action="/pets/corrections">
         <div class="dropdown btn-group">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"

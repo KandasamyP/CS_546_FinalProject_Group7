@@ -12,8 +12,8 @@
               alt="Card image cap"
             />
             <div class="card-body text-center">
-              <h3 class="card-title">{{petName}}</h3>
-              <h5 class="card-text">{{sex}} | {{ageGroup}}</h5>
+              <h2 class="card-title">{{petName}}</h2>
+              <h3 class="card-text pet-card-name">{{sex}} | {{ageGroup}}</h3>
               <p>ZIP Location: {{currentLocation}}</p>
               <a href="/pets/pet/{{_id}}" class="btn btn-success">View
                 {{petName}}</a>
@@ -25,7 +25,5 @@
 {{#unless pets.length}}
   <p class="not-found">We're sorry, but no results were found for that criteria.</p>
 {{/unless}}
-<br />
-<a href="/pets" class="search_link">Make another search</a>
 <br />
 <br />

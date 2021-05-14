@@ -156,3 +156,29 @@ input[type="number"] {
 li.favPets {
   float: left;
 }
+
+.nav-link-dark {
+  color: #003400!important;
+}
+
+.pet-card-name {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+.btn-success {
+  background-color: #008a00;
+}
+
+.btn-primary {
+  background-color: #0072ee;
+}
+
+.link-on-pet-page {
+  color: #008a00;
+}
