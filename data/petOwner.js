@@ -200,7 +200,7 @@ async function updatePetOwner(updatedData) {
 
 async function updatePetOwnerFeedbackById(req) {
   const petOwnerCollection = await petOwnerData();
-  let petOwner = await this.getPetOwnerByUserEmail(req.cookies.AuthCookie.email);
+  let petOwner = await this.getPetOwnerByUserEmail(req.session.user.email);
 
   const addFeedback = {
     date: new Date(),
@@ -321,15 +321,15 @@ async function getUserFavoritePets(favoritePetArray) {
 }
 
 
-async function updateVolunteerStatus(userId, status){
+async function updateVolunteerStatus(userId, status) {
   let value = Boolean;
   //console.log(userId+" "+status);
   if (status == "true")
     value = true;
-  else  
-    value = false;  
+  else
+    value = false;
   const petOwnerCollection = await petOwnerData();
- 
+
 
   const updateInfo = await petOwnerCollection.updateOne(
     { _id: ObjectId(userId) },
@@ -342,18 +342,18 @@ async function updateVolunteerStatus(userId, status){
   return await getPetOwnerById(userId);
 }
 
-async function getPetCount(){
+async function getPetCount() {
   const shelterAndRescueCollection = await shelterAndRescueData();
 
   const shelterData = await shelterAndRescueCollection.find({}).toArray();
 
   if (shelterData == null) throw "Data not found";
   let total = 0
-  for (let i =0; i < shelterData.length; i++){
+  for (let i = 0; i < shelterData.length; i++) {
     total += shelterData[i].adoptedPets.length;
   }
   return total;
-} 
+}
 async function getAllUsersWithFavoritePet(id) {
   if (!id) throw "The input id is missing.";
   // If the id provided is not a string, or is an  empty string, the method should throw
@@ -364,13 +364,13 @@ async function getAllUsersWithFavoritePet(id) {
   let parsedId = ObjectId(id);
 
   const userCollection = await petOwnerData();
-  let userResults = await userCollection.find( { favoritedPets: id } ).toArray();
+  let userResults = await userCollection.find({ favoritedPets: id }).toArray();
   let userIds = [];
 
   for (let user of userResults) {
     userIds.push(user._id.toString());
   }
-  
+
   return userIds;
 }
 
