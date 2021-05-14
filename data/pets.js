@@ -65,7 +65,7 @@ const exportedMethods = {
     if (sex !== "Female" && sex !== "Male")
       throw "Sex must be male or female.";
     // current location must be a valid zip code
-    if (zipcodes.lookup(info.currentLocation) === undefined)
+    if (zipcodes.lookup(currentLocation) === undefined)
       throw "That is not a valid zip code.";
     // availableForAdoption should be true or false
     if (typeof availableForAdoption !== "boolean")

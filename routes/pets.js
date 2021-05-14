@@ -742,6 +742,8 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
 
       let filters = appearanceArray.concat(behaviorsArray);
 
+      const shelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
+
       const newPet = await petsData.addPet(
         req.body.petName,
         req.body.animalType,
@@ -832,8 +834,6 @@ router.get("/new", async (req, res) => {
       const behaviors = csvsync.parse(
         fs.readFileSync("data/petInformation/behaviors.csv")
       )[0];
-
-      const shelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
 
       res.status(200).render("pets/pet-add", {
         dogBreeds: dogBreeds,
