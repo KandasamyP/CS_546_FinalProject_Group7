@@ -134,10 +134,19 @@ const exportedMethods = {
     // If the pet was created, add its id to the availablePets array in shelters
     const newId = insertInfo.insertedId;
     const shelterRescueCollection = await sheltersRescues();
-    const shelterUpdateInfo = await shelterRescueCollection.updateOne(
-      { _id: parsedShelterId },
-      { $push: { availablePets: newId.toString() } }
-    );
+
+    let shelterUpdateInfo;
+    if (availableForAdoption === true) {
+      shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: parsedShelterId }, { $push: { availablePets: newId.toString() } });
+    } else {
+      shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: parsedShelterId }, { $push: { adoptedPets: newId.toString() } });
+    }
+
+  //  const shelterUpdateInfo = await shelterRescueCollection.updateOne(
+  //    { _id: parsedShelterId },
+     // { $push: { availablePets: newId.toString() } }
+    //);
+
 
     // If the shelter cannot be updated, the method should throw
     if (shelterUpdateInfo.insertedCount === 0)
@@ -448,6 +457,20 @@ const exportedMethods = {
     }
 
     updatedData.filters = info.appearance.concat(info.behaviors);
+
+    const oldPetData = await this.getPetById(id);
+
+    let shelterUpdateInfo;
+    const shelterRescueCollection = await sheltersRescues();
+    // if the pet was considered adopted but is now available again, push into available array and pull from adopted array
+    if (info.availableForAdoption === true && oldPetData.availableForAdoption === false) {
+      shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: ObjectId(oldPetData.associatedShelter) }, { $push: { availablePets: id.toString() } });
+      shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: ObjectId(oldPetData.associatedShelter) }, { $pull: { adoptedPets: id.toString() } });
+    } else if (info.availableForAdoption === false && oldPetData.availableForAdoption === true) {
+      // if pet was available but is now not, push into adopted and pull from available
+      shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: ObjectId(oldPetData.associatedShelter) }, { $pull: { availablePets: id.toString() } });
+      shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: ObjectId(oldPetData.associatedShelter) }, { $push: { adoptedPets: id.toString() } });
+    }
 
     await petCollection.updateOne({ _id: parsedId }, { $set: updatedData });
     return await this.getPetById(id);

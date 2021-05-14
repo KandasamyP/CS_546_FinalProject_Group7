@@ -1,5 +1,5 @@
 <section id="individualShelter">
-    <h2 class="results_page">{{shelterDetails.name}}</h2>
+    <h1 class="results_page">{{shelterDetails.name}}</h1>
     <p>{{shelterDetails.biography}}</p>
     <hr />
 
@@ -33,9 +33,23 @@
                     <label>Location:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.location.streetAddress1}}, {{shelterDetails.location.city}},
-                    {{shelterDetails.location.stateCode}}, {{shelterDetails.location.zipCode}}
-                     {{#if geoLocation.latitude}}
+                    {{#if shelterDetails.location.streetAddress1}}
+                        {{shelterDetails.location.streetAddress1}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.city}}
+                        ,{{shelterDetails.location.city}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.stateCode}}
+                        ,{{shelterDetails.location.stateCode}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.zipCode}}
+                        ,{{shelterDetails.location.zipCode}}
+                    {{/if}}
+                      
+                    {{#if geoLocation.latitude}}
                         <iframe src="https://maps.google.com/maps?q={{geoLocation.latitude}}, {{geoLocation.longitude}}&z=15&output=embed"
                             width="360" height="270" frameborder="0" style="border:0"></iframe>
                     {{/if}}
@@ -77,15 +91,14 @@
                     </ol>
                     <div class="carousel-inner">
                         {{#each availablePet}}
-                        {{availablePet.petPictures.[0]}}
                             <div class="carousel-item{{#if @first}} active{{/if}}">
-                                {{!-- {{#each availablePet.petPictures}} --}}
-                                    <img class="img-fluid" src="../../public/images/pets/{{availablePet.petPictures.[0]}}" alt="{{availablePet.petName}}">
-                                {{!-- {{/each}} --}}
+                                {{#each this.petPictures}}
+                                    <img class="img-fluid" src="../../public/images/pets/{{this}}" alt="{{this.petName}}">
+                                {{/each}}
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3>{{this.petName}}</h3>
+                                    <h2>{{this.petName}}</h2>
                                     Age group: {{this.ageGroup}}; SEX: {{this.sex}}
-                                    <h6>Adoption Fee: ${{this.adoptionFee}}</h6>
+                                    <h3>Adoption Fee: ${{this.adoptionFee}}</h3>
                                 </div>
                             </div>                    
                         {{/each}}
@@ -110,6 +123,7 @@
 
     <hr />
      <div class="row">
+         {{#if adoptedPet}}
         <div class="col-md-7">
             <h1>Adopted Pets in {{shelterDetails.name}}</h1>
             <section class="pet-carousel-bg">
@@ -123,13 +137,13 @@
                     <div class="carousel-inner">
                         {{#each adoptedPet}}
                             <div class="carousel-item{{#if @first}} active{{/if}}">
-                                {{!-- {{#each availablePet.petPictures}} --}}
-                                    <img class="img-fluid" src="../../public/images/pets/{{adoptedPet.petPictures.[0]}}" alt="{{adoptedPet.petName}}">
-                                {{!-- {{/each}} --}}
+                                {{#each this.petPictures}}
+                                    <img class="img-fluid" src="../../public/images/pets/{{this}}" alt="{{this.petName}}">
+                                {{/each}}
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3>{{this.petName}}</h3>
+                                    <h2>{{this.petName}}</h2>
                                     Age group: {{this.ageGroup}}; SEX: {{this.sex}}
-                                    <h6>Adoption Fee: {{this.adoptionFee}}</h6>
+                                    <h3>Adoption Fee: ${{this.adoptionFee}}</h3>
                                 </div>
                             </div>                    
                         {{/each}}
@@ -150,7 +164,8 @@
                 </div>
             </section>
         </div>
-
+        {{/if }}
+        {{#if isLoggedIn}}
         <div class="col-md-5">
             <form class="form-horizontal" id="addReviewForm">
                 <fieldset>
@@ -183,9 +198,10 @@
                     </div>
                 </div>
             </form>
-            <div class="error" id="successMessage" hidden>Your review is added !!</div>
+            <div class="reviewSuccess" id="successMessage" hidden>Your review is added !!</div>
             <div class="error" id="reviewError" hidden>All input in form is mandatory !!</div>
         </div>
+        {{/if}}
     </div>
    
 
@@ -193,10 +209,10 @@
     <div class="row" id="individualShelterRating">
         <div class="col-md-3">
             Overall Rating of Shelter
-            <div class="ratings"> <span class="product-rating">{{reviewDetail.avgReviews}}</span><span>/5</span>
+            <div class="ratings"> <span class="product-rating" id="avgReviews">{{reviewDetail.avgReviews}}</span><span>/5</span>
                 <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
                         class="fa fa-star"></i> </div>
-                <div class="rating-text"> <span>{{reviewDetail.totalReviews}} reviews</span> </div>
+                <div class="rating-text" id="totalReviews"> <span>{{reviewDetail.totalReviews}} reviews</span> </div>
             </div>
         </div>
         <div class="col-md-9">         
@@ -207,17 +223,18 @@
                         <div class="col-md-6">
                             <h3>{{this.reviewerName}}</h3>
                             <div>
-                                <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
+                                <p class="text-left"><span>Rating: {{this.rating}}</span> 
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <p class="">{{this.reviewDate}}</p>
                         </div>
+                        <div class="col-md-12">
+                            <p class="content">{{this.reviewBody}}</p>
+                        </div>
                     </div>
-                    <div class="row col-md-12">
-                        <p class="content">{{this.reviewBody}}</p>
-                    </div>
+                 
                     <hr/>
                 {{/each}}
 

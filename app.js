@@ -136,15 +136,15 @@ app.use("/profile", (req, res, next) => {
   }
 });
 
-app.use("/shelters", (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  } else {
-    req.body.userData = req.session.user;
-    // console.log(req.body.userData)
-    next();
-  }
-});
+// app.use("/shelters", (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect("/login");
+//   } else {
+//     req.body.userData = req.session.user;
+//     // console.log(req.body.userData)
+//     next();
+//   }
+// });
 
 app.use("/petOwner", (req, res, next) => {
   if (!req.session.user) {
