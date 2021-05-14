@@ -226,4 +226,45 @@ router.post("/", async (req, res) => {
   }
 });
 
+//updates the status of isVolunteerCandidate field
+router.post("/changeVolunteer", async(req,res)=>{
+  try{
+   
+    let isVolunteerStatus = req.body.status;
+   
+    let email = req.body.userData.email;
+    let existingUserData;
+    try {
+        existingUserData = await petOwnerData.getPetOwnerByUserEmail(email);
+    } catch (e) {
+        res.status(404).json({error: "user not found"});
+        return;
+    }
+
+    try{
+
+      const petOwner = await petOwnerData.updateVolunteerStatus(existingUserData._id,isVolunteerStatus);
+      res.status(200).render("users/petOwner", { petOwner });
+    }catch(e){
+      res.status(404).json({ error: "User not found. Routes/petOwner" });
+    }
+  }catch(e){
+    res.status(500).json({error: "Internal server error."});
+  }
+});
+
+router.get('/petCount', async(req,res)=>{
+  // console.log(" in routes call successfull");
+  let petCount;
+  try{
+     petCount = await petOwnerData.getPetCount();
+     console.log(petCount);
+  }catch(e){
+
+  }
+ return {"count": petCount};
+ //return "call success";
+});
+
 module.exports = router;
+

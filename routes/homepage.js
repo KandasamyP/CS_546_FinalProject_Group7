@@ -39,6 +39,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET '/login'
+
 router.get("/login", async (req, res) => {
   try {
     res.status(200).render("homepage/login", {

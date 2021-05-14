@@ -923,39 +923,30 @@ router.get("/pet/:id/update", async (req, res) => {
   }
 });
 
-router.post("/delete", async (req, res) => {
-  if (!req.body.petId) {
-    res.status(400).render("pets/error", {
-      title: "Error",
-      error: "You must supply an ID to delete",
-      pageTitle: "Pets",
-      isLoggedIn: req.body.isLoggedIn,
-    });
+
+router.post('/delete', async (req, res) => {
+  if (!req.body.petId || typeof req.body.petId !== "string" || req.body.petId.trim().length === 0) {
+      res.status(400).render("pets/error", {title: "Error", error: 'You must supply a pet ID to delete' });
+      return;
+  }
+
+  if (!req.body.shelterId || typeof req.body.shelterId !== "string" || req.body.shelterId.trim().length === 0) {
+    res.status(400).render("pets/error", {title: "Error", error: 'You must supply a shelter ID to delete' });
+
     return;
   }
 
   try {
-    await petsData.getPetById(req.body.petId);
-  } catch (e) {
-    res.status(404).render("pets/error", {
-      title: "Error",
-      error: e,
-      pageTitle: "Pets",
-      isLoggedIn: req.body.isLoggedIn,
-    });
-    return;
-  }
 
-  try {
-    const deleted = await petsData.delete(req.body.petId, req.body.shelterId);
-    res.redirect(`/shelters/${req.body.shelterId}`);
+      // make sure pet exists
+      await petsData.getPetById(req.body.petId);
+
+      const deleted = await petsData.delete(req.body.petId, req.body.shelterId);
+      return res.redirect(`/shelters/${req.body.shelterId}`);
   } catch (e) {
-    res.status(500).render("pets/error", {
-      title: "Error",
-      error: e,
-      pageTitle: "Pets",
-      isLoggedIn: req.body.isLoggedIn,
-    });
+      res.status(404).render("pets/error", {title: "Error", error: e });
+      return;
+
   }
 });
 
