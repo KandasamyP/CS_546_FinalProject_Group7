@@ -5,8 +5,6 @@ const users = mongoCollections.petAdopterAndOwner;
 const userMethods = require("./petOwner");
 
 
-
-
 let exportedMethods = {
   async create(name, email, password, location, biography, phoneNumber, website, socialMedia, availablePets, adoptedPets, reviews, profilePicture, websiteFeedbackGiven) {
     if (!name || !email || !password || !location || !biography || !phoneNumber || !website || !socialMedia || !availablePets || !adoptedPets || !reviews || !profilePicture || !websiteFeedbackGiven) throw "One of the input paramertes are missing"
