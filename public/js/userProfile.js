@@ -1,3 +1,24 @@
+$(function() {
+  
+
+  $.ajax({
+    url: '/petOwner/petCount',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    type: 'GET',
+    dataType: 'json',
+  
+  }).then((data)=>{
+    //$("#petCount").show();
+    console.log(data);
+    //$("#petCount").html(data);
+  });
+
+});
+
+
+
 //userInformation fields
 const userInfo = document.getElementById("userInfo");
 const editData = document.getElementById("editData");
@@ -62,9 +83,29 @@ function userProfile() {
   //     }
 
   // });
-  
-
+  // success: function(response){
+  //   $("#petCount").show();
+  //   console.log(response);
+  //   $("#petCount").append(response);
+  // }
+ 
 }
+
+
+  $.ajax({
+    url: '/petOwner/petCount',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    type: 'GET',
+    dataType: 'json',
+  }).then((data)=>{
+    //$("#petCount").show();
+    
+    console.log(data);
+    //$("#petCount").html(data);
+  });
+
 
 function validateForm() {
   // if ($("#firstName").val().trim() === "") {
@@ -127,6 +168,11 @@ if( pathname === "/petOwner/changePassword") {
 }
 
 if( pathname === "/petOwner/changeProfileImage") {
+  window.location.pathname = "/petOwner";
+  userProfile();
+}
+
+if( pathname === "/petOwner/changeVolunteer") {
   window.location.pathname = "/petOwner";
   userProfile();
 }

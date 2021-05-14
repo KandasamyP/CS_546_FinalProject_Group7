@@ -42,9 +42,12 @@ let exportedMethods = {
   async getPetShelterByEmail(shelterEmail) {
     const sheltersCollection = await shelterAndRescue();
 
-    const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
+    let shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
 
     if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
+
+    // must return this as a string!
+    shelterDetails._id = shelterDetails._id.toString();
 
     return shelterDetails;
   },
@@ -122,7 +125,7 @@ let exportedMethods = {
       if (
         updatedData.location.hasOwnProperty("stateCode") &&
         updatedData.location.stateCode.trim() != ""
-      ) {
+      ) { 
 
         modifiedData.location["stateCode"] = updatedData.location.stateCode;
       } else {
@@ -164,7 +167,7 @@ let exportedMethods = {
     let shelter = await sheltersCollection.findOne({ _id: parsedId })
 
     if (shelter === null) throw "shelter not found";
-    // shelter._id = shelter._id.toString();
+    shelter._id = shelter._id.toString();
     return shelter;
   },
 
@@ -232,16 +235,6 @@ let exportedMethods = {
     const sheltersCollection = await shelterAndRescue();
     const getAllShelters = sheltersCollection.find({}).toArray();
     return getAllShelters;
-  },
-
-  async getPetShelterByEmail(shelterEmail) {
-    const sheltersCollection = await shelterAndRescue();
-
-    const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
-
-    if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
-
-    return shelterDetails;
   },
 
   async updateShelter(updatedData) {

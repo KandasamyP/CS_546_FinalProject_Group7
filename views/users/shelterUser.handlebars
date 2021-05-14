@@ -194,14 +194,17 @@
             <div class="card">
                 <h5 class="card-header" id="info">Available Pets</h5>
                 <div class="card-body">
-                    {{#if shelterUser.availablePets.length}}
+                    {{#if shelterUser.availablePetsArray.length}}
                     <ul>
-                        {{#each shelterUser.availablePets}}
-                        <li>{{this}}</li>
+                        {{#each shelterUser.availablePetsArray}}
+                            <li>
+                                <p>{{this.name}}</p>
+                                <img class="profile-picture rounded-circle" src="../public/images/pets/{{this.profilePicture}}" alt="{{this.name}}" />
+                            </li>
                         {{/each}}
                     </ul>
                     {{else}}
-                    <p>You don't have any pets available.</p>
+                    <p>You don't have any pets available for adoption yet.</p>
                     {{/if}}
                 </div>
             </div>
@@ -213,10 +216,13 @@
             <div class="card">
                 <h5 class="card-header" id="info">Adopted Pets</h5>
                 <div class="card-body">
-                    {{#if shelterUser.adoptedPets.length}}
+                    {{#if shelterUser.adoptedPetsArray.length}}
                     <ul>
-                        {{#each shelterUser.adoptedPets}}
-                        <li>{{this}}</li>
+                        {{#each shelterUser.adoptedPetsArray}}
+                            <li>
+                                <p>{{this.name}}</p>
+                                <img class="profile-picture rounded-circle" src="../public/images/pets/{{this.profilePicture}}" alt="{{this.name}}" />
+                            </li>
                         {{/each}}
                     </ul>
                     {{else}}
@@ -235,7 +241,12 @@
                     {{#if shelterUser.reviews.length}}
                     <ul>
                         {{#each shelterUser.reviews}}
-                        <li>{{this}}</li>
+                        <li>
+                            <p>Review Given By: {{this.reviewerName}}</p>
+                            <p>Rating: {{this.rating}}/5</p>
+                            <p>Review: {{this.reviewBody}}</p>
+                            <p>Review Posted On: {{this.reviewDate}}</p>
+                        </li>
                         {{/each}}
                     </ul>
                     {{else}}

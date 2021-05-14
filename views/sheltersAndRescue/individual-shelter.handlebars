@@ -10,7 +10,7 @@
                     <label>Email:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.emailAddress}}
+                    {{shelterDetails.email}}
                 </span>
             </div>
         </div>
@@ -20,7 +20,7 @@
                     <label>Phone:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.phonenumber}}
+                    {{shelterDetails.phoneNumber}}
                 </span>
             </div>
         </div>
@@ -48,9 +48,16 @@
                     <label>Website:</label>
                 </span>
                 <span class="col-md-9">
-                    {{#each shelterDetails.website}}
-                        <a> {{this}} </a>
-                    {{/each}}
+                   <a> {{shelterDetails.website}} </a>
+                    {{#if shelterDetails.socialMedia.facebook}}
+                      <p>Facebook: <a> {{shelterDetails.socialMedia.facebook}} </a> </p>
+                    {{/if}}
+                    {{#if shelterDetails.socialMedia.instagram}}
+                       <p>Instagram: <a> {{shelterDetails.socialMedia.instagram}} </a> </p>
+                    {{/if}}
+                    {{#if shelterDetails.socialMedia.twitter}}
+                       <p>Twitter: <a> {{shelterDetails.socialMedia.twitter}} </a> </p>
+                    {{/if}}
                 </span>
             </div>
         </div>
@@ -197,10 +204,10 @@
             
 
             <div id="shelter-review-container">
-                {{#each shelterDetails.reviews}}
+                {{#each userReviewDetail}}
                     <div class="row">
-                        <div class="">
-                            <h3>Reviewer name comes here</h3>
+                        <div class="col-md-6">
+                            <h3>{{this.reviewerName}}</h3>
                             <div>
                                 <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
                                 </p>

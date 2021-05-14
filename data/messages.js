@@ -21,6 +21,9 @@ const exportedMethods = {
         // If the ids provided are not valid ObjectIds, the method should throw
         let parsedPetOwnerId = ObjectId(petOwner);
         let parsedShelterRescueId = ObjectId(shelterRescue);
+        // Make sure petOwner and shelterRescue exist in their respective databases
+        await petOwners.getPetOwnerById(petOwner);
+        await sheltersRescues.getShelterById(shelterRescue);
 
         const messageCollection = await messages();
         let currentTime = new Date();
@@ -72,8 +75,7 @@ const exportedMethods = {
 
     async addMessage(threadId, sender, messageText) {
         // If threadId, sender, or messageText are not provided, the method should throw
-        if (!threadId || !sender || !messageText) 
-            throw "There is at least one missing input argument.";
+        if (!threadId || !sender || !messageText) throw "There is at least one missing input argument.";
         // If the inputs provided are not strings, or are empty strings, the method should throw
         if (typeof threadId != "string") throw "The input 'threadId' must be a string.";
         if (threadId.trim().length === 0) throw "The input 'threadId' must not be empty.";
@@ -143,6 +145,8 @@ const exportedMethods = {
     // When given an array of ids, this function will return a message thread from the database if it exists
     async getThreadByParticipants(array) {
         // Input must be an array
+        if (!array)
+            throw "The input participants array is missing.";
         if (!Array.isArray(array))
             throw "The participants must be in an array.";
         if (array.length !== 2)

@@ -1,3 +1,6 @@
+
+    <p id = "petCount" hidden>Total Pet adopted:</p>
+
 <div class="user-bg container-fluid">
     <div class="row spacing">
         <div class="container-fluid">
@@ -161,7 +164,7 @@
                     {{#if petOwner.favoritedPetsArray.length}}
                     <ul>
                         {{#each petOwner.favoritedPetsArray}}
-                        <li class="favPets">
+                        <li>
                             <p>{{this.name}}</p>
                             <img class="profile-picture rounded-circle" src="../public/images/pets/{{this.image}}" alt="{{this.name}}" />
                         </li>
@@ -184,7 +187,7 @@
                     <ul>
                         {{#each petOwner.shelterReviewsGivenArray}}
                         <li>
-                            <p>Shleter Name: {{this.name}}</p>
+                            <p>Shelter Name: {{this.name}}</p>
                             <p>Review Posted On: {{this.reviews.reviewDate}}</p>
                             <p>Shelter Rating: {{this.reviews.rating}}/5</p>
                             <p>Your Comments: {{this.reviews.reviewBody}}</p>
@@ -238,15 +241,42 @@
                 <div class="card-body"> </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
                 <h5 class="card-header" id="info">Volunteer</h5>
-                <div class="card-body"> </div>
+                <div class="card-body"> 
+                    {{!-- {{#if petOwner.isVolunteerCandidate}}
+                        <p>You are a volunteer.</p>
+                    {{else}}
+                        <p>You are not a volunteer.</p> 
+                        <form action = "/petOwner/applyToBeAnVolunteer" method = "POST" id = "volunteerForm">
+                            <label for="applyToBeAnVolunteer">
+                                <button class="btn" id="applyToBeVolunteer" type="submit">Apply Now</button>
+                            </label>
+                        </form>
+                    {{/if}} --}}
+
+                    <form action = "/petOwner/changeVolunteer" method = "POST" id = "volunteerForm">
+                           {{#if petOwner.isVolunteerCandidate}}
+                                <p>You are a volunteer.</p>
+                                <label for="withdrawVolunteer">
+                                    <button class="btn" id="withdrawVolunteer" type="submit">Withdraw</button>
+                                    <input type="text" id = "status" name = "status" value="false" hidden>
+                                </label>
+                            {{else}}
+                                <p>You are not a volunteer.</p> 
+                                <label for="applyToBeAnVolunteer">
+                                    <button class="btn" id="applyToBeVolunteer" type="submit">Apply</button>
+                                    <input type="text" id = "status" name = "status" value="true" hidden>
+                                </label>
+                            {{/if}}
+                    </form>
+                </div>
             </div>
         </div>
-    </div> --}}
+    </div> 
 
 </div>
