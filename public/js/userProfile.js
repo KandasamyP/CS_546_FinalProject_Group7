@@ -1,7 +1,5 @@
 $(function() {
-  
-
-  $.ajax({
+   $.ajax({
     url: '/petOwner/petCount',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'

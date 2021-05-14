@@ -759,12 +759,12 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
         filters
       );
 
-      res.redirect(`/pet/${newPet._id}`);
+      return res.redirect(`pets/pet/${newPet._id}`);
     } else {
-      res.redirect("/");
+      return res.redirect("/");
     }
   } catch (e) {
-    res.render("pets/error", {
+    return res.render("pets/error", {
       title: "Something went wrong!",
       error: e,
       pageTitle: "Pets",
