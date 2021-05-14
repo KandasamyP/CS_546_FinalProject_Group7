@@ -179,6 +179,10 @@ li.favPets {
   background-color: #0072ee;
 }
 
-.link-on-pet-page {
+.link-on-pet-page, .reviewSuccess {
   color: #008a00;
+}
+
+.error {
+  color: #ff0000;
 }
