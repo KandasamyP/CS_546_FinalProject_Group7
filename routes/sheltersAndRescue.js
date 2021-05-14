@@ -43,7 +43,7 @@ router.get("/:id", async (req, res) => {
   }
 
   try {
-    const shelter = await sheltersData.getShelterById(req.params.id);
+    const shelter = await sheltersData.getShelterById(xss(req.params.id));
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
     for (let i = 0; i < shelter.availablePets.length; ++i) {
       const petsDetails = await petsData.getPetById(shelter.availablePets[i]);
@@ -74,7 +74,7 @@ router.get("/:id", async (req, res) => {
       avgReviews = totalReviews / shelter.reviews.length;
 
       let reviewDetail = {
-        avgReviews: avgReviews,
+        avgReviews: avgReviews.toFixed(2),
         totalReviews: shelter.reviews.length,
       };
 
@@ -108,70 +108,55 @@ router.get("/:id", async (req, res) => {
 router.post("/addReviews/:id", async (req, res) => {
   try {
     const shelter = await sheltersData.updateShelterReviewById(req);
-
-    let petsDetailsArray = [];
-
+    let petsDetailsArray = [], adoptedPetsDetailsArray = [];
     for (let i = 0; i < shelter.availablePets.length; ++i) {
       const petsDetails = await petsData.getPetById(shelter.availablePets[i]);
       petsDetailsArray.push(petsDetails);
     }
 
-    const recentlyAddedReview = shelter.reviews[shelter.reviews.length - 1];
-    if (shelter.location && shelter.location.zipCode) {
-      let avgReviews = 0,
-        totalReviews = 0,
-        userReviewDetail = [];
-      for (let i = 0; i < shelter.reviews.length; ++i) {
-        // const petOwnerInfo = await petOwnerData.findOne({_id: ObjectId(shelter.reviews[i].reviewer)});
+    for (let i = 0; i < shelter.adoptedPets.length; ++i) {
+      const petsDetails = await petsData.getPetById(shelter.adoptedPets[i]);
+      adoptedPetsDetailsArray.push(petsDetails);
+    }
 
+    if (shelter.location && shelter.location.zipCode) {
+
+      let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
+      for (let i = 0; i < shelter.reviews.length; ++i) {
+        const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);
         userReviewDetail.push({
           rating: shelter.reviews[i].rating,
-          reviewerName: "John", // petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+          reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
           reviewBody: shelter.reviews[i].reviewBody,
           reviewDate: shelter.reviews[i].reviewDate,
           reviewer: shelter.reviews[i].rating,
         });
         totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
       }
-     
-      const recentlyAddedReview = shelter.reviews[shelter.reviews.length-1];
+      avgReviews = totalReviews / shelter.reviews.length;
 
-      if (shelter.location && shelter.location.zipCode) {
-        let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
-        for (let i = 0; i < shelter.reviews.length; ++i) {
-         // const petOwnerInfo = await petOwnerData.findOne({_id: ObjectId(shelter.reviews[i].reviewer)});
-  
-          userReviewDetail.push({
-            rating: shelter.reviews[i].rating,
-            reviewerName: "John",// petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
-            reviewBody: shelter.reviews[i].reviewBody,
-            reviewDate: shelter.reviews[i].reviewDate,
-            reviewer: shelter.reviews[i].rating
-          });
-          totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
-        }
-        avgReviews = totalReviews/shelter.reviews.length;
-  
-        let reviewDetail = {
-          avgReviews: avgReviews,
-          totalReviews: shelter.reviews.length
-        };
-        let recentReview = shelter.reviews[shelter.reviews.length - 1];
+      let reviewDetail = {
+        avgReviews: avgReviews.toFixed(2),
+        totalReviews: shelter.reviews.length,
+      };
+      let recentReview = {};
 
-        //res.status(200).json(recentReview);
-        res
-          .status(200)
-          .json(recentReview);
-      } else {
-  
-        res
-          .status(200)
-          .render("partials/add-review", { shelterDetails: shelter, petsDetails: petsDetailsArray ,
-            pageTitle: "Shelter/Rescue",
-            isLoggedIn: req.body.isLoggedIn});
-        }
+      if(userReviewDetail.length > 0) {
+        recentReview = userReviewDetail[userReviewDetail.length - 1];
+        recentReview.avgReviews = avgReviews.toFixed(2);
+        recentReview.totalReviews = shelter.reviews.length;
+      }
+      res.status(200).json(recentReview);
+    } else {
+      res.status(200).render("sheltersAndRescue/individual-shelter", {
+        shelterDetails: shelter,
+        petsDetails: petsDetailsArray,
+        pageTitle: "Shelter/Rescue",
+        isLoggedIn: req.body.isLoggedIn,
+        script: "individual-shelter",
+      });
     }
-  }catch (e) {
+  } catch (e) {
     console.log("error" + e)
 
     res.status(404).send(e);

@@ -5,6 +5,8 @@
   var rating = $('#rating');
   var reviewError = $('#reviewError');
   var successMessage = $('#successMessage');
+  var avgReviews = $("avgReviews");
+  var totalReviews = $("totalReviews");
 
   console.log("form is called");
 
@@ -14,7 +16,6 @@
     console.log("Add review submit btn is clicked");
 
     if(!reviewBody.val() || !rating.val()) {
-      console.log("form needs to submit");
       reviewError.attr("hidden", false);
       return;
     } 
@@ -40,20 +41,45 @@
     setTimeout(function () {
       successMessage.attr("hidden", true);
     }, 5000);
-    console.log("Add review submit btn is clicked" + responseMessage.rating);
-    var shelterReviewContainer = $("shelter-review-container");
-    let div = document.createElement('div');
-    div.innerHTML = responseMessage.rating;
-    // show.append(h1);
-    // let img = document.createElement('img');
-    // if (responseMessage.image !== null && responseMessage.image.medium){
-    //     img.src = responseMessage.image.medium;
-    // }
-    // else{
-    //     img.src = "public/js/no_image.jpeg";
-    // }
-    shelterReviewContainer.append(div);
+    var shelterReviewContainer = $("#shelter-review-container");
+    rating.innerHTML = "";
+    reviewBody.innerHTML = "";
+    
+    // <div class="row">
+    //     <div class="col-md-6">
+    //         <h3>{{this.reviewerName}}</h3>
+    //         <div>
+    //             <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
+    //             </p>
+    //         </div>
+    //     </div>
+    //     <div class="col-md-6">
+    //         <p class="">{{this.reviewDate}}</p>
+    //     </div>
+    //     <div class="col-md-12">
+    //         <p class="content">{{this.reviewBody}}</p>
+    //     </div>
+    // </div>
+    let outerDiv = document.createElement('div');
+   // outerDiv.addClass("row");
+    let firstInnerdiv = document.createElement('div');
+    outerDiv.append(firstInnerdiv);
+    let h3 = document.createElement('h3');
+    h3.innerHTML = responseMessage.reviewerName;
+    firstInnerdiv.append(h3);
+    let first_firstInnerdiv = document.createElement('div');
+    first_firstInnerdiv.innerHTML = "Rating: " + responseMessage.rating;
+    firstInnerdiv.append(first_firstInnerdiv);
+    let secondInnerdiv = document.createElement('div');
+    secondInnerdiv.innerHTML = responseMessage.reviewDate;
+    outerDiv.append(secondInnerdiv);
+    let thirdInnerdiv = document.createElement('div');
+    thirdInnerdiv.innerHTML = responseMessage.reviewBody;
+    outerDiv.append(thirdInnerdiv);
+    outerDiv.append(document.createElement('hr'));
 
+
+    shelterReviewContainer.append(outerDiv);
 
   });
     
