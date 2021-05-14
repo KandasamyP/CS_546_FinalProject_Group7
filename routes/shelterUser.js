@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
     
       const shelterUser = await shelterUserData.getPetShelterByEmail(email);
 
+
      //checking if shelter has available pets
      if(shelterUser.availablePets.length !=0){
         try{
@@ -56,6 +57,7 @@ router.get("/", async (req, res) => {
         }
       }
       res.status(200).render("users/shelterUser", { shelterUser });
+
     }
   } catch (e) {
     res.status(404).json({ error: "Shelter User not found." });
@@ -64,88 +66,134 @@ router.get("/", async (req, res) => {
 });
 
 //POST --> Updates the shelter's user profile picture
-router.post("/changeProfileImage", upload.single("profilePicture"), async(req,res)=>{
-  const imageData = req.body;
-  // console.log("In routes");
-  // console.log(req.session.user);
-  imageData.profilePicture = req.file.filename;
-  // console.log(req.session.user);
-  let email = req.session.user.email;
-  let shelterUserDetails;
-  try{
-     shelterUserDetails = await shelterUserData.updateShelterProfileImage(email, imageData.profilePicture);
-    // console.log(shelterUserDetails.profilePicture);
-     res.status(200).render("users/shelterUser", { shelterUser:shelterUserDetails, status: "success", alertMessage: "Profile Picture Updated Successfully." });  
-  }catch(e){
-    res.status(500).render("users/shelterUser", { shelterUser:shelterUserDetails, status: "failed", alertMessage: "Profile Picture Update Failed. Please try again."});
+router.post(
+  "/changeProfileImage",
+  upload.single("profilePicture"),
+  async (req, res) => {
+    const imageData = req.body;
+    // console.log("In routes");
+    // console.log(req.session.user);
+    imageData.profilePicture = req.file.filename;
+    // console.log(req.session.user);
+    let email = req.session.user.email;
+    let shelterUserDetails;
+    try {
+      shelterUserDetails = await shelterUserData.updateShelterProfileImage(
+        email,
+        imageData.profilePicture
+      );
+      // console.log(shelterUserDetails.profilePicture);
+      res.status(200).render("users/shelterUser", {
+        shelterUser: shelterUserDetails,
+        status: "success",
+        alertMessage: "Profile Picture Updated Successfully.",
+        pageTitle: "Shelter/Rescue",
+        isLoggedIn: req.body.isLoggedIn,
+        script: "sheltersProfile",
+      });
+    } catch (e) {
+      res.status(500).render("users/shelterUser", {
+        shelterUser: shelterUserDetails,
+        status: "failed",
+        alertMessage: "Profile Picture Update Failed. Please try again.",
+        pageTitle: "Shelter/Rescue",
+        isLoggedIn: req.body.isLoggedIn,
+        script: "sheltersProfile",
+      });
+    }
   }
-});
+);
 
 //handles change password request
-router.post("/changePassword", async(req,res)=>{
-  try{
-        let plainTextPassword = req.body.password;
-        //console.log(req.body);
-        if (!plainTextPassword || plainTextPassword.trim() === ""){
-            throw "Password must be provided";
-        }
-        let email = req.body.userData.email;
-        
-        let existingShelterUserData;
-        try {
-           existingShelterUserData = await shelterUserData.getPetShelterByEmail(email);
-        } catch (e) {
-            res.status(404).json({error: "shelter user not found"});
-            return;
-        }
-        //console.log(existingShelterUserData._id);
-        try{
-          const shelterData = await shelterUserData.updatePassword(existingShelterUserData._id,plainTextPassword);
-          res.status(200).render("users/shelterUser", { shelterUser:shelterData, status: "success", alertMessage: "Password Updated Successfully." });
-        }catch(e){
-          res.status(500).render("users/shelterUser", { shelterUser:shelterData, status: "failed", alertMessage: "Password Update Failed. Please try again."});
-        }
-        
-    }catch(e){
-      res.status(500).json({error: "Internal server error."});
-    };
+router.post("/changePassword", async (req, res) => {
+  try {
+    let plainTextPassword = req.body.password;
+    //console.log(req.body);
+    if (!plainTextPassword || plainTextPassword.trim() === "") {
+      throw "Password must be provided";
+    }
+    let email = req.body.userData.email;
+
+    let existingShelterUserData;
+    try {
+      existingShelterUserData = await shelterUserData.getPetShelterByEmail(
+        email
+      );
+    } catch (e) {
+      res.status(404).json({ error: "shelter user not found" });
+      return;
+    }
+    //console.log(existingShelterUserData._id);
+    try {
+      const shelterData = await shelterUserData.updatePassword(
+        existingShelterUserData._id,
+        plainTextPassword
+      );
+      res.status(200).render("users/shelterUser", {
+        shelterUser: shelterData,
+        status: "success",
+        alertMessage: "Password Updated Successfully.",
+        pageTitle: "Shelter/Rescue",
+        isLoggedIn: req.body.isLoggedIn,
+        script: "sheltersProfile",
+      });
+    } catch (e) {
+      res.status(500).render("users/shelterUser", {
+        shelterUser: shelterData,
+        status: "failed",
+        alertMessage: "Password Update Failed. Please try again.",
+        pageTitle: "Shelter/Rescue",
+        isLoggedIn: req.body.isLoggedIn,
+        script: "sheltersProfile",
+      });
+    }
+  } catch (e) {
+    res.status(500).json({ error: "Internal server error." });
+  }
 });
 
 router.post("/", async (req, res) => {
   const shelterUserInfo = req.body;
   //console.log(shelterUserInfo);
-  
+
   updatedData = {
-    name: shelterUserInfo.name, 
+    name: shelterUserInfo.name,
     phoneNumber: shelterUserInfo.phoneNumber,
     location: {
       streetAddress1: shelterUserInfo.streetAddress1,
       streetAddress2: shelterUserInfo.streetAddress2,
       city: shelterUserInfo.city,
       stateCode: shelterUserInfo.stateCode,
-      zipCode: shelterUserInfo.zipCode
+      zipCode: shelterUserInfo.zipCode,
     },
     website: shelterUserInfo.website,
     socialMedia: {
       twitter: shelterUserInfo.twitter,
       facebook: shelterUserInfo.facebook,
-      instagram: shelterUserInfo.instagram
+      instagram: shelterUserInfo.instagram,
     },
-    biography: shelterUserInfo.biography
-  }
+    biography: shelterUserInfo.biography,
+  };
 
   // console.log(updatedData);
   // console.log(req.body.userData.email);
 
   try {
-    const shelterUserInfo = await shelterUserData.updateShelter(updatedData, req.body.userData.email);
-    
+    const shelterUserInfo = await shelterUserData.updateShelter(
+      updatedData,
+      req.body.userData.email
+    );
+
     // console.log(shelterUserInfo);
-    res.status(200).render("users/shelterUser", { shelterUser: shelterUserInfo });
+    res.status(200).render("users/shelterUser", {
+      shelterUser: shelterUserInfo,
+      pageTitle: "Shelter/Rescue",
+      isLoggedIn: req.body.isLoggedIn,
+      script: "sheltersProfile",
+    });
   } catch (e) {
     res.status(500).json({ error: e });
   }
-
 });
 
 module.exports = router;

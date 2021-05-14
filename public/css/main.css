@@ -123,35 +123,36 @@ input[type="number"] {
   display: flex;
   flex-direction: column;
   max-height: 500px;
-  overflow-y: scroll
+  overflow-y: scroll;
 }
 
 .message-recipient,
 .message-user {
   display: flex;
-  flex-shrink: 0
+  flex-shrink: 0;
 }
 
 .message-recipient {
-  margin-right: auto
+  margin-right: auto;
 }
 
 .message-user {
   flex-direction: row-reverse;
-  margin-left: auto
+  margin-left: auto;
 }
 
 .bg-user {
-  background-color: #a2aab1!important;
+  background-color: #a2aab1 !important;
 }
 
 .bg-recipient {
-  background-color: #e6e8eb!important;
+  background-color: #e6e8eb !important;
 }
 
 .pet-search-container {
   width: 75%;
+}
 
-li.favPets{
+li.favPets {
   float: left;
 }
