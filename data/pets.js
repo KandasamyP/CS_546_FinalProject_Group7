@@ -255,10 +255,10 @@ const exportedMethods = {
       let petShort = {
         _id: allPets[i]._id.toString(),
         petName: allPets[i].petName,
-        defaultPic: allPets[i].petPictures[0],
         animalType: allPets[i].animalType,
         breeds: allPets[i].breeds,
         biography: allPets[i].biography,
+        petPhoto: allPets[i].petPictures[0]
       };
       allPetsShort.push(petShort);
 
