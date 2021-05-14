@@ -8,13 +8,12 @@
   var avgReviews = $("#avgReviews");
   var totalReviews = $("#totalReviews");
   var volunteerForm = $('#volunteerForm');
+  var volunteerSuccessMessage = $("#volunteerSuccessMessage");
 
-  console.log("form is called");
 
   addReviewForm.submit(function(event) {
    event.preventDefault();
     var mainContainer = $("main-container");
-    console.log("Add review submit btn is clicked");
 
     if (!reviewBody.val() || !rating.val()) {
       reviewError.attr("hidden", false);
@@ -49,31 +48,12 @@
       reviewBody.val = "";
       $("#reviewBody").val("");
 
-      console.log(responseMessage.totalReviews);
-     // $("#avgReviews").val(responseMessage.avgReviews);
-
       avgReviews.value = responseMessage.avgReviews;
-     // $("#totalReviews").val(responseMessage.totalReviews);
 
       totalReviews.value = responseMessage.totalReviews;
       
-      // <div class="row">
-      //     <div class="col-md-6">
-      //         <h3>{{this.reviewerName}}</h3>
-      //         <div>
-      //             <p class="text-left"><span class="text-muted">Rating: {{this.rating}}</span> 
-      //             </p>
-      //         </div>
-      //     </div>
-      //     <div class="col-md-6">
-      //         <p class="">{{this.reviewDate}}</p>
-      //     </div>
-      //     <div class="col-md-12">
-      //         <p class="content">{{this.reviewBody}}</p>
-      //     </div>
-      // </div>
+
       let outerDiv = document.createElement('div');
-    // outerDiv.addClass("row");
       let firstInnerdiv = document.createElement('div');
       outerDiv.append(firstInnerdiv);
       let h3 = document.createElement('h3');
@@ -98,8 +78,7 @@
   });
 
   volunteerForm.submit(function(event) {
-    event.preventDefault();
-   
+      event.preventDefault();  
        
        var urlGetId = window.location.pathname, linkToId;
        const url = urlGetId.split("/");
@@ -114,10 +93,13 @@
          contentType: 'application/json',
        };
    
-       $.ajax(requestConfig).then(function(responseMessage) {
-        
-   
-         location.reload();
+       $.ajax(requestConfig).then(function(responseMessage) {        
+          volunteerSuccessMessage.attr("hidden", false);
+          setTimeout(function () {
+            volunteerSuccessMessage.attr("hidden", true);
+          }, 5000);
+
+          location.reload();
        });
        
      
