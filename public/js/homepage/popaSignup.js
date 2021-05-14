@@ -66,6 +66,25 @@ $(function () {
         error.show();
       }
 
+      function dateChecker(date1, date2 = new Date()) {
+        var date1 = new Date(Date.parse(date1));
+        var date2 = new Date(Date.parse(date2));
+        var ageTime = date2.getTime() - date1.getTime();
+
+        if (ageTime < 0) {
+          return false; //date2 is before date1
+        } else {
+          return true;
+        }
+      }
+
+      if (dateOfBirth_term) {
+        if (!dateChecker(dateOfBirth_term)) {
+          errorList.append(`<li>DOB cannot be a future date!</li>`);
+          error.show();
+        }
+      }
+
       if (!profilePicture_term || profilePicture_term.trim() === "") {
         errorList.append(`<li>Profile Picture public must be provided!</li>`);
         error.show();
