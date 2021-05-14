@@ -7,6 +7,7 @@ const data = require("../data");
 const petsData = data.pets;
 const homepageData = data.homepageData;
 const petOwnerData = data.petOwnerData;
+const xss = require("xss");
 
 /* required for multer --> */
 const storage = multer.diskStorage({
@@ -40,6 +41,13 @@ router.get("/", async (req, res) => {
       }
     });
 
+    let isUserVolunteer = false;
+    if (req.session.user) {
+      isUserVolunteer = await petOwnerData.checkVolunteer(
+        req.session.user.email
+      );
+    }
+
     var petTotalCount = await petOwnerData.getPetCount(); //gets the total number of
     //console.log("Homepage"+petTotalCount);
     res.status(200).render("homepage/homepage", {
@@ -50,6 +58,7 @@ router.get("/", async (req, res) => {
       petCount: petTotalCount,
       script: "homepage/homepage",
       animalTypeArray: animalTypeArray,
+      isUserVolunteer: isUserVolunteer,
     });
   } catch (e) {
     res.status(500).json({ message: e });
@@ -127,6 +136,7 @@ router.post("/login", async (req, res) => {
 
   try {
     const logInData = req.body;
+
     const isSuccess = await homepageData.logInUser(logInData);
 
     if (isSuccess) {
