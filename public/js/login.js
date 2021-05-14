@@ -6,6 +6,8 @@ $(function () {
   let popaUser = $("#popaUser");
   let error = $("#error");
   let errorList = $("#errorList");
+  let errorFromRoutes = $("#errorFromRoutes");
+  error.hide();
 
   if (myForm) {
     myForm.submit(function (event) {
@@ -16,28 +18,38 @@ $(function () {
 
       errorList.empty();
       error.hide();
+      if (errorFromRoutes) {
+        errorFromRoutes.hide();
+      }
 
-      //Email
+      //Email Client-Side Error Checking
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
       if (!email_term || email_term.trim() === "") {
         errorList.append(`<li>E-Mail must be provided!</li>`);
         error.show();
+        error.focus();
       } else if (!validateEmail(email_term)) {
         errorList.append(`<li>E-Mail must be in correct format!</li>`);
         error.show();
+        error.focus();
       }
 
+      //Password Client-Side Error Checking
       if (!password_term || password_term.trim() === "") {
         errorList.append(`<li>Password must be provided!</li>`);
         error.show();
+        error.focus();
       }
 
+      //User Type Client-Side Error Checking
       if (!srUser.is(":checked") && !popaUser.is(":checked")) {
         errorList.append(`<li>Must select user type!</li>`);
         error.show();
+        error.focus();
       }
 
       if (error.is(":hidden")) {
