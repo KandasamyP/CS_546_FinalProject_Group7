@@ -27,7 +27,7 @@ let exportedMethods = {
     if (insertInfo.insertedCount === 0) throw 'Could not add shelter';
 
     const newId = insertInfo.insertedId;
-    let shelter = await this.getShelterByID(newId.toString());
+    let shelter = await this.getShelterById(newId.toString());
     shelter._id = shelter._id.toString();
 
     return shelter;
@@ -153,9 +153,9 @@ let exportedMethods = {
     if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
       throw "Could not update user";
 
-    return await this.getShelterByID(existingUserData._id);
+    return await this.getShelterById(existingUserData._id);
   },
-  async getShelterByID(id) {
+  async getShelterById(id) {
     if (!id) throw "Please provide a proper ID "
     if (typeof id != "string") throw "Please provide a String based ID"
     if (id.trim().length === 0) throw "Input ID cannot be blank"
@@ -196,7 +196,7 @@ let exportedMethods = {
     }     
 
     const sheltersCollection = await shelterAndRescue();
-    let shelter = await this.getShelterByID(req.params.id);
+    let shelter = await this.getShelterById(req.params.id);
 
     const addReview = {
       reviewDate: new Date(),
@@ -212,7 +212,7 @@ let exportedMethods = {
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
     
-    return await this.getShelterByID(shelter._id.toString());
+    return await this.getShelterById(shelter._id.toString());
   },
   
   async getUserByEmail(userEmail) {
@@ -348,7 +348,7 @@ let exportedMethods = {
     if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
       throw "Could not update user";
 
-    return await this.getShelterByID(existingUserData._id);
+    return await this.getShelterById(existingUserData._id);
   },
 }
 module.exports = exportedMethods;

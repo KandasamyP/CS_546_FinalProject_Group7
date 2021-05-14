@@ -37,7 +37,7 @@ router.get("/:id", async (req, res) => {
 
   try {
 
-    const shelter = await sheltersData.getShelterByID(req.params.id);
+    const shelter = await sheltersData.getShelterById(req.params.id);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
 
     for (let i = 0; i < shelter.availablePets.length; ++i) {
