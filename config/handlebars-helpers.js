@@ -1,3 +1,5 @@
+const moment = require("moment")
+
 module.exports = {
   doctype: () => {
     return "<!DOCTYPE html>";

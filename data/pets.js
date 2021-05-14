@@ -311,7 +311,7 @@ const exportedMethods = {
     let parsedId = ObjectId(id);
 
     // If any inputs are missing, the method should throw
-    if (!info.petName || !info.animalType || !info.breeds || !info.petPictures || !info.sex || !info.currentLocation || info.availableForAdoption === undefined || !info.ageGroup || !info.biography || !info.associatedShelter || !info.adoptionFee || !info.filters) 
+    if (!info.petName || !info.animalType || !info.breeds || !info.petPictures || !info.sex || !info.currentLocation || info.availableForAdoption === undefined || !info.ageGroup || !info.biography || !info.associatedShelter || !info.adoptionFee || !info.appearance || !info.behaviors) 
 		  throw "There is at least one missing input argument.";
 
     const petCollection = await pets();
@@ -340,9 +340,11 @@ const exportedMethods = {
       if (typeof pic !== "string" || pic.trim().length === 0)
         throw "Each picture file name must be a string.";
     }
-    if (info.petPictures.length < 1 || info.petPictures.length > 5)
+    // 0 new pictures means old ones stay
+    if (info.petPictures.length > 5)
       throw "There must be between 1 and 5 pet pictures.";
-    updatedData.petPictures = info.petPictures;
+    if (info.petPictures.length > 0)
+      updatedData.petPictures = info.petPictures;
 
     if (info.sex !== "Female" && info.sex !== "Male")
       throw "Pet must be male or female!"

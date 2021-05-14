@@ -41,7 +41,7 @@ router.get("/pet/:id", async (req, res) => {
     let userId;
     let isUserThisShelter = false;
     let isPetFavorited = false;
-    const sessionInfo = req.cookies.AuthCookie;
+    const sessionInfo = req.session.user;
 
     const dogPhysicalCharacteristics = csvsync.parse(
       fs.readFileSync("data/petInformation/dogPhysical.csv")
@@ -83,6 +83,7 @@ router.get("/pet/:id", async (req, res) => {
 
         userId = userInfo._id;
       } else {
+        console.log(sessionInfo)
         const userInfo = await shelterData.getPetShelterByEmail(
           sessionInfo.email
         );
@@ -701,7 +702,7 @@ router.post("/search", async (req, res) => {
 /* upload.array(name of item from form submission) is required for multer */
 router.post("/add", upload.array("petPictures", 5), async (req, res) => {
   try {
-    const sessionInfo = req.cookies.AuthCookie;
+    const sessionInfo = req.session.user;
     if (
       sessionInfo &&
       sessionInfo.userAuthenticated &&
@@ -810,7 +811,7 @@ router.get("/", async (req, res) => {
 
 router.get("/new", async (req, res) => {
   try {
-    const sessionInfo = req.cookies.AuthCookie;
+    const sessionInfo = req.session.user;
     if (
       sessionInfo &&
       sessionInfo.userAuthenticated &&
@@ -954,7 +955,7 @@ router.post('/delete', async (req, res) => {
 router.post("/update", upload.array("petPictures", 5), async (req, res) => {
   try {
     // todo add authentication check
-    const sessionInfo = req.cookies.AuthCookie;
+    const sessionInfo = req.session.user;
     let shelter;
     if (
       sessionInfo &&
@@ -1007,7 +1008,7 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
     info.behaviors = inputBehaviors;
     info.petName = req.body.petName;
     info.associatedShelter = shelter._id;
-    info.availableForAdoption = req.body.availableForAdoption;
+    info.availableForAdoption = req.body.availableForAdoption == "true" ? true : false;
     info.adoptionFee = req.body.adoptionFee;
 
     const updatedPet = await petsData.update(req.body.petId, info);
