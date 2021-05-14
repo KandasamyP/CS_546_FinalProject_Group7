@@ -954,7 +954,6 @@ router.post('/delete', async (req, res) => {
 // upload.array(name of item from form submission) is required for multer
 router.post("/update", upload.array("petPictures", 5), async (req, res) => {
   try {
-    // todo add authentication check
     const sessionInfo = req.session.user;
     let shelter;
     if (
@@ -1065,7 +1064,12 @@ router.post("/favorite", async (req, res) => {
     ) {
       user = await petOwnerData.getPetOwnerByUserEmail(sessionInfo.email);
     } else {
-      res.redirect("/"); // todo redirect or error?
+      res.status(400).render("pets/error", {
+        title: "400 Error",
+        error: "You're not able to add or remove favorites without a pet adopter profile",
+        pageTitle: "Pets",
+        isLoggedIn: req.body.isLoggedIn,
+      });
       return;
     }
 
