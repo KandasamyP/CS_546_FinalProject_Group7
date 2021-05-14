@@ -66,16 +66,10 @@ router.post("/", async (req, res) => {
         );
         isUserShelter = true;
       }
-
-      const thread = await messagesData.getThreadByParticipants([
-        userInfo._id,
-        req.body.recipient,
-      ]);
-      const newMsg = await messagesData.addMessage(
-        thread._id,
-        userInfo._id,
-        req.body.reply
-      );
+            const thread = await messagesData.getThreadByParticipants([userInfo._id, req.body.recipient]);
+            const newMsg = await messagesData.addMessage(thread._id, userInfo._id, req.body.reply);
+            const threadList = await messagesData.getThreadsByParticipant(userInfo._id);
+            //console.log(JSON.stringify(threadList))
 
       const threadList = await messagesData.getThreadsByParticipant(
         userInfo._id
