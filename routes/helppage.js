@@ -13,7 +13,11 @@ router.get("/", async (req, res) => {
       isLoggedIn: req.body.isLoggedIn,
     });
   } catch (error) {
-    res.render("shelters/error", { title: "No Data Found" });
+    res.render("shelters/error", {
+      title: "No Data Found",
+      pageTitle: "Help Page",
+      isLoggedIn: req.body.isLoggedIn,
+    });
   }
 });
 router.post("/", async (req, res) => {
