@@ -67,29 +67,24 @@ $(function () {
       if (!email_term || email_term.trim() === "") {
         errorList.append(`<li>E-Mail must be provided!</li>`);
         error.show();
-        error.focus();
       } else if (!validateEmail(email_term)) {
         errorList.append(`<li>E-Mail must be in correct format!</li>`);
         error.show();
-        error.focus();
       }
 
       if (!password_term || password_term.trim() === "") {
         errorList.append(`<li>Password must be provided!</li>`);
         error.show();
-        error.focus();
       }
 
       if (!name_term || name_term.trim() === "") {
         errorList.append(`<li>Shelter/Rescue name must be provided!</li>`);
         error.show();
-        error.focus();
       }
 
       if (!profilePicture_term || profilePicture_term.trim() === "") {
         errorList.append(`<li>Profile Picture public must be provided!</li>`);
         error.show();
-        error.focus();
       }
 
       if (
@@ -104,7 +99,6 @@ $(function () {
           `<li>Location State, City, Street & ZIP Code must be provided!</li>`
         );
         error.show();
-        error.focus();
       }
 
       function validateZipCode(zipCode) {
@@ -115,14 +109,12 @@ $(function () {
         if (!validateZipCode(locationZipCodeId_term)) {
           errorList.append(`<li>Zip Code must be in correct format!</li>`);
           error.show();
-          error.focus();
         }
       }
 
       if (!biography_term || biography_term.trim() === "") {
         errorList.append(`<li>Biography must be provided!</li>`);
         error.show();
-        error.focus();
       }
 
       //Phone Number
@@ -134,16 +126,16 @@ $(function () {
       if (!phoneNumber_term || phoneNumber_term.trim() === "") {
         errorList.append(`<li>Phone Number must be provided!</li>`);
         error.show();
-        error.focus();
       } else if (!validatePhoneNumber(phoneNumber_term)) {
         errorList.append(`<li>Phone Number must be in correct format!</li>`);
         error.show();
-        error.focus();
       }
 
       if (error.is(":hidden")) {
         myForm.unbind().submit();
         myForm.submit();
+      } else {
+        $("html, body").animate({ scrollTop: 0 }, "slow");
       }
     });
   }

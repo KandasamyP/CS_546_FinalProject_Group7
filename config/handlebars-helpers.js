@@ -1,4 +1,4 @@
-const moment = require("moment")
+const moment = require("moment");
 
 module.exports = {
   doctype: () => {
@@ -20,21 +20,22 @@ module.exports = {
       return html;
     } else {
       var html = `
-        <div id="loginAndSignup">
+        <div id="login">
             <button
-                id="login"
+                id="loginButton"
                 onclick="location.href = '/login'"
                 type="button"
                 class="login"
             >Log In</button>
-            <br />
+        </div>
+        <div id="signup">
             <button
                 id="srSignup"
                 onclick="location.href = '/signup/sr'"
                 type="button"
                 class="signup"
             >Shelter/Rescue - Sign Up</button>
-            
+            <br />
             <button
                 id="popaSignup"
                 onclick="location.href = '/signup/popa'"
