@@ -123,32 +123,62 @@ input[type="number"] {
   display: flex;
   flex-direction: column;
   max-height: 500px;
-  overflow-y: scroll
+  overflow-y: scroll;
 }
 
 .message-recipient,
 .message-user {
   display: flex;
-  flex-shrink: 0
+  flex-shrink: 0;
 }
 
 .message-recipient {
-  margin-right: auto
+  margin-right: auto;
 }
 
 .message-user {
   flex-direction: row-reverse;
-  margin-left: auto
+  margin-left: auto;
 }
 
 .bg-user {
-  background-color: #a2aab1!important;
+  background-color: #a2aab1 !important;
 }
 
 .bg-recipient {
-  background-color: #e6e8eb!important;
+  background-color: #e6e8eb !important;
 }
 
-li.favPets{
+.pet-search-container {
+  width: 75%;
+}
+
+li.favPets {
   float: left;
+}
+
+.nav-link-dark {
+  color: #003400!important;
+}
+
+.pet-card-name {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+.btn-success {
+  background-color: #008a00;
+}
+
+.btn-primary {
+  background-color: #0072ee;
+}
+
+.link-on-pet-page {
+  color: #008a00;
 }

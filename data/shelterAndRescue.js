@@ -28,7 +28,7 @@ let exportedMethods = {
     if (insertInfo.insertedCount === 0) throw 'Could not add shelter';
 
     const newId = insertInfo.insertedId;
-    let shelter = await this.getShelterByID(newId.toString());
+    let shelter = await this.getShelterById(newId.toString());
     shelter._id = shelter._id.toString();
 
     return shelter;
@@ -43,9 +43,12 @@ let exportedMethods = {
   async getPetShelterByEmail(shelterEmail) {
     const sheltersCollection = await shelterAndRescue();
 
-    const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
+    let shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
 
     if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
+
+    // must return this as a string!
+    shelterDetails._id = shelterDetails._id.toString();
 
     return shelterDetails;
   },
@@ -123,7 +126,7 @@ let exportedMethods = {
       if (
         updatedData.location.hasOwnProperty("stateCode") &&
         updatedData.location.stateCode.trim() != ""
-      ) {
+      ) { 
 
         modifiedData.location["stateCode"] = updatedData.location.stateCode;
       } else {
@@ -154,9 +157,9 @@ let exportedMethods = {
     if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
       throw "Could not update user";
 
-    return await this.getShelterByID(existingUserData._id);
+    return await this.getShelterById(existingUserData._id);
   },
-  async getShelterByID(id) {
+  async getShelterById(id) {
     if (!id) throw "Please provide a proper ID "
     if (typeof id != "string") throw "Please provide a String based ID"
     if (id.trim().length === 0) throw "Input ID cannot be blank"
@@ -165,7 +168,7 @@ let exportedMethods = {
     let shelter = await sheltersCollection.findOne({ _id: parsedId })
 
     if (shelter === null) throw "shelter not found";
-    // shelter._id = shelter._id.toString();
+    shelter._id = shelter._id.toString();
     return shelter;
   },
 
@@ -191,6 +194,32 @@ let exportedMethods = {
       throw "Not able to update db";
   },
 
+  async updateShelterReviewById(req) {
+    if (req && req.params.id) {
+      let reviewBody = req.body.reviewBody;
+      let rating = req.body.rating;
+    }     
+
+    const sheltersCollection = await shelterAndRescue();
+    let shelter = await this.getShelterById(req.params.id);
+
+    const addReview = {
+      reviewDate: new Date(),
+      rating: parseInt(req.body.rating),
+      reviewBody: req.body.reviewBody
+    };
+    addReview._id = ObjectId();
+   shelter.reviews.push(addReview);
+
+    shelter._id = ObjectId(shelter._id);
+
+    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter});
+    if (updateInfo.modifiedCount === 0)
+      throw "Not able to update db";
+    
+    return await this.getShelterById(shelter._id.toString());
+  },
+  
   async getUserByEmail(userEmail) {
     const sheltersCollection = await shelterAndRescue();
     let userDetails = await sheltersCollection.findOne({
@@ -208,16 +237,6 @@ let exportedMethods = {
     const sheltersCollection = await shelterAndRescue();
     const getAllShelters = sheltersCollection.find({}).toArray();
     return getAllShelters;
-  },
-
-  async getPetShelterByEmail(shelterEmail) {
-    const sheltersCollection = await shelterAndRescue();
-
-    const shelterDetails = await sheltersCollection.findOne({ email: shelterEmail });
-
-    if (shelterDetails == null || !shelterDetails) throw "Shelter not found";
-
-    return shelterDetails;
   },
 
   async updateShelter(updatedData) {
@@ -324,7 +343,7 @@ let exportedMethods = {
     if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
       throw "Could not update user";
 
-    return await this.getShelterByID(existingUserData._id);
+    return await this.getShelterById(existingUserData._id);
   },
 }
 module.exports = exportedMethods;

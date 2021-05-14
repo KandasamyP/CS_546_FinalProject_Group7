@@ -112,28 +112,66 @@ async function updateShelterProfileImage(email, picture){
   );
  
   if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
-  throw "Could not update profile picture";
+     throw "Could not update profile picture";
   
   return await getShelterById(ObjectId(userDetails._id));  
 
 }
 
-async function getAvailablePets(email, availablePetsArray){
-  const sheltersCollection = await shelterAndRescueData();
-
-  const shelterDetails = await getPetShelterByEmail(email);
+async function getAvailablePets(availablePetsArray){
+  // console.log("In data");
+  // console.log("email "+email);
+  // for (let i=0; i < availablePetsArray.length; i++)
+  //   console.log(availablePetsArray[i]);
+  const petCollection = await petData();
+  let availablePetsDetails = [];
 
   for (let index = 0; index < availablePetsArray.length; index++){
+    const petDetails = await petCollection.findOne({_id: ObjectId(availablePetsArray[index])});
     
+    if (petDetails == null) throw "pet not found";
+
+    availablePetsDetails.push({
+      name: petDetails.petName,
+      profilePicture: petDetails.petPictures[0]
+    });
   }
+  return availablePetsDetails;
 }
 
-async function getAdoptedPets(){
+//returns the pet name and profile picture. petsIdArray is a list if pet ids either available for adoption or already adopted
+async function getPetsData(petsIdArray){
+  const petCollection = await petData();
+  let petsDetails = [];
 
+  for (let index = 0; index < petsIdArray.length; index++){
+    const petInfo = await petCollection.findOne({_id: ObjectId(petsIdArray[index])});
+    
+    if (petInfo == null) throw "pet not found";
+
+    petsDetails.push({
+      name: petInfo.petName,
+      profilePicture: petInfo.petPictures[0]
+    });
+  }
+  return petsDetails;
 }
 
-async function getReviews(){
+async function getReviews(reviewsIdArray){
+  let reviewData = [];
+  for (let index = 0; index < reviewsIdArray.length; index++){
 
+      const petOwnerCollection = await petOwnerData();
+      const petOwnerInfo = await petOwnerCollection.findOne({_id:ObjectId(reviewsIdArray[index].reviewer)});
+
+      reviewData.push({
+        rating: reviewsIdArray[index].rating,
+        reviewerName: petOwnerInfo.fullName.firstName + " "+ petOwnerInfo.fullName.lastName,
+        reviewBody: reviewsIdArray[index].reviewBody,
+        reviewDate: reviewsIdArray[index].reviewDate
+      });
+  }
+  return reviewData;
 }
 
 module.exports = {
@@ -142,7 +180,6 @@ module.exports = {
   updateShelter,
   getShelterById,
   updateShelterProfileImage,
-  getAvailablePets,
-  getAdoptedPets,
-  getReviews
+  getReviews,
+  getPetsData
 };

@@ -1,22 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const shelterAndRescueData = require("../data/shelterAndRescue");
-const petOwnerData = require("../data/petOwner")
+const petOwnerData = require("../data/petOwner");
 
+router.get("/", async (req, res) => {
+  try {
+    // if (req.session.user) {
+    //     var email = req.body.userData.email;
+    //     const shelterOwnerDetails = await shelterAndRescueData.getUserByEmail(email);
 
-router.get('/', async (req, res) => {
-    try {
-        // if (req.session.user) {
-        //     var email = req.body.userData.email;
-        //     const shelterOwnerDetails = await shelterAndRescueData.getUserByEmail(email);
-
-        //     res.status(200).render("shelters/feedback", { title: "Feedback" });
-        // }
-        res.status(200).render("shelters/feedback", { title: "Feedback" });
-    } catch (error) {
-        res.status(404).json({ error: "User not found." });
-        return;
-    }
+    //     res.status(200).render("shelters/feedback", { title: "Feedback" });
+    // }
+    res.status(200).render("shelters/feedback", {
+      title: "Feedback",
+      pageTitle: "Feedback",
+      isLoggedIn: req.body.isLoggedIn,
+      script: "feedback",
+    });
+  } catch (error) {
+    res.status(404).json({ error: "User not found." });
+    return;
+  }
 });
 router.post('/', async (req, res) => {
     const feedbackdata = req.body

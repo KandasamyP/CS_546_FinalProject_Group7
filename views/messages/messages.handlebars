@@ -1,4 +1,4 @@
-<main class="container">
+
     <h1>Messages</h1>
     <div class="row">
         <div class="col-4">
@@ -21,7 +21,7 @@
                     {{#each this.messages}}
                     <div class="message-{{ifUserIsSender this.sender ../../userId}} pb-4 {{../this.participants.[1]}} {{ifMessageSent ../../recipient ../this.participants.[1]}}">
                         <div>
-                            <div class="text-success small px-1 text-nowrap message-timestamp">{{formatDate this.timestamp "LLL"}}</div>
+                            <div class="text-secondary small px-1 text-nowrap message-timestamp">{{formatDate this.timestamp "LLL"}}</div>
                         </div>
                         <div class="flex-shrink-1 bg-{{ifUserIsSender this.sender ../../userId}} rounded py-1 px-2 mr-1">
                             <div class="font-weight-bold mb-1">{{setSenderName this.sender ../../userId ../this.petOwnerName ../this.shelterName ../../isUserShelter}}</div>
@@ -31,6 +31,7 @@
                     {{/each}}
                     <form id="send-message-form" class="{{this.participants.[1]}} {{ifMessageSent ../recipient this.participants.[1]}} flex-container" method="POST" action="/messages">
                         <input type="text" id="recipient" name="recipient" value="{{this.participants.[1]}}" hidden>
+                        <label for="type-message"></label>
                         <textarea id="type-message" name="reply" placeholder="Type a message..." class="fill-width"></textarea>
                         <input type="submit" class="btn" value="Send"/>
                     </form>
@@ -40,5 +41,3 @@
         </div>
     </div>
     <br>
-</main>
-<script src='../../public/js/messages.js'></script>
