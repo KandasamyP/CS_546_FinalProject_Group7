@@ -253,6 +253,7 @@ const exportedMethods = {
         animalType: allPets[i].animalType,
         breeds: allPets[i].breeds,
         biography: allPets[i].biography,
+        petPhoto: allPets[i].petPictures[0]
       };
       allPetsShort.push(petShort);
 

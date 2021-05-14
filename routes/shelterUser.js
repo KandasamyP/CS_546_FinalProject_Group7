@@ -56,7 +56,9 @@ router.get("/", async (req, res) => {
 
         }
       }
-      res.status(200).render("users/shelterUser", { shelterUser });
+      res.status(200).render("users/shelterUser", { shelterUser,
+        script: "sheltersProfile",
+      });
 
     }
   } catch (e) {
