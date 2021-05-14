@@ -77,6 +77,7 @@
                     </ol>
                     <div class="carousel-inner">
                         {{#each availablePet}}
+                        {{availablePet.petPictures.[0]}}
                             <div class="carousel-item{{#if @first}} active{{/if}}">
                                 {{!-- {{#each availablePet.petPictures}} --}}
                                     <img class="img-fluid" src="../../public/images/pets/{{availablePet.petPictures.[0]}}" alt="{{availablePet.petName}}">
@@ -84,7 +85,7 @@
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3>{{this.petName}}</h3>
                                     Age group: {{this.ageGroup}}; SEX: {{this.sex}}
-                                    <h6>Adoption Fee: {{this.adoptionFee}}</h6>
+                                    <h6>Adoption Fee: ${{this.adoptionFee}}</h6>
                                 </div>
                             </div>                    
                         {{/each}}
@@ -198,10 +199,7 @@
                 <div class="rating-text"> <span>{{reviewDetail.totalReviews}} reviews</span> </div>
             </div>
         </div>
-        <vr></vr>
-        <div class="row col-md-9">
-
-            
+        <div class="col-md-9">         
 
             <div id="shelter-review-container">
                 {{#each userReviewDetail}}
@@ -217,7 +215,7 @@
                             <p class="">{{this.reviewDate}}</p>
                         </div>
                     </div>
-                    <div class="row text-left">
+                    <div class="row col-md-12">
                         <p class="content">{{this.reviewBody}}</p>
                     </div>
                     <hr/>
