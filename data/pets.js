@@ -128,7 +128,7 @@ const exportedMethods = {
     // If the pet was created, add its id to the availablePets array in shelters
     const newId = insertInfo.insertedId;
     const shelterRescueCollection = await sheltersRescues();
-    const shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: parsedShelterId }, { $push: { adoptablePets: newId.toString() } });
+    const shelterUpdateInfo = await shelterRescueCollection.updateOne({ _id: parsedShelterId }, { $push: { availablePets: newId.toString() } });
 
     // If the shelter cannot be updated, the method should throw
     if (shelterUpdateInfo.insertedCount === 0) throw "The shelter could not be updated.";
