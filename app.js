@@ -7,6 +7,7 @@ const moment = require("moment");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
+require("dotenv").config();
 
 //Setup Static Folder and Routes File
 const static = express.static(__dirname + "/public");
