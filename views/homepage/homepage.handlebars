@@ -1,29 +1,44 @@
-{{#if isLoggedIn}}
-  <div id="username">
-    <h2>Welcome {{username}}</h2>
-  </div>
-{{/if}}
+<div>
+  <h2>
+    {{#if isLoggedIn}}
+      Hello
+      {{username}}!
+    {{/if}}
+    Welcome to GetAPet!
+  </h2>
+  <h3>You can adore all our fur babies below or check the Pet Search above 🐶</h3>
+  <p id="homepagePetCounter" class="text-white bg-dark">Total Number of Pets
+    Adopted:
+    {{petCount}}
+    💖</p>
+</div>
 
 <div id="displayPets">
-  {{#each pet}}
-
-    <div>
-      <br />
-      <img
-        src="../public/images/pets/{{petPhoto}}"
-        alt="petPhoto:{{petName}}"
-      />
-      <br />
-      Name:
-      {{petName}}<br />
-      Pet Type:
-      {{animalType}}<br />
-      Breed:
-      {{breeds}}<br />
-      Biography:
-      {{biography}}<br />
-      <br />
+  <div id="homepagePetCatalouge" class="container">
+    <div class="row">
+      {{#each pet}}
+        <div class="col-md-4 col-sm-6">
+          <div id="homepagePetCard" class="card text-center">
+            <div class="card-block">
+              <img
+                id="homepagePetCardImage"
+                src="../public/images/pets/{{petPhoto}}"
+                alt="{{petName}}-pet-image"
+                class="img-fluid"
+              />
+              <div class="card-title">
+                <h4>{{petName}}</h4>
+              </div>
+              <div id="homepagePetCardBio" class="card-text">{{biography}}</div>
+              <a
+                id="homepagePetCardButton"
+                href="/pets/pet/{{_id}}"
+                class="btn btn-success"
+              >Know More</a>
+            </div>
+          </div>
+        </div>
+      {{/each}}
     </div>
-  {{/each}}
-  <p>Total Number of Pets Adopted: {{petCount}}</p>
+  </div>
 </div>

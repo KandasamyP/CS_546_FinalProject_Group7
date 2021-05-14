@@ -43,7 +43,7 @@ router.get("/:id", async (req, res) => {
   }
 
   try {
-    const shelter = await sheltersData.getShelterById(xss(req.params.id));
+    const shelter = await sheltersData.getShelterById(req.params.id);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
     for (let i = 0; i < shelter.availablePets.length; ++i) {
       const petsDetails = await petsData.getPetById(shelter.availablePets[i]);
@@ -56,19 +56,27 @@ router.get("/:id", async (req, res) => {
     }
 
     if (shelter.location && shelter.location.zipCode) {
-
       let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
       for (let i = 0; i < shelter.reviews.length; ++i) {
-        const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);
-        
-
-        userReviewDetail.push({
-          rating: shelter.reviews[i].rating,
-          reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
-          reviewBody: shelter.reviews[i].reviewBody,
-          reviewDate: shelter.reviews[i].reviewDate,
-          reviewer: shelter.reviews[i].rating,
-        });
+        if(shelter.reviews[i].reviewer) {
+          const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);   
+          userReviewDetail.push({
+            rating: shelter.reviews[i].rating,
+            reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+            reviewBody: shelter.reviews[i].reviewBody,
+            reviewDate: shelter.reviews[i].reviewDate,
+            reviewer: shelter.reviews[i].rating,
+          });
+        }  else {
+            userReviewDetail.push({
+              rating: shelter.reviews[i].rating,
+              reviewerName: "",
+              reviewBody: shelter.reviews[i].reviewBody,
+              reviewDate: shelter.reviews[i].reviewDate,
+              reviewer: shelter.reviews[i].rating,
+            });
+        }
+       
         totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
       }
       avgReviews = totalReviews / shelter.reviews.length;

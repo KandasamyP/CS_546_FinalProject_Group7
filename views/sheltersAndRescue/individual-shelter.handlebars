@@ -33,9 +33,23 @@
                     <label>Location:</label>
                 </span>
                 <span class="col-md-9">
-                    {{shelterDetails.location.streetAddress1}}, {{shelterDetails.location.city}},
-                    {{shelterDetails.location.stateCode}}, {{shelterDetails.location.zipCode}}
-                     {{#if geoLocation.latitude}}
+                    {{#if shelterDetails.location.streetAddress1}}
+                        {{shelterDetails.location.streetAddress1}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.city}}
+                        ,{{shelterDetails.location.city}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.stateCode}}
+                        ,{{shelterDetails.location.stateCode}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.zipCode}}
+                        ,{{shelterDetails.location.zipCode}}
+                    {{/if}}
+                      
+                    {{#if geoLocation.latitude}}
                         <iframe src="https://maps.google.com/maps?q={{geoLocation.latitude}}, {{geoLocation.longitude}}&z=15&output=embed"
                             width="360" height="270" frameborder="0" style="border:0"></iframe>
                     {{/if}}
@@ -109,6 +123,7 @@
 
     <hr />
      <div class="row">
+         {{#if adoptedPet}}
         <div class="col-md-7">
             <h1>Adopted Pets in {{shelterDetails.name}}</h1>
             <section class="pet-carousel-bg">
@@ -149,7 +164,8 @@
                 </div>
             </section>
         </div>
-
+        {{/if }}
+        {{#if isLoggedIn}}
         <div class="col-md-5">
             <form class="form-horizontal" id="addReviewForm">
                 <fieldset>
@@ -185,6 +201,7 @@
             <div class="reviewSuccess" id="successMessage" hidden>Your review is added !!</div>
             <div class="error" id="reviewError" hidden>All input in form is mandatory !!</div>
         </div>
+        {{/if}}
     </div>
    
 
