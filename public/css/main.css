@@ -158,7 +158,7 @@ li.favPets {
 }
 
 .nav-link-dark {
-  color: #003400!important;
+  color: #003400 !important;
 }
 
 .pet-card-name {
@@ -181,4 +181,76 @@ li.favPets {
 
 .link-on-pet-page {
   color: #008a00;
+}
+
+#homepagePetCardButton {
+  margin-top: 13px;
+}
+
+#homepagePetCardImage {
+  padding-top: 5%;
+  padding-bottom: 2%;
+  width: 18rem;
+  height: 15rem;
+  object-fit: cover;
+}
+
+#homepagePetCard {
+  width: 20rem;
+  height: 26rem;
+}
+
+#homepagePetCardBio {
+  text-align: center;
+  padding: 0% 5% 0% 5%;
+}
+
+#homepagePetCatalouge {
+  padding-top: 5px;
+}
+
+#homepagePetCounter {
+  display: inline-block;
+  padding: 10px 10px 10px 10px;
+}
+
+#srSignup {
+  width: 100%;
+}
+
+#loginButton {
+  height: 60px;
+  padding-right: 10px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+#login-form,
+#shelterRescue-signupForm,
+#petOwner-signupForm {
+  padding-top: 10px;
+}
+
+#error {
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding-top: 15px;
+  color: #d8000c;
+}
+
+body {
+  /* Margin bottom by footer height */
+  /* margin-bottom: 60px; */
+}
+
+.footer {
+  margin-top: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: 35px;
 }

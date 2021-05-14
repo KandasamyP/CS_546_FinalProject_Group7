@@ -27,7 +27,20 @@ router.get("/", async (req, res) => {
   try {
     var pets = await petsData.getPetHomepage();
 
-    var petTotalCount = await petOwnerData.getPetCount();  //gets the total number of
+    pets.map((pet) => {
+      if (pet.biography.length > 100) {
+        pet.biography = `“` + pet.biography.slice(0, 115) + `....”`;
+      }
+    });
+
+    const animalTypeArray = [];
+    pets.filter((pet) => {
+      if (!animalTypeArray.includes(pet.animalType)) {
+        animalTypeArray.push(pet.animalType);
+      }
+    });
+
+    var petTotalCount = await petOwnerData.getPetCount(); //gets the total number of
     //console.log("Homepage"+petTotalCount);
     res.status(200).render("homepage/homepage", {
       defaultTitle: true,
@@ -35,7 +48,8 @@ router.get("/", async (req, res) => {
       username: req.body.isLoggedIn ? req.body.userData.email : false,
       pet: pets,
       petCount: petTotalCount,
-      script: "homepage",
+      script: "homepage/homepage",
+      animalTypeArray: animalTypeArray,
     });
   } catch (e) {
     res.status(500).json({ message: e });
@@ -46,7 +60,7 @@ router.get("/", async (req, res) => {
 //   // console.log(" in routes call successfull");
 //   let petCount;
 //   try{
-     
+
 //   }catch(e){
 
 //   }
