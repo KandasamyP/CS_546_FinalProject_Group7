@@ -122,6 +122,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/addReviews/:id", async (req, res) => {
+  console.log("add Review");
   try {
     const shelter = await sheltersData.updateShelterReviewById(req);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
@@ -178,5 +179,17 @@ router.post("/addReviews/:id", async (req, res) => {
     res.status(404).send(e);
   } 
 });
+
+router.post("/addVolunteer/:id", async (req, res) => {
+  try {
+    const shelter = await sheltersData.updateVolunteerById(req);
+    res.status(200).json(shelter);
+  } catch (e) {
+    console.log("error" + e)
+
+    res.status(404).send(e);
+  } 
+});
+
 
 module.exports = router;
