@@ -79,13 +79,21 @@ router.get("/:id", async (req, res) => {
        
         totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
       }
-      avgReviews = totalReviews / shelter.reviews.length;
+      let reviewDetail = {};
 
-      let reviewDetail = {
-        avgReviews: avgReviews.toFixed(2),
-        totalReviews: shelter.reviews.length,
-      };
-
+      if(shelter.reviews.length > 0) {
+        avgReviews = totalReviews / shelter.reviews.length;
+        reviewDetail = {
+          avgReviews: avgReviews.toFixed(2),
+          totalReviews: shelter.reviews.length,
+        };
+      } else {
+        reviewDetail = {
+          avgReviews: 0,
+          totalReviews: 0,
+        };
+      }
+  
       res.status(200).render("sheltersAndRescue/individual-shelter", {
         shelterDetails: shelter,
         geoLocation: await getGeoLocation(shelter.location.zipCode),

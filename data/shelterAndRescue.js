@@ -222,8 +222,6 @@ let exportedMethods = {
     addReview._id = ObjectId();
 
    shelter.reviews.push(addReview);
-   console.log(shelter);
-
 
     shelter._id = ObjectId(shelter._id);
 

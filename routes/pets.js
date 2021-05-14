@@ -1056,7 +1056,7 @@ router.post("/favorite", async (req, res) => {
   }
 
   try {
-    const sessionInfo = req.cookies.AuthCookie;
+    const sessionInfo = req.session.user;
     let user;
     if (
       sessionInfo &&

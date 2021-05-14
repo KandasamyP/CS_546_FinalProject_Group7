@@ -38,15 +38,15 @@
                     {{/if}}
 
                     {{#if shelterDetails.location.city}}
-                        ,{{shelterDetails.location.city}}
+                        , {{shelterDetails.location.city}}
                     {{/if}}
 
                     {{#if shelterDetails.location.stateCode}}
-                        ,{{shelterDetails.location.stateCode}}
+                        , {{shelterDetails.location.stateCode}}
                     {{/if}}
 
                     {{#if shelterDetails.location.zipCode}}
-                        ,{{shelterDetails.location.zipCode}}
+                        , {{shelterDetails.location.zipCode}}
                     {{/if}}
                       
                     {{#if geoLocation.latitude}}
@@ -81,6 +81,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Available Pets for adoption</h1>
+            {{#if availablePet}}
             <section class="pet-carousel-bg">
                 <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
@@ -97,8 +98,8 @@
                                 {{/each}}
                                 <div class="carousel-caption d-none d-md-block">
                                     <h2>{{this.petName}}</h2>
-                                    Age group: {{this.ageGroup}}; SEX: {{this.sex}}
-                                    <h3>Adoption Fee: ${{this.adoptionFee}}</h3>
+                                    <h3><span class="carouselLabel">Age group:</span> {{this.ageGroup}}; <span class="carouselLabel">SEX: </span> {{this.sex}}</h3>
+                                    <h3> <span class="carouselLabel">Adoption Fee: </span> ${{this.adoptionFee}}</h3>
                                 </div>
                             </div>                    
                         {{/each}}
@@ -118,14 +119,17 @@
                     </a>
                 </div>
             </section>
+            {{else}}
+                <h2 class="noShelterPets">No available pets for adoptions !!!</h2>
+            {{/if}}
         </div>
     </div>
 
     <hr />
      <div class="row">
-         {{#if adoptedPet}}
         <div class="col-md-7">
             <h1>Adopted Pets in {{shelterDetails.name}}</h1>
+            {{#if adoptedPet}}
             <section class="pet-carousel-bg">
                 <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
@@ -140,10 +144,10 @@
                                 {{#each this.petPictures}}
                                     <img class="img-fluid" src="../../public/images/pets/{{this}}" alt="{{this.petName}}">
                                 {{/each}}
-                                <div class="carousel-caption d-none d-md-block">
+                                <div class="carousel-caption d-none d-md-block">                              
                                     <h2>{{this.petName}}</h2>
-                                    Age group: {{this.ageGroup}}; SEX: {{this.sex}}
-                                    <h3>Adoption Fee: ${{this.adoptionFee}}</h3>
+                                    <span class="carouselLabel">Age group:</span> {{this.ageGroup}}; <span class="carouselLabel">SEX: </span> {{this.sex}}
+                                    <h3> <span class="carouselLabel">Adopted Fee: </span> ${{this.adoptionFee}}</h3>
                                 </div>
                             </div>                    
                         {{/each}}
@@ -163,11 +167,16 @@
                     </a>
                 </div>
             </section>
+            {{else}}
+                <h2 class="noShelterPets">No adopted pet in this shelter !!!</h2>
+            {{/if }}
+
         </div>
-        {{/if }}
         {{#if isLoggedIn}}
         <div class="col-md-5">
             <form class="form-horizontal" id="addReviewForm">
+                <h1>Review Form</h1>
+
                 <fieldset>
             
                     <!-- Message body -->
@@ -207,6 +216,9 @@
 
     <hr>
     <div class="row" id="individualShelterRating">
+        <div class="col-md-12">
+            <h1>Review Section</h1>
+        </div>
         <div class="col-md-3">
             Overall Rating of Shelter
             <div class="ratings"> <span class="product-rating" id="avgReviews">{{reviewDetail.avgReviews}}</span><span>/5</span>
