@@ -1,6 +1,10 @@
 const mongoCollections = require('../config/mongoCollections');
 let { ObjectId } = require("mongodb");
 const shelterAndRescue = mongoCollections.shelterAndRescue;
+const users = mongoCollections.petAdopterAndOwner;
+const userMethods = require("./petOwner");
+
+
 
 
 let exportedMethods = {
@@ -160,6 +164,7 @@ let exportedMethods = {
     return await this.getShelterById(existingUserData._id);
   },
   async getShelterById(id) {
+
     if (!id) throw "Please provide a proper ID "
     if (typeof id != "string") throw "Please provide a String based ID"
     if (id.trim().length === 0) throw "Input ID cannot be blank"
@@ -208,8 +213,19 @@ let exportedMethods = {
       rating: parseInt(req.body.rating),
       reviewBody: req.body.reviewBody
     };
+
+    if (req.session.user) {
+      var email = req.session.user.email;
+      const petOwnerCollection = await users();
+      const petOwner = await userMethods.getPetOwnerByUserEmail(email);
+
+      addReview.reviewer = ObjectId(petOwner._id);
+    }
     addReview._id = ObjectId();
-    shelter.reviews.push(addReview);
+
+   shelter.reviews.push(addReview);
+   console.log(shelter);
+
 
     shelter._id = ObjectId(shelter._id);
 

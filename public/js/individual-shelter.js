@@ -1,3 +1,4 @@
+
 (function($) {
   var addReviewForm = $('#addReviewForm');
   var reviewBody = $('#reviewBody');
@@ -17,9 +18,15 @@
       reviewError.attr("hidden", false);
       return;
     } 
+    var urlGetId = window.location.pathname, linkToId;
+    const url = urlGetId.split("/");
+    if(urlGetId.split("/").length == 3) {
+      linkToId = url[2];
+      console.log(linkToId);
+    }
     var requestConfig = {
       method: 'POST',
-      url: `/shelters/addReviews/609c5acf5369c8c9a4f96e23`,
+      url: `/shelters/addReviews/${linkToId}`,
       contentType: 'application/json',
       data: JSON.stringify({
         reviewBody: reviewBody.val(),
