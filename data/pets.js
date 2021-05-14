@@ -257,7 +257,10 @@ const exportedMethods = {
       let pet = {
         _id: petResults[i]._id.toString(),
         petName: petResults[i].petName,
+        ageGroup: petResults[i].ageGroup,
+        sex: petResults[i].sex,
         defaultPic: petResults[i].petPictures[0],
+        currentLocation: petResults[i].currentLocation
       };
       petArr.push(pet);
     }
