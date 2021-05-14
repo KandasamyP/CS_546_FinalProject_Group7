@@ -56,8 +56,9 @@ router.get("/:id", async (req, res) => {
 
     if (shelter.location && shelter.location.zipCode) {
       let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
+      console.log(shelter.reviews)
       for (let i = 0; i < shelter.reviews.length; ++i) {
-        const petOwnerInfo = await petOwnerData.findOne({_id: ObjectId(shelter.reviews[i].reviewer)});
+        const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);
 
         userReviewDetail.push({
           rating: shelter.reviews[i].rating,
