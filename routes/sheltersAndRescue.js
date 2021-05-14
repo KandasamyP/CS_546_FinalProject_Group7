@@ -18,7 +18,6 @@ async function getGeoLocation(zip) {
 router.get("/", async (req, res) => {
   try {
     const shelter = await sheltersData.getAll();
-    // console.log(shelter)
     res.status(200).render("shelters/allShelters", {
       shelter,
       title: "List of shelters",
@@ -55,7 +54,7 @@ router.get("/:id", async (req, res) => {
       adoptedPetsDetailsArray.push(petsDetails);
     }
 
-    if (shelter.location && shelter.location.zipCode) {
+    
       let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
       for (let i = 0; i < shelter.reviews.length; ++i) {
         if(shelter.reviews[i].reviewer) {
@@ -93,7 +92,15 @@ router.get("/:id", async (req, res) => {
           totalReviews: 0,
         };
       }
+      let petOwnerDetails ;
+      if (req.session.user) {
+        var email = req.session.user.email;
+        const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
   
+        petOwnerDetails = petOwner;
+      }
+
+    if (shelter.location && shelter.location.zipCode) {
       res.status(200).render("sheltersAndRescue/individual-shelter", {
         shelterDetails: shelter,
         geoLocation: await getGeoLocation(shelter.location.zipCode),
@@ -103,14 +110,19 @@ router.get("/:id", async (req, res) => {
         userReviewDetail: userReviewDetail,
         pageTitle: "Shelter/Rescue",
         isLoggedIn: req.body.isLoggedIn,
+        petOwnerDetails: petOwnerDetails,
         script: "individual-shelter",
       });
     } else {
       res.status(200).render("sheltersAndRescue/individual-shelter", {
         shelterDetails: shelter,
-        petsDetails: petsDetailsArray,
+        availablePet: petsDetailsArray,
+        adoptedPet: adoptedPetsDetailsArray,
+        reviewDetail: reviewDetail,
+        userReviewDetail: userReviewDetail,
         pageTitle: "Shelter/Rescue",
         isLoggedIn: req.body.isLoggedIn,
+        petOwnerDetails: petOwnerDetails,
         script: "individual-shelter",
       });
     }
@@ -122,7 +134,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/addReviews/:id", async (req, res) => {
-  console.log("add Review");
   try {
     const shelter = await sheltersData.updateShelterReviewById(req);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
@@ -135,9 +146,6 @@ router.post("/addReviews/:id", async (req, res) => {
       const petsDetails = await petsData.getPetById(shelter.adoptedPets[i]);
       adoptedPetsDetailsArray.push(petsDetails);
     }
-
-    if (shelter.location && shelter.location.zipCode) {
-
       let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
       for (let i = 0; i < shelter.reviews.length; ++i) {
         const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);
@@ -164,15 +172,7 @@ router.post("/addReviews/:id", async (req, res) => {
         recentReview.totalReviews = shelter.reviews.length;
       }
       res.status(200).json(recentReview);
-    } else {
-      res.status(200).render("sheltersAndRescue/individual-shelter", {
-        shelterDetails: shelter,
-        petsDetails: petsDetailsArray,
-        pageTitle: "Shelter/Rescue",
-        isLoggedIn: req.body.isLoggedIn,
-        script: "individual-shelter",
-      });
-    }
+   
   } catch (e) {
     console.log("error" + e)
 
