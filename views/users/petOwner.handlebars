@@ -1,11 +1,8 @@
-
-    <p id = "petCount" hidden>Total Pet adopted:</p>
-
 <div class="user-bg container-fluid">
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="user-photo">Profile Picture</h5>
+                <p class="card-header cardheadProfile" id="user-photo">Profile Picture</p>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-2">
@@ -15,16 +12,11 @@
                                 <img class="profile-picture rounded-circle" src="../public/images/users/no_image.png" alt="{{petOwner.fullName.firstName}}" />
                             {{/if}}
                         </div>
-                        {{!-- <div class="col-sm-10">
-                            <p>Choose an image from your computer</p>
-                            <button class="btn">Change</button>
-                            <button class="btn">Delete</button>
-                        </div> --}}
-
+                    
                         <form id="imageForm" method="POST" action="/petOwner/changeProfileImage" enctype="multipart/form-data">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label for="image" class="col-form-label">Choose an image from your computer</label>
+                                    <label for="profilePicture" class="col-form-label">Choose an image from your computer</label>
                                     <input class = "form-control" type="file" id="profilePicture" name="profilePicture" accept="image/*"/>
                                 </div> 
                             </div>
@@ -34,15 +26,14 @@
                                 </div>
                              </div>       
                         </form> 
-                         <div class="form-group row">
+                         {{!-- <div class="form-group row">
                              <div class="col-sm-12">
                                  <p>{{alertMessage}}</p>
                              </div>
-                        </div> 
+                        </div>  --}}
 
                     </div>
                 </div>
-                {{!-- alt="{{petOwner.fullName.firstName}}" --}}
             </div>
         </div>
     </div>
@@ -50,16 +41,16 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="user-photo">Change Password</h5>
+                <p class="card-header cardheadProfile" id="user-password">Change Password</p>
                 <div class="card-body">
-                    <form id="passwordForm" method="POST" action="/petOwner/changePassword">
+                    <form id="passwordForm" method="POST" action="/petOwner/changePassword" onsubmit="return(validatePassword());">
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <label for="password" class="col-form-label">Enter New Password</label>
                             </div>
                             <div class="col-sm-6">
                                 <input type="password" class="form-control" name="password" id="password"
-                                    value="{{petOwner.password}}" placeholder="Enter New Password"></input>
+                                    value="{{petOwner.password}}" placeholder="Enter New Password" required/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -83,31 +74,31 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Information</h5>
+                <p class="card-header cardheadProfile" id="info">Information</p>
                 <div class="card-body">
                     <form id="userInfo" method="POST" action="/petOwner" onsubmit="return(validateForm());">
-                        <div class="form-group row" id="formSpacing">
+                        <div class="form-group row">
                             <label for="email" class="col-sm-4 col-form-label">Username</label>
-                            <label for="firstname" class="col-sm-4 col-form-label">Firstname</label>
-                            <label for="lastname" class="col-sm-4 col-form-label">Lastname</label>
-                            {{!-- <label for="username" class="col-sm-6 col-form-label">username</label> --}}
+                            <label for="firstName" class="col-sm-4 col-form-label">Firstname</label>
+                            <label for="lastName" class="col-sm-4 col-form-label">Lastname</label>
+                           
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="email" id="email"
-                                    value="{{petOwner.email}}" placeholder="email" type="email"></input>
+                                <input class="form-control" name="email" id="email"
+                                    value="{{petOwner.email}}" placeholder="email" type="email" required/>
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="firstName" id="firstName"
-                                    value="{{petOwner.fullName.firstName}}" placeholder="firstname" required></input>
+                                    value="{{petOwner.fullName.firstName}}" placeholder="firstname" required/>
                             </div>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="lastName" id="lastName"
-                                    value="{{petOwner.fullName.lastName}}" placeholder="lastname" required></input>
+                                    value="{{petOwner.fullName.lastName}}" placeholder="lastname" required/>
                             </div>
-                        </div>
+                        </div> 
 
-                        <div class="form-group row" id="formSpacing">
+                        <div class="form-group row">
                             <label for="dateOfBirth" class="col-sm-4 col-form-label">Date Of Birth</label>
                             <label for="phoneNumber" class="col-sm-4 col-form-label">Phone Number</label>
 
@@ -116,33 +107,33 @@
                         <div class="form-group row">
                             <div class="col-sm-4">
                                 <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth"
-                                    value="{{petOwner.dateOfBirth}}" placeholder="Date Of Birth" required></input>
+                                    value="{{petOwner.dateOfBirth}}" required/>
                             </div>
                             <div class="col-sm-4">
                             {{!-- <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber"
-                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></input> --}}
-                            <input type="number" class="form-control" name="phoneNumber" id="phoneNumber"
-                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" required></input>
+                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required/>--}}
+                            <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    value="{{petOwner.phoneNumber}}" placeholder="123-456-7890" required/>
    
                             </div>
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" name="zipCode" id="zipCode"
-                                    value="{{petOwner.zipCode}}" placeholder="Eg. 07307" min="00501" max="99950" required></input>
+                                    value="{{petOwner.zipCode}}" placeholder="Eg. 07307" min="00501" max="99950" required/>
                             </div>
                         </div>
 
-                        <div class="form-group row" id="formSpacing">
+                        <div class="form-group row">
                             <label for="biography" class="col-sm-12 col-form-label">Biography</label>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" name="biography" id="biography"
-                                    value="{{petOwner.biography}}" placeholder="biography"></input>
+                                    value="{{petOwner.biography}}" placeholder="biography"/>
                             </div>
                         </div>
                         {{!-- <div>
                             <label for="userid">User id</label>
-                            <input type="text" name="userid" id="userid" value="{{petOwner._id}}"></input>
+                            <input type="text" name="userid" id="userid" value="{{petOwner._id}}/">
                         </div> --}}
                         <div class="form-group row">
                             <div class="col-sm-12">
@@ -159,7 +150,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Favorite Pets</h5>
+                <p class="card-header cardheadProfile">Favorite Pets</p>
                 <div class="card-body">
                     {{#if petOwner.favoritedPetsArray.length}}
                     <ul>
@@ -181,7 +172,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Shelter Reviews</h5>
+                <p class="card-header cardheadProfile">Shelter Reviews</p>
                 <div class="card-body">
                     {{#if petOwner.shelterReviewsGivenArray.length}}
                     <ul>
@@ -205,7 +196,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Feedback</h5>
+                <p class="card-header cardheadProfile">Feedback</p>
                 <div class="card-body">
                     {{#if petOwner.websiteFeedbackGiven.length}}
                         <ul>
@@ -228,7 +219,7 @@
     {{!-- <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Reported Posts</h5>
+                <h5 class="card-header" id="">Reported Posts</h5>
                 <div class="card-body"> </div>
             </div>
         </div>
@@ -237,7 +228,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Donations </h5>
+                <h5 class="card-header" id="">Donations </h5>
                 <div class="card-body"> </div>
             </div>
         </div>
@@ -246,7 +237,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Volunteer</h5>
+                <p class="card-header cardheadProfile">Volunteer</p>
                 <div class="card-body"> 
                     {{!-- {{#if petOwner.isVolunteerCandidate}}
                         <p>You are a volunteer.</p>
@@ -262,16 +253,16 @@
                     <form action = "/petOwner/changeVolunteer" method = "POST" id = "volunteerForm">
                            {{#if petOwner.isVolunteerCandidate}}
                                 <p>You are a volunteer.</p>
-                                <label for="withdrawVolunteer">
+                                
                                     <button class="btn" id="withdrawVolunteer" type="submit">Withdraw</button>
                                     <input type="text" id = "status" name = "status" value="false" hidden>
-                                </label>
+                              
                             {{else}}
                                 <p>You are not a volunteer.</p> 
-                                <label for="applyToBeAnVolunteer">
+                               
                                     <button class="btn" id="applyToBeVolunteer" type="submit">Apply</button>
                                     <input type="text" id = "status" name = "status" value="true" hidden>
-                                </label>
+                               
                             {{/if}}
                     </form>
                 </div>

@@ -42,18 +42,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// router.get('/petCount', async(req,res)=>{
-//   // console.log(" in routes call successfull");
-//   let petCount;
-//   try{
-     
-//   }catch(e){
-
-//   }
-//  return {"count": petCount};
-//  //return "call success";
-// });
-
 // GET '/login'
 
 router.get("/login", async (req, res) => {

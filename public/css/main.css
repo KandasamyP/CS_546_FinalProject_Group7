@@ -182,3 +182,7 @@ li.favPets {
 .link-on-pet-page {
   color: #008a00;
 }
+
+.cardheadProfile{
+  font-weight:500;
+}
