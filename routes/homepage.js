@@ -4,6 +4,7 @@ const multer = require("multer");
 const axios = require("axios").default;
 
 const data = require("../data");
+const petsData = data.pets;
 const homepageData = data.homepageData;
 
 /* required for multer --> */
@@ -23,10 +24,14 @@ module.exports = router;
 // GET '/'
 router.get("/", async (req, res) => {
   try {
+    var pets = await petsData.getPetHomepage();
+
     res.status(200).render("homepage/homepage", {
       defaultTitle: true,
       isLoggedIn: req.body.isLoggedIn,
       username: req.body.isLoggedIn ? req.body.userData.email : false,
+      pet: pets,
+      script: "homepage",
     });
   } catch (e) {
     res.status(500).json({ message: e });

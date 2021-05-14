@@ -63,6 +63,11 @@
       {{{body}}}
     </main>
 
+    <footer class="bg-success text-center text-lg-start">
+      Get-A-Pet is a not-for-profit website run to help reduce the amount of
+      homeless pets on the street.
+    </footer>
+
     {{! jQuery Uncompressed CDN }}
     <script
       src="https://code.jquery.com/jquery-3.6.0.js"
@@ -81,6 +86,7 @@
       crossorigin="anonymous"
     ></script>
 
+    {{! JS imported from web }}
     {{#if webImportedScript}}
       <script src="{{webImportedScript}}"></script>
     {{/if}}
@@ -90,17 +96,6 @@
       <script src="../public/js/{{script}}.js"></script>
     {{/if}}
 
-    {{! User Profile Page JS }}
-    <script src="../public/js/userProfile.js"></script>
-    {{! Individual Shelter Page JS }}
-    <script src="../public/js/individual-shelter.js"></script>
-    {{! shelter User Profile Page JS }}
-    <script src="../public/js/sheltersProfile.js"></script>
   </body>
-
-  <footer class="bg-success text-center text-lg-start">
-    Get-A-Pet is a not-for-profit website run to help reduce the amount of
-    homeless pets on the street.
-  </footer>
 
 </html>

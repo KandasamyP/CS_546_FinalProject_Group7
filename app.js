@@ -42,6 +42,17 @@ app.use(
   })
 );
 
+app.use("*", (req, res, next) => {
+  if (req.session.user) {
+    req.body.isLoggedIn = true;
+    req.body.userData = req.session.user;
+    next();
+  } else {
+    req.body.isLoggedIn = false;
+    next();
+  }
+});
+
 //Middleware: Check if user is already signed in on signup route
 app.use("/", (req, res, next) => {
   if (req.session.user) {
@@ -163,6 +174,19 @@ app.use("/helppage", (req, res, next) => {
     return res.redirect("/login");
   } else {
     next();
+  }
+});
+
+app.use("/profile", (req, res, next) => {
+  if (req.session.user) {
+    if (req.session.user.userType === "srUser") {
+      return res.redirect("/shelterUser");
+    } else if (req.session.user.userType === "popaUser") {
+      return res.redirect("/petOwner");
+    }
+    next();
+  } else {
+    return res.redirect("/login");
   }
 });
 

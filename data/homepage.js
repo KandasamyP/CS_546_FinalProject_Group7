@@ -195,8 +195,7 @@ const exportedMethods = {
         };
       }
     } catch (e) {
-      res.status(e.status).send({ title: "Error", error: e.error });
-      return;
+      throw { status: 500, message: e };
     }
 
     srData.availablePets = [];
