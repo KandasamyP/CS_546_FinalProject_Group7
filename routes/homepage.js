@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
       isLoggedIn: req.body.isLoggedIn,
       username: req.body.isLoggedIn ? req.body.userData.email : false,
       pet: pets,
-      script: "homepage",
+      script: "homepage/homepage",
     });
   } catch (e) {
     res.status(500).json({ message: e });
