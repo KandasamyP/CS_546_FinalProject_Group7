@@ -80,12 +80,12 @@ router.post("/", async (req, res) => {
       const threadList = await messagesData.getThreadsByParticipant(
         userInfo._id
       );
-      //console.log(JSON.stringify(threadList))
 
       res.status(200).render("messages/messages", {
         thread: threadList,
         userId: userInfo._id,
         reloaded: true,
+        isUserShelter: isUserShelter,
         recipient: req.body.recipient,
         pageTitle: "Messages",
         isLoggedIn: req.body.isLoggedIn,

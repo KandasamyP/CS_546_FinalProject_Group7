@@ -42,7 +42,7 @@ router.get("/", async (req, res) => {
     });
 
     let isUserVolunteer = false;
-    if (req.session.user) {
+    if (req.session.user && req.session.user.userType === "popaUser") {
       isUserVolunteer = await petOwnerData.checkVolunteer(
         req.session.user.email
       );
