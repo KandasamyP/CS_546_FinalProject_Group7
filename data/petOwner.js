@@ -73,7 +73,7 @@ async function getPetOwnerByUserEmail(petOwnerEmail) {
 
   let petOwnerDetails = await petOwnerCollection.findOne({ email: petOwnerEmail });
 
-  if (petOwnerDetails == null || !petOwnerDetails) throw "User not found.";
+  if (petOwnerDetails == null || !petOwnerDetails) throw "User not found. data/petOwner getbyemail";
 
   // return _id as string
   petOwnerDetails._id = petOwnerDetails._id.toString();
@@ -94,7 +94,7 @@ async function getPetOwnerById(petOwnerId) {
     _id: ObjectId(petOwnerId),
   });
 
-  if (petOwnerDetails == null || !petOwnerDetails) throw "User not found.";
+  if (petOwnerDetails == null || !petOwnerDetails) throw "User not found. data/petOwner/getbyid";
 
   return petOwnerDetails;
 }
@@ -319,6 +319,40 @@ async function getUserFavoritePets(favoritePetArray) {
   return favoritePetsDetails;
 }
 
+
+async function updateVolunteerStatus(userId, status){
+  let value = Boolean;
+  //console.log(userId+" "+status);
+  if (status == "true")
+    value = true;
+  else  
+    value = false;  
+  const petOwnerCollection = await petOwnerData();
+ 
+
+  const updateInfo = await petOwnerCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $set: { "isVolunteerCandidate": value } }
+  );
+
+  if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
+    throw "Could not update password";
+
+  return await getPetOwnerById(userId);
+}
+
+async function getPetCount(){
+  const shelterAndRescueCollection = await shelterAndRescueData();
+
+  const shelterData = await shelterAndRescueCollection.find({}).toArray();
+
+  if (shelterData == null) throw "Data not found";
+  let total = 0
+  for (let i =0; i < shelterData.length; i++){
+    total += shelterData[i].adoptedPets.length;
+  }
+  return total;
+} 
 async function getAllUsersWithFavoritePet(id) {
   if (!id) throw "The input id is missing.";
   // If the id provided is not a string, or is an  empty string, the method should throw
@@ -349,5 +383,10 @@ module.exports = {
   getShelterReviews,
   updateProfileImage,
   getUserFavoritePets,
+
+  updateVolunteerStatus,
+  getPetCount,
+
   getAllUsersWithFavoritePet
+
 };

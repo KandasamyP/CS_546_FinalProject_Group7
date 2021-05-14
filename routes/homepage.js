@@ -47,6 +47,7 @@ router.get("/", async (req, res) => {
 });
 
 //GET '/profile'
+//commented this code as it was throwing some error
 router.get("/profile", async (req, res) => {
   if (req.session.user) {
     if (req.body.userData.userType === "popaUser") {
@@ -54,9 +55,12 @@ router.get("/profile", async (req, res) => {
     } else if (req.body.userData.userType === "srUser") {
       return res.status(200).redirect("/shelterUser");
     }
+
+
     if (req.cookies.AuthCookie.userType === "srUser") {
       return res.status(200).redirect("/petOwner");
     }
+
   } else {
     return res.status(200).render("homepage/login");
   }
