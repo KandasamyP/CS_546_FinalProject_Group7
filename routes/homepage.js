@@ -84,6 +84,7 @@ router.get("/login", async (req, res) => {
     res.status(200).render("homepage/login", {
       pageTitle: "Log In",
       script: "homepage/login",
+      isLoggedIn: req.body.isLoggedIn,
     });
   } catch (e) {
     res.status(500).json({ message: e });
@@ -155,6 +156,7 @@ router.post("/login", async (req, res) => {
         error: `Wrong Email-ID or Password!`,
         pageTitle: "Log In",
         script: "homepage/login",
+        isLoggedIn: req.body.isLoggedIn,
       });
       return;
     }
@@ -170,6 +172,7 @@ router.get("/signup/sr", async (req, res) => {
     pageTitle: "Signup",
     script: "homepage/srSignup",
     webImportedScript: `//geodata.solutions/includes/statecity.js`,
+    isLoggedIn: req.body.isLoggedIn,
   });
 });
 
@@ -308,6 +311,7 @@ router.post("/signup/sr", upload.single("profilePicture"), async (req, res) => {
           facebook: signupData.facebook,
           instagram: signupData.instagram,
           twitter: signupData.twitter,
+          isLoggedIn: req.body.isLoggedIn,
         });
         return;
       }
@@ -333,6 +337,7 @@ router.post("/signup/sr", upload.single("profilePicture"), async (req, res) => {
         pageTitle: "Log In",
         script: "homepage/login",
         error: "User is already registered, please Log In!",
+        isLoggedIn: req.body.isLoggedIn,
       });
     }
   } catch (e) {
@@ -345,6 +350,7 @@ router.get("/signup/popa", async (req, res) => {
   res.status(200).render("homepage/popaSignup", {
     pageTitle: "Signup",
     script: "homepage/popaSignup",
+    isLoggedIn: req.body.isLoggedIn,
   });
 });
 
@@ -473,6 +479,7 @@ router.post(
           pageTitle: "Log In",
           script: "homepage/login",
           message: "User is already registered, please Log In!",
+          isLoggedIn: req.body.isLoggedIn,
         });
       }
     } catch (e) {

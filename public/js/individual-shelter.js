@@ -7,6 +7,7 @@
   var successMessage = $('#successMessage');
   var avgReviews = $("#avgReviews");
   var totalReviews = $("#totalReviews");
+  var volunteerForm = $('#volunteerForm');
 
   console.log("form is called");
 
@@ -19,6 +20,7 @@
       reviewError.attr("hidden", false);
       return;
     } 
+    
     var urlGetId = window.location.pathname, linkToId;
     const url = urlGetId.split("/");
 
@@ -94,4 +96,30 @@
     });
     
   });
+
+  volunteerForm.submit(function(event) {
+    event.preventDefault();
+   
+       
+       var urlGetId = window.location.pathname, linkToId;
+       const url = urlGetId.split("/");
+   
+       if (urlGetId.split("/").length == 3) {
+         linkToId = url[2];
+       }
+   
+       var requestConfig = {
+         method: 'POST',
+         url: `/sheltersAndRescue/addVolunteer/${linkToId}`,
+         contentType: 'application/json',
+       };
+   
+       $.ajax(requestConfig).then(function(responseMessage) {
+        
+   
+         location.reload();
+       });
+       
+     
+  })
 })(window.jQuery);

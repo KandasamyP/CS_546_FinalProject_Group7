@@ -19,47 +19,49 @@ const upload = multer({ storage: storage });
 router.get("/", async (req, res) => {
   try {
     if (req.session.user) {
-    
       var email = req.session.user.email;
-    
+
       const shelterUser = await shelterUserData.getPetShelterByEmail(email);
 
-
-     //checking if shelter has available pets
-     if(shelterUser.availablePets.length !=0){
-        try{
-          const shelterAvailablePets = await shelterUserData.getPetsData(shelterUser.availablePets);
+      //checking if shelter has available pets
+      if (shelterUser.availablePets.length != 0) {
+        try {
+          const shelterAvailablePets = await shelterUserData.getPetsData(
+            shelterUser.availablePets
+          );
           shelterUser.availablePetsArray = shelterAvailablePets;
-        }catch(e){
+        } catch (e) {}
+      }
 
-        }
-     }
-
-     //checking if shelter has available pets
-     if(shelterUser.adoptedPets.length !=0){
-        try{
-          const shelterAdoptedPets = await shelterUserData.getPetsData(shelterUser.adoptedPets);
+      //checking if shelter has available pets
+      if (shelterUser.adoptedPets.length != 0) {
+        try {
+          const shelterAdoptedPets = await shelterUserData.getPetsData(
+            shelterUser.adoptedPets
+          );
           shelterUser.adoptedPetsArray = shelterAdoptedPets;
           // for (let i = 0; i < shelterAdoptedPets.length; i++)
           //   console.log(shelterAdoptedPets[i]);
-        }catch(e){
-
-        };
+        } catch (e) {}
       }
 
       //checking if shelter has reviews and retrieving reviewer's name
-      if(shelterUser.reviews.length !=0){
-        try{
-          const shelterDetails = await shelterUserData.getReviews(shelterUser.reviews);
+      if (shelterUser.reviews.length != 0) {
+        try {
+          const shelterDetails = await shelterUserData.getReviews(
+            shelterUser.reviews
+          );
           shelterUser.reviews = shelterDetails;
-        }catch(e){
-
-        }
+        } catch (e) {}
       }
-      res.status(200).render("users/shelterUser", { shelterUser,
-        script: "sheltersProfile",
-      });
-
+      res
+        .status(200)
+        .render("users/shelterUser", {
+          shelterUser,
+          script: "sheltersProfile",
+          pageTitle: "Shelter/Rescue",
+          isLoggedIn: req.body.isLoggedIn,
+        });
     }
   } catch (e) {
     res.status(404).json({ error: "Shelter User not found." });
