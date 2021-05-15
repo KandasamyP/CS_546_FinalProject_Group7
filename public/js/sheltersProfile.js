@@ -10,6 +10,7 @@ const shelterEditPassword = document.getElementById("editPassword");
 const shelterSavePassword = document.getElementById("savePassword");
 const shelterPassword = document.getElementById("shelterPassword");
 
+
 var pathname = window.location.pathname;
 
 function validateShelterUserForm(){
