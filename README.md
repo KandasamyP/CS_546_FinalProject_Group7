@@ -1,21 +1,16 @@
 # CS_546_FinalProject_Group7 (Work in progress)
 
-
-## How to Use
-In the terminal, navigate to the directory containing package.json, and run the following commands:
-- npm install : install all the dependencies for the project
-
-Paste this in Mongo Compass to connect to our database:
-- mongodb+srv://admin:fRrL1vFaU4XcbfD2@getapet.yu3ss.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-- npm start : start the server
-
-Then, navigate to localhost:3000 to experience our site.
-
-If you'd like to log in to an existing account, feel free to log using the following info:
-- https://docs.google.com/document/d/1QQgGwd9KXclpLIRAbEoHp9oQCTzO2nCUW8MQcm-42G8/edit  -- Refer google doc for respective shelter and pet owner login credentials
-
-
 # Pet Adoption (GetAPet)
+
+[Live App Demo](https://get-a-pet.herokuapp.com/)
+
+## Instructions to run App:
+
+- [x] git clone repo to system
+- [x] Configure `mongoConnection.js` file
+- [x] run `npm install`
+- [x] run npm start
+- [x] ENJOY!
 
 ## Team Members (Group 7)
 
@@ -98,6 +93,3 @@ This page will allow users to apply to volunteer at shelters/rescues.<br>
 ### GitHub Repository
 
 [Project Repository](https://github.com/KandasamyP/CS_546_FinalProject_Group7)
-
-
-
