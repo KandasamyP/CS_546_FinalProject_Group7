@@ -1108,7 +1108,7 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
       inputAppearance = [inputAppearance];
     } else if (Array.isArray(inputAppearance)) {
       for (let appearance of inputAppearance) {
-        if (typeof appearance !== "string" || breed.trim().length === 0) {
+        if (typeof appearance !== "string" || appearance.trim().length === 0) {
           res.status(400).render("pets/error", {
             title: "Error",
             error: "Any appearances must be strings!",
