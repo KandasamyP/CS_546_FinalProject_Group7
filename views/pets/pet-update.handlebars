@@ -51,7 +51,7 @@
                 {{#each dogBreeds}}
                 <div class="dropdown-item checkbox">
                     <label>
-                        <input class="breeds" type="checkbox" name="breeds" value="{{this}}" {{prefillCheckboxes ../pet.breeds this}}>{{this}}
+                        <input class="breeds" type="checkbox" name="dogBreeds" value="{{this}}" {{prefillCheckboxes ../pet.breeds this}}>{{this}}
                     </label>
                 </div>
                 {{/each}}
@@ -66,7 +66,7 @@
                 {{#each catBreeds}}
                 <div class="dropdown-item checkbox">
                     <label>
-                        <input class="breeds" type="checkbox" name="breeds" value="{{this}} {{prefillCheckboxes ../pet.breeds this}}">{{this}}
+                        <input class="breeds" type="checkbox" name="catBreeds" value="{{this}}" {{prefillCheckboxes ../pet.breeds this}}>{{this}}
                     </label>
                 </div>
                 {{/each}}
@@ -96,7 +96,7 @@
                 {{#each dogAppearance}}
                 <div class="dropdown-item checkbox">
                     <label>
-                        <input type="checkbox" name="appearance" value="{{this}}" {{prefillCheckboxes ../pet.physicalCharacteristics this}}>{{this}}
+                        <input type="checkbox" name="dogAppearance" value="{{this}}" {{prefillCheckboxes ../pet.physicalCharacteristics this}}>{{this}}
                     </label>
                 </div>
                 {{/each}}
@@ -113,7 +113,7 @@
                 {{#each catAppearance}}
                 <div class="dropdown-item checkbox">
                     <label>
-                        <input type="checkbox" name="appearance" value="{{this}}" {{prefillCheckboxes ../pet.physicalCharacteristics this}}>{{this}}
+                        <input type="checkbox" name="catAppearance" value="{{this}}" {{prefillCheckboxes ../pet.physicalCharacteristics this}}>{{this}}
                     </label>
                 </div>
                 {{/each}}

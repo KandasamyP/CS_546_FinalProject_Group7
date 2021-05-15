@@ -22,6 +22,7 @@ const exportedMethods = {
     adoptionFee,
     filters
   ) {
+
     // If any inputs are missing, the method should throw
     if (
       !petName ||

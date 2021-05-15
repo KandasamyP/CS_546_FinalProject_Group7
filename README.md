@@ -1,6 +1,16 @@
-# CS_546_FinalProject_Group7 (Work in progress 🚧)
+# CS_546_FinalProject_Group7 (Work in progress)
 
 # Pet Adoption (GetAPet)
+
+[Live App Demo](https://get-a-pet.herokuapp.com/)
+
+## Instructions to run App:
+
+- [x] git clone repo to system
+- [x] Configure `mongoConnection.js` file
+- [x] run `npm install`
+- [x] run npm start
+- [x] ENJOY!
 
 ## Team Members (Group 7)
 

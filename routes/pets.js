@@ -770,6 +770,8 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
       // make sure breeds is an array even if one option was chosen
       if (typeof req.body.breeds === "string") {
         breedArray.push(req.body.breeds);
+      } else if (req.body.breeds === undefined) {
+        breedArray = ["Unknown"];
       } else {
         breedArray = req.body.breeds;
       }
@@ -778,19 +780,25 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
       let behaviorsArray = [];
 
       // make sure filters is an array even if one option was chosen
-      if (typeof req.body.appearance === "string") {
-        appearanceArray.push(req.body.appearance);
-      } else {
-        appearanceArray = req.body.appearance;
+      if (req.body.appearance !== undefined) {
+        if (typeof req.body.appearance === "string") {
+          appearanceArray.push(req.body.appearance);
+        } else {
+          appearanceArray = req.body.appearance;
+        }
       }
 
-      if (typeof req.body.behaviors === "string") {
-        behaviorsArray.push(req.body.behaviors);
-      } else {
-        behaviorsArray = req.body.behaviors;
+      if (req.body.behaviors !== undefined) {
+        if (typeof req.body.behaviors === "string") {
+          behaviorsArray.push(req.body.behaviors);
+        } else {
+          behaviorsArray = req.body.behaviors;
+        }
       }
 
-      let filters = appearanceArray.concat(behaviorsArray);
+      let filters = [];
+      
+      filters = appearanceArray.concat(behaviorsArray);
 
       const shelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
 
@@ -1078,10 +1086,25 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
     info.petPictures = imgArray;
 
     let inputAnimalType = req.body.animalType;
-    let inputBreeds = req.body.breeds;
+    let inputBreeds;
+    
+    if (inputAnimalType === "Dog") {
+      inputBreeds = req.body.dogBreeds;
+    } else {
+      inputBreeds = req.body.catBreeds;
+    }
+
     let inputAgeGroups = req.body.ageGroup;
     let inputSex = req.body.sex;
-    let inputAppearance = req.body.appearance;
+
+    let inputAppearance;
+
+    if (inputAnimalType === "Dog") {
+      inputAppearance = req.body.dogAppearance;
+    } else {
+      inputAppearance = req.body.catAppearance;
+    }
+
     let inputBehaviors = req.body.behaviors;
 
     if (inputBreeds === undefined) {
@@ -1120,7 +1143,7 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
       }
     }
 
-    if (inputBehaviors == undefined) {
+    if (inputBehaviors === undefined) {
       inputBehaviors = [];
     } else if (!Array.isArray(inputBehaviors)) {
       inputBehaviors = [inputBehaviors];
