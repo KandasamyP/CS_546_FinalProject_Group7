@@ -75,7 +75,7 @@ function shelterUserProfile(){
 function validateShelterImage(){
   if($("#shelterprofilePicture").val().trim() == "")
   {
-    alert("you must provide photo");
+    alert("You must provide photo");
     return false;
   }
   return true;
