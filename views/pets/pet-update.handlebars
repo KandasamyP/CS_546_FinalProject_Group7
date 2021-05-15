@@ -1,5 +1,5 @@
     <h1>Update {{pet.petName}}</h1>
-    <form method="POST" action="../../update" enctype="multipart/form-data">
+    <form method="POST" action="../../update" id="add-new-pet" enctype="multipart/form-data">
         <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
         <label for="petName">Pet name:</label>
         <input type="text" id="petName" name="petName" value="{{pet.petName}}" required>
@@ -41,7 +41,7 @@
         <input type="radio" id="no" name="availableForAdoption" value="false" {{prefillRadioButton pet.availableForAdoption false}}>
         <label for="no">No</label>
         <br class="dog-chosen cat-chosen">
-        <span class="dog-chosen cat-chosen">Breeds (maximum 2):</span>
+        <span class="dog-chosen cat-chosen">Breeds (maximum 2; defaults to unknown if left empty):</span>
         <div class="dropdown btn-group dog-chosen">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dogBreedButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -86,7 +86,7 @@
         <label for="senior" class="dog-chosen cat-chosen">Senior</label>
         <br class="dog-chosen cat-chosen">
         <span class="dog-chosen">Select anything from this list that describes the pet's
-            appearance:</span>
+            appearance (not required):</span>
         <div class="dropdown btn-group dog-chosen">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dogAppearanceButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,7 +103,7 @@
             </div>
         </div>
         <span class="cat-chosen">Select anything from this list that describes the pet's
-            appearance:</span>
+            appearance (not required):</span>
         <div class="dropdown btn-group cat-chosen">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="catAppearanceButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -121,7 +121,7 @@
         </div>
         <br>
         <br>
-        Select anything from this list that describes the pet's behaviors or lifestyle:
+        Select anything from this list that describes the pet's behaviors or lifestyle (not required):
         <div class="dropdown btn-group">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="behaviorButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
