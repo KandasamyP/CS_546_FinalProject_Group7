@@ -30,14 +30,9 @@ router.get("/", async (req, res) => {
 
     pets.map((pet) => {
       if (pet.biography.length > 100) {
-        pet.biography = `“` + pet.biography.slice(0, 115) + `....”`;
-      }
-    });
-
-    const animalTypeArray = [];
-    pets.filter((pet) => {
-      if (!animalTypeArray.includes(pet.animalType)) {
-        animalTypeArray.push(pet.animalType);
+        pet.biography = `“` + pet.biography.slice(0, 100) + `....”`;
+      } else {
+        pet.biography = `“` + pet.biography.slice(0, 100) + `”`;
       }
     });
 
@@ -57,7 +52,6 @@ router.get("/", async (req, res) => {
       pet: pets,
       petCount: petTotalCount,
       script: "homepage/homepage",
-      animalTypeArray: animalTypeArray,
       isUserVolunteer: isUserVolunteer,
     });
   } catch (e) {
