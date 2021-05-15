@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
     if (req.session.user) {
       var email = req.session.user.email;
 
-    }      
+      const shelterUser = await shelterUserData.getPetShelterByEmail(email);   
      //checking if shelter has available pets
      if(shelterUser.availablePets.length !=0){
         try{
@@ -69,7 +69,7 @@ router.get("/", async (req, res) => {
         pageTitle: "Shelter/Rescue",
         isLoggedIn: req.body.isLoggedIn,
       });
-
+    } 
   } catch (e) {
     res.status(e.status).json({ error: e.error });
     return;
