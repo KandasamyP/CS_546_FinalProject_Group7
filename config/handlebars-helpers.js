@@ -81,7 +81,7 @@ module.exports = {
     if (originalValue === formValue) {
       return "checked";
     } else {
-      return "unchecked";
+      return "";
     }
   },
   prefillCheckboxes: function (originalValues, formValue) {

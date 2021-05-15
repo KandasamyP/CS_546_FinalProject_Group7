@@ -83,7 +83,6 @@ router.get("/pet/:id", async (req, res) => {
 
         userId = userInfo._id;
       } else {
-        console.log(sessionInfo);
         const userInfo = await shelterData.getPetShelterByEmail(
           sessionInfo.email
         );
@@ -126,8 +125,6 @@ router.get("/pet/:id", async (req, res) => {
       }
     }
 
-    //console.log(isUserThisShelter)
-
     res.status(200).render("pets/pets-single", {
       pet: pet,
       physicalCharacteristics: petPhys,
@@ -143,21 +140,43 @@ router.get("/pet/:id", async (req, res) => {
       isLoggedIn: req.body.isLoggedIn,
       script: "pet-single",
     });
+    return;
   } catch (e) {
-    res.status(400).render("pets/error", {
+    res.status(500).render("pets/error", {
       title: "Error",
       error: e,
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
 router.post("/inquire", async (req, res) => {
+  if (!sessionInfo || !sessionInfo.userAuthenticated || sessionInfo.userType !== "popaUser") {
+    res.status(400).render("pets/error", {
+      title: "400 Error",
+      error: "Please sign in as a pet adopter to use this feature.",
+      pageTitle: "Pets",
+      isLoggedIn: req.body.isLoggedIn,
+    });
+    return;
+  }
+
   if (!req.body.user) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "No user supplied.",
+      pageTitle: "Pets",
+      isLoggedIn: req.body.isLoggedIn,
+    });
+    return;
+  }
+
+  if (!req.body.petId) {
+    res.status(400).render("pets/error", {
+      title: "400 Error",
+      error: "No pet id supplied.",
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
@@ -188,6 +207,19 @@ router.post("/inquire", async (req, res) => {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "The user must be a non-empty string.",
+      pageTitle: "Pets",
+      isLoggedIn: req.body.isLoggedIn,
+    });
+    return;
+  }
+
+  if (
+    typeof req.body.petId !== "string" ||
+    req.body.petId.trim().length === 0
+  ) {
+    res.status(400).render("pets/error", {
+      title: "400 Error",
+      error: "The pet id must be a non-empty string.",
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
@@ -244,6 +276,7 @@ router.post("/inquire", async (req, res) => {
     }
 
     res.redirect(`pet/${req.body.petId}`);
+    return;
   } catch (e) {
     res.render("pets/error", {
       title: "Something went wrong!",
@@ -255,6 +288,16 @@ router.post("/inquire", async (req, res) => {
 });
 
 router.post("/corrections", async (req, res) => {
+  if (!sessionInfo || !sessionInfo.userAuthenticated || sessionInfo.userType !== "popaUser") {
+    res.status(400).render("pets/error", {
+      title: "400 Error",
+      error: "Please sign in as a pet adopter to use this feature.",
+      pageTitle: "Pets",
+      isLoggedIn: req.body.isLoggedIn,
+    });
+    return;
+  }
+
   try {
     // check if a thread already exists between these two users
     let thread = await messagesData.getThreadByParticipants([
@@ -321,6 +364,7 @@ router.post("/corrections", async (req, res) => {
     }
 
     res.redirect(`pet/${req.body.petId}`);
+    return;
   } catch (e) {
     res.render("pets/error", {
       title: "Something went wrong!",
@@ -328,6 +372,7 @@ router.post("/corrections", async (req, res) => {
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
@@ -390,6 +435,7 @@ router.post("/search", async (req, res) => {
       });
       return;
     }
+
     if (Array.isArray(req.body.breeds)) {
       for (let breed of req.body.breeds) {
         if (typeof breed !== "string" || breed.trim().length() === 0) {
@@ -604,6 +650,8 @@ router.post("/search", async (req, res) => {
       });
       return;
     }
+
+    // if length is greater than 0 that means the distance was supplied
     if (req.body.distance.length > 0) {
       // input must be an integer
       if (!Number.isInteger(parseFloat(req.body.distance))) {
@@ -689,6 +737,7 @@ router.post("/search", async (req, res) => {
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   } catch (e) {
     res.render("pets/error", {
       title: "Something went wrong!",
@@ -696,6 +745,7 @@ router.post("/search", async (req, res) => {
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
@@ -759,17 +809,20 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
         filters
       );
 
-      return res.redirect(`pets/pet/${newPet._id}`);
+      res.redirect(`/pets/pet/${newPet._id}`);
+      return;
     } else {
-      return res.redirect("/");
+      res.redirect("/");
+      return;
     }
   } catch (e) {
-    return res.render("pets/error", {
+    res.render("pets/error", {
       title: "Something went wrong!",
       error: e,
       pageTitle: "Pets",
-      isLoggedIn: req.body.isLoggedIn,
+      isLoggedIn: req.body.isLoggedIn
     });
+    return;
   }
 });
 
@@ -845,8 +898,10 @@ router.get("/new", async (req, res) => {
         isLoggedIn: req.body.isLoggedIn,
         script: "pet-add",
       });
+      return;
     } else {
       res.redirect("/");
+      return;
     }
   } catch (e) {
     res.render("pets/error", {
@@ -855,12 +910,38 @@ router.get("/new", async (req, res) => {
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
 router.get("/pet/:id/update", async (req, res) => {
   try {
+    if (!req.params.id || typeof req.params.id !== "string" || req.params.id.trim().length === 0) {
+      res.status(404).render("pets/error", {
+        title: "404 Error",
+        error: "No id supplied.",
+        pageTitle: "Pets",
+        isLoggedIn: req.body.isLoggedIn,
+      });
+      return;
+    }
+
+    const sessionInfo = req.session.user;
+
+    // if not logged in or logged in as pet adopter, you can't be on this page!
+    if (!sessionInfo || sessionInfo.userType === "popaUser") {
+      res.redirect(`/pets/pet/${req.params.id}`);
+      return;
+    }
+
+    const thisShelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
     const pet = await petsData.getPetById(req.params.id);
+
+    // if you are not the shelter that manages this pet, you can't be on this page!
+    if (thisShelter._id !== pet.associatedShelter)  {
+      res.redirect(`/pets/pet/${req.params.id}`);
+      return;
+    }
 
     const dogPhysicalCharacteristics = csvsync.parse(
       fs.readFileSync("data/petInformation/dogPhysical.csv")
@@ -912,8 +993,9 @@ router.get("/pet/:id/update", async (req, res) => {
       pet: pet,
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
-      script: "pet-add",
+      script: "pet-add"
     });
+    return;
   } catch (e) {
     res.render("pets/error", {
       title: "Something went wrong!",
@@ -921,58 +1003,53 @@ router.get("/pet/:id/update", async (req, res) => {
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
 router.post("/delete", async (req, res) => {
-  if (
-    !req.body.petId ||
-    typeof req.body.petId !== "string" ||
-    req.body.petId.trim().length === 0
-  ) {
-    res
-      .status(400)
-      .render("pets/error", {
+  try {
+    if (
+      !req.body.petId ||
+      typeof req.body.petId !== "string" ||
+      req.body.petId.trim().length === 0
+    ) {
+      res.status(400).render("pets/error", {
         title: "Error",
         error: "You must supply a pet ID to delete",
         pageTitle: "Pets",
         isLoggedIn: req.body.isLoggedIn,
       });
-    return;
-  }
-
-  if (
-    !req.body.shelterId ||
-    typeof req.body.shelterId !== "string" ||
-    req.body.shelterId.trim().length === 0
-  ) {
-    res
-      .status(400)
-      .render("pets/error", {
+      return;
+    }
+  
+    if (
+      !req.body.shelterId ||
+      typeof req.body.shelterId !== "string" ||
+      req.body.shelterId.trim().length === 0
+    ) {
+      res.status(400).render("pets/error", {
         title: "Error",
         error: "You must supply a shelter ID to delete",
         pageTitle: "Pets",
         isLoggedIn: req.body.isLoggedIn,
       });
+      return;
+    }
 
-    return;
-  }
-
-  try {
     // make sure pet exists
     await petsData.getPetById(req.body.petId);
+    await petsData.delete(req.body.petId, req.body.shelterId);
 
-    const deleted = await petsData.delete(req.body.petId, req.body.shelterId);
-    return res.redirect(`/shelters/${req.body.shelterId}`);
+    res.redirect(`/shelters/${req.body.shelterId}`);
+    return;
   } catch (e) {
-    res
-      .status(404)
-      .render("pets/error", {
-        title: "Error",
-        error: e,
-        pageTitle: "Pets",
-        isLoggedIn: req.body.isLoggedIn,
-      });
+    res.status(404).render("pets/error", {
+      title: "Error",
+      error: e,
+      pageTitle: "Pets",
+      isLoggedIn: req.body.isLoggedIn,
+    });
     return;
   }
 });
@@ -1007,22 +1084,58 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
     let inputAppearance = req.body.appearance;
     let inputBehaviors = req.body.behaviors;
 
-    if (inputBreeds == undefined) {
-      inputBreeds = [];
+    if (inputBreeds === undefined) {
+      inputBreeds = ["Unknown"];
     } else if (!Array.isArray(inputBreeds)) {
       inputBreeds = [inputBreeds];
+    } else if (Array.isArray(inputBreeds)) {
+      for (let breed of inputBreeds) {
+        if (typeof breed !== "string" || breed.trim().length === 0) {
+          res.status(400).render("pets/error", {
+            title: "Error",
+            error: "Any breeds must be strings!",
+            pageTitle: "Pets",
+            isLoggedIn: req.body.isLoggedIn,
+          });
+          return;
+        }
+      }
     }
 
-    if (inputAppearance == undefined) {
+    if (inputAppearance === undefined) {
       inputAppearance = [];
     } else if (!Array.isArray(inputAppearance)) {
       inputAppearance = [inputAppearance];
+    } else if (Array.isArray(inputAppearance)) {
+      for (let appearance of inputAppearance) {
+        if (typeof appearance !== "string" || appearance.trim().length === 0) {
+          res.status(400).render("pets/error", {
+            title: "Error",
+            error: "Any appearances must be strings!",
+            pageTitle: "Pets",
+            isLoggedIn: req.body.isLoggedIn,
+          });
+          return;
+        }
+      }
     }
 
     if (inputBehaviors == undefined) {
       inputBehaviors = [];
     } else if (!Array.isArray(inputBehaviors)) {
       inputBehaviors = [inputBehaviors];
+    } else if (Array.isArray(inputBehaviors)) {
+      for (let behavior of inputBehaviors) {
+        if (typeof behavior !== "string" || behavior.trim().length === 0) {
+          res.status(400).render("pets/error", {
+            title: "Error",
+            error: "Any behaviors must be strings!",
+            pageTitle: "Pets",
+            isLoggedIn: req.body.isLoggedIn,
+          });
+          return;
+        }
+      }
     }
 
     info.animalType = inputAnimalType;
@@ -1040,6 +1153,7 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
     const updatedPet = await petsData.update(req.body.petId, info);
 
     res.redirect(`/pets/pet/${info.petId}`);
+    return;
   } catch (e) {
     res.render("pets/error", {
       title: "Something went wrong!",
@@ -1047,11 +1161,12 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
 router.post("/favorite", async (req, res) => {
-  if (!req.body.favoritedPet) {
+  if (!req.body.favoritedPet || typeof req.body.favoritedPet !== "string" || req.body.favoritedPet.trim().length === 0) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "No pet id supplied.",
@@ -1061,7 +1176,7 @@ router.post("/favorite", async (req, res) => {
     return;
   }
 
-  if (!req.body.userId) {
+  if (!req.body.userId || typeof req.body.userId !== "string" || req.body.userId.trim().length === 0) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "No user id supplied.",
@@ -1071,7 +1186,7 @@ router.post("/favorite", async (req, res) => {
     return;
   }
 
-  if (!req.body.favoriteTrueFalse) {
+  if (!req.body.favoriteTrueFalse || typeof req.body.favoriteTrueFalse !== "string" || req.body.favoriteTrueFalse.trim().length === 0) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "Can't determine if pet is being favorited or unfavorited.",
@@ -1131,6 +1246,7 @@ router.post("/favorite", async (req, res) => {
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
