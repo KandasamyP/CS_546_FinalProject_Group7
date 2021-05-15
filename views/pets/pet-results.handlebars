@@ -1,19 +1,27 @@
 <h1>Here are some adorable pets we found...</h1>
-<main>
-    <ul>
-        {{#each pets}}
-        <div class="card card-width-18">
-            <img class="card-img-top" src="../public/images/pets/{{defaultPic}}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{petName}}</h5>
-                <p class="card-text">{{sex}} | {{ageGroup}}</p>
-                <a href="/pets/pet/{{_id}}" class="btn btn-primary">View {{petName}}</a>
+<br />
+  <div class="row">
+    <div class="card-group">
+      {{#each pets}}
+        <div class="col-sm-4">
+          <div class="card mb-5">
+            <img
+              class="card-img-top"
+              src="../public/images/pets/{{defaultPic}}"
+              alt="Card image cap"
+            />
+            <div class="card-body text-center">
+              <h2 class="card-title">{{petName}}</h2>
+              <h3 class="card-text pet-card-name">{{sex}} | {{ageGroup}}</h3>
+              <p>ZIP Location: {{currentLocation}}</p>
+              <a href="/pets/pet/{{_id}}" class="btn btn-success">View
+                {{petName}}</a>
             </div>
-        </div>
-        {{/each}}
-    </ul>
-</main>
+          </div></div>
+      {{/each}}
+    </div></div>
 {{#unless pets.length}}
-<p class="not-found">We're sorry, but no results were found for that criteria.</p>
+  <p class="not-found">We're sorry, but no results were found for that criteria.</p>
 {{/unless}}
-<a href="/pets" class="search_link">Make another search</a>
+<br />
+<br />

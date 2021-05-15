@@ -1,27 +1,27 @@
-<main>
-    {{error}}
-    <div id="error">
-        <ul id="errorList"></ul>
-    </div>
-    <div id="message">{{{message}}}</div>
-    <form method="POST" id="login-form" action="/login">
-        <label id="emailLabel" for="email">
-            Enter E-Mail:
-            <input type="email" name="email" id="email" autocomplete="on" />
-        </label>
-        <label id="passwordLabel" for="password">
-            Enter Password:
-            <input type="password" name="password" id="password" />
-        </label>
-        <br>
-        <p>Select User Type:</p>
-        <input type="radio" id="srUser" name="userType" value="srUser">
-        <label for="male">Shelter/Rescue</label><br>
-        <input type="radio" id="popaUser" name="userType" value="popaUser">
-        <label for="female">Pet Owner/Pet Adopter</label>
-        <br>
-        <br>
-        <button type="submit">Login</button>
-    </form>
-</main>
-<script src="/public/js/login.js"></script>
+<div id="error">
+  <ul id="errorList"></ul>
+</div>
+
+{{#if error}}
+  <div id="errorFromRoutes">{{error}}</div>
+{{/if}}
+
+<form method="POST" id="login-form" action="/login">
+  <label id="emailLabel" for="email">
+    Enter E-Mail:
+    <input type="email" name="email" id="email" />
+  </label>
+  <label id="passwordLabel" for="password">
+    Enter Password:
+    <input type="password" name="password" id="password" />
+  </label>
+  <br />
+  <p>Select User Type:</p>
+  <input type="radio" id="srUser" name="userType" value="srUser" />
+  <label>Shelter/Rescue</label><br />
+  <input type="radio" id="popaUser" name="userType" value="popaUser" />
+  <label>Pet Owner/Pet Adopter</label>
+  <br />
+  <br />
+  <button type="submit">Login</button>
+</form>

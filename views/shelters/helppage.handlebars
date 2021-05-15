@@ -1,0 +1,47 @@
+<h1 class="helppagetitle">Help Page</h1>
+<div class="row">
+    {{#each helpcarddata}}
+
+
+    <section class="col-lg-4 col-md-4 col-sm-7 col-xs-12">
+        <div class="mx-3 mt-4 card ">
+            <img class="card-img-top" src={{image}} alt="garbage">
+            <div class="card-body">
+                <h2 class="card-title">Name: {{name}}</h2>
+                <p class="card-text">Biography: {{bio}}</p>
+            </div>
+            <div class="card-footer">
+                <p>Address:</p>
+                {{#each address}}
+                <small>{{.}}</small>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+    {{/each}}
+</div><br><br>
+<h3 class="faqtitle">Frequently asked questions (FAQ)</h3><br>
+<div class="container py-3">
+    <div class="row">
+        <div class="col-10 mx-auto">
+            <div class="accordion" id="faqQuestion">
+                {{#each helpfaqdata}}
+                <div class="card">
+                    <div class="card-header p-2">
+                        <h3 class="faqquestion">
+                            {{question}}
+                        </h3>
+                    </div>
+                    <div class="collapse show" data-parent="#faqAnswer">
+                        <div class="card-body">
+                            <b>Answer:</b> {{answer}}
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <!--/row-->
+</div><br><br>
+<!--container-->

@@ -1,73 +1,92 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const axios = require("axios").default;
 
 const data = require("../data");
-const homepageData = data.homepageData;
 const petsData = data.pets;
-
-const path = require("path");
+const homepageData = data.homepageData;
+const petOwnerData = data.petOwnerData;
+const xss = require("xss");
 
 /* required for multer --> */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/images/popaUsers");
+    cb(null, "public/images/users");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // todo find best way to name files if not this. uuid?
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
-
 const upload = multer({ storage: storage });
-/* <-- required for multer */
+
+//Export Router function
+module.exports = router;
 
 // GET '/'
 router.get("/", async (req, res) => {
   try {
     var pets = await petsData.getPetHomepage();
 
-    if (req.cookies.AuthCookie) {
-      res.status(200).render("homepage/homepage", {
-        username: req.cookies.AuthCookie.email,
-        loginSignUp: "hidden",
-        greeting: "show",
-        pet: pets,
-      });
-    } else {
-      res.status(200).render("homepage/homepage", {
-        loginSignUp: "show",
-        greeting: "hidden",
-        pet: pets,
-      });
+    pets.map((pet) => {
+      if (pet.biography.length > 100) {
+        pet.biography = `“` + pet.biography.slice(0, 115) + `....”`;
+      }
+    });
+
+    const animalTypeArray = [];
+    pets.filter((pet) => {
+      if (!animalTypeArray.includes(pet.animalType)) {
+        animalTypeArray.push(pet.animalType);
+      }
+    });
+
+    let isUserVolunteer = false;
+    if (req.session.user && req.session.user.userType === "popaUser") {
+      isUserVolunteer = await petOwnerData.checkVolunteer(
+        req.session.user.email
+      );
     }
+
+    var petTotalCount = await petOwnerData.getPetCount(); //gets the total number of
+    //console.log("Homepage"+petTotalCount);
+    res.status(200).render("homepage/homepage", {
+      defaultTitle: true,
+      isLoggedIn: req.body.isLoggedIn,
+      username: req.body.isLoggedIn ? req.body.userData.email : false,
+      pet: pets,
+      petCount: petTotalCount,
+      script: "homepage/homepage",
+      animalTypeArray: animalTypeArray,
+      isUserVolunteer: isUserVolunteer,
+    });
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-//GET '/profile'
-router.get("/profile", async (req, res) => {
-  if (req.cookies.AuthCookie) {
-    if (req.cookies.AuthCookie.userType === "popaUser") {
-      res.status(200).redirect("/petOwner");
-    }
-  } else {
-    res.status(200).render("homepage/login");
+// GET '/login'
+
+router.get("/login", async (req, res) => {
+  try {
+    res.status(200).render("homepage/login", {
+      pageTitle: "Log In",
+      script: "homepage/login",
+      isLoggedIn: req.body.isLoggedIn,
+    });
+  } catch (e) {
+    res.status(500).json({ message: e });
   }
 });
 
-//GET '/login'
-router.get("/login", async (req, res) => {
-  res.status(200).render("homepage/login");
-});
-
-//POST '/login'
+// POST '/login'
 router.post("/login", async (req, res) => {
   try {
     const logInData = req.body;
 
     function validateEmail(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
 
@@ -106,37 +125,53 @@ router.post("/login", async (req, res) => {
 
   try {
     const logInData = req.body;
+
     const isSuccess = await homepageData.logInUser(logInData);
 
     if (isSuccess) {
-      res.cookie("AuthCookie", {
+      req.session.user = {
         userAuthenticated: true,
         email: logInData.email,
         userType: logInData.userType,
+      };
+      res.cookie("AuthCookie", {
+        userAuthenticated: true,
       });
       res.redirect("/");
+      return;
     } else {
       res.render("homepage/login", {
-        message: "Wrong Username or Password!",
+        error: `Wrong Email-ID or Password!`,
+        pageTitle: "Log In",
+        script: "homepage/login",
+        isLoggedIn: req.body.isLoggedIn,
       });
+      return;
     }
   } catch (e) {
     res.status(e.status).json({ error: e.error });
+    return;
   }
 });
 
-//GET '/signup/sr'
+// GET '/signup/sr'
 router.get("/signup/sr", async (req, res) => {
-  res.status(200).render("homepage/shelter&rescueSignup");
+  res.status(200).render("homepage/srSignup", {
+    pageTitle: "Signup",
+    script: "homepage/srSignup",
+    webImportedScript: `//geodata.solutions/includes/statecity.js`,
+    isLoggedIn: req.body.isLoggedIn,
+  });
 });
 
-//POST '/signup/sr'
-router.post("/signup/sr", async (req, res) => {
+// POST 'signup/sr'
+router.post("/signup/sr", upload.single("profilePicture"), async (req, res) => {
   try {
     const signupData = req.body;
 
     function validateEmail(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
 
@@ -173,14 +208,11 @@ router.post("/signup/sr", async (req, res) => {
       };
     }
 
-    if (
-      signupData.profilePicture === undefined ||
-      signupData.profilePicture.trim() === ""
-    ) {
+    if (req.file.filename === undefined || req.file.filename.trim() === "") {
       throw {
         status: 400,
         error:
-          "Profile Picture public URL not passed - Generated by '/routes/getAPetApi.js'.",
+          "Profile Picture not passed - Generated by '/routes/getAPetApi.js'.",
       };
     }
 
@@ -200,7 +232,10 @@ router.post("/signup/sr", async (req, res) => {
       };
     }
 
-    if (signupData.street === undefined || signupData.street.trim() === "") {
+    if (
+      signupData.streetAddress1 === undefined ||
+      signupData.streetAddress1.trim() === ""
+    ) {
       throw {
         status: 400,
         error:
@@ -242,20 +277,55 @@ router.post("/signup/sr", async (req, res) => {
           "Phone Number not passed in correct format - Generated by '/routes/getAPetApi.js'.",
       };
     }
+
+    try {
+      const { data } = await axios.get(
+        encodeURI(
+          `https://us-street.api.smartystreets.com/street-address?auth-id=33470d7f-96b9-3696-5112-d370eef1e36f&auth-token=FWi7nSCzrbUQmPsX5rGe&street=${signupData.streetAddress1}&street2=${signupData.streetAddress2}&city=${signupData.city}&state=${signupData.state}&zipcode=${signupData.zipCode}`
+        )
+      );
+
+      if (data.length === 0) {
+        res.render("homepage/srSignup", {
+          pageTitle: "Signup",
+          script: "homepage/srSignup",
+          webImportedScript: `//geodata.solutions/includes/statecity.js`,
+          error: `Please check your Zip Code for the address: ${signupData.streetAddress1}, ${signupData.city}, ${signupData.state}`,
+          email: signupData.email,
+          name: signupData.name,
+          biography: signupData.biography,
+          phoneNumber: signupData.phoneNumber,
+          website: signupData.website,
+          facebook: signupData.facebook,
+          instagram: signupData.instagram,
+          twitter: signupData.twitter,
+          isLoggedIn: req.body.isLoggedIn,
+        });
+        return;
+      }
+    } catch (e) {
+      throw {
+        status: 500,
+        error: "Axios call failed '/routes/getAPetApi.js'.",
+      };
+    }
   } catch (e) {
     res.status(e.status).send({ title: "Error", error: e.error });
     return;
   }
-
   try {
     const signupData = req.body;
+    signupData.profilePicture = req.file.filename;
     const newSrUser = await homepageData.addSr(signupData);
 
     if (newSrUser) {
-      res.redirect("/");
+      res.redirect("/login");
     } else {
       res.render("homepage/login", {
-        message: "User is already registered, please Log In!",
+        pageTitle: "Log In",
+        script: "homepage/login",
+        error: "User is already registered, please Log In!",
+        isLoggedIn: req.body.isLoggedIn,
       });
     }
   } catch (e) {
@@ -263,12 +333,16 @@ router.post("/signup/sr", async (req, res) => {
   }
 });
 
-//GET '/signup/popa'
+// GET '/signup/popa'
 router.get("/signup/popa", async (req, res) => {
-  res.status(200).render("homepage/petOwner&petAdopterSignup");
+  res.status(200).render("homepage/popaSignup", {
+    pageTitle: "Signup",
+    script: "homepage/popaSignup",
+    isLoggedIn: req.body.isLoggedIn,
+  });
 });
 
-//POST '/signup/popa'
+// POST 'signup/popa'
 router.post(
   "/signup/popa",
   upload.single("profilePicture"),
@@ -277,7 +351,8 @@ router.post(
       const signupData = req.body;
 
       function validateEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
       }
 
@@ -331,19 +406,57 @@ router.post(
         };
       }
 
-      //Phone Number
-      function validatePhoneNumber(phoneNumber) {
-        const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-        return re.test(String(phoneNumber));
+      function dateChecker(date1, date2 = new Date()) {
+        var date1 = new Date(Date.parse(date1));
+        var date2 = new Date(Date.parse(date2));
+        var ageTime = date2.getTime() - date1.getTime();
+
+        if (ageTime < 0) {
+          return false; //date2 is before date1
+        } else {
+          return true;
+        }
       }
-      if (signupData.phoneNumber) {
-        if (!validatePhoneNumber(signupData.phoneNumber)) {
+
+      if (signupData.dateOfBirth) {
+        if (!dateChecker(signupData.dateOfBirth)) {
           throw {
             status: 400,
             error:
-              "Phone Number not in correct format - Generated by '/routes/getAPetApi.js'.",
+              "DOB cannot be a future date - Generated by '/routes/getAPetApi.js'.",
           };
         }
+      }
+
+      if (req.file.filename === undefined || req.file.filename.trim() === "") {
+        throw {
+          status: 400,
+          error:
+            "Profile Picture not passed - Generated by '/routes/getAPetApi.js'.",
+        };
+      }
+
+      //Phone Number
+      function validatePhoneNumber(phoneNumber) {
+        const re =
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        return re.test(String(phoneNumber));
+      }
+
+      if (signupData.phoneNumber === undefined) {
+        throw {
+          status: 400,
+          error:
+            "Phone Number not passed - Generated by '/routes/getAPetApi.js'.",
+        };
+      }
+
+      if (!validatePhoneNumber(signupData.phoneNumber)) {
+        throw {
+          status: 400,
+          error:
+            "Phone Number not passed in correct format - Generated by '/routes/getAPetApi.js'.",
+        };
       }
 
       function validateZipCode(zipCode) {
@@ -373,7 +486,10 @@ router.post(
         res.redirect("/login");
       } else {
         res.render("homepage/login", {
+          pageTitle: "Log In",
+          script: "homepage/login",
           message: "User is already registered, please Log In!",
+          isLoggedIn: req.body.isLoggedIn,
         });
       }
     } catch (e) {
@@ -382,5 +498,10 @@ router.post(
   }
 );
 
-//Export Router function
-module.exports = router;
+// GET '/logout'
+router.get("/logout", async (req, res) => {
+  req.session.destroy();
+  res.clearCookie("getAPet");
+  res.clearCookie("AuthCookie");
+  res.status(200).redirect("/");
+});

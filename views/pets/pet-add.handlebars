@@ -1,146 +1,241 @@
-<main>
-    <h1>Add new pet</h1>
-    <form method="POST" action="/pets/add" enctype="multipart/form-data">
-        <label for="petName">Pet name:</label>
-        <input type="text" id="petName" name="petName">
-        <br>
-        <label for="animalType">Animal type:</label>
-        <input type="radio" id="dog" name="animalType" value="Dog">
-        <label for="dog">Dog</label>
-        <input type="radio" id="cat" name="animalType" value="Cat">
-        <label for="cat">Cat</label>
-        <br>
-        <label for="petPictures">Pet pictures (maximum 5):</label>
-        <input type="file" id="petPictures" name="petPictures" accept="image/*" multiple>
-        <br>
-        <label for="sex">Sex:</label>
-        <input type="radio" id="female" name="sex" value="Female">
-        <label for="female">Female</label>
-        <input type="radio" id="male" name="sex" value="Male">
-        <label for="male">Male</label>
-        <br>
-        <label for="currentLocation">What zip code is this animal currently located in?</label>
-        <input type="number" id="currentLocation" name="currentLocation" placeholder="e.g. 07030" min="00501"
-            max="99950" required>
-        <br>
-        <label for="adoptionFee">Adoption fee (USD):</label>
-        <input type="number" id="adoptionFee" name="adoptionFee" step="0.01" placeholder="e.g. 200.00" min="0"
-            max="1000" required>
-        <br>
-        <label for="biography">Give us more details about this pet. Do you know its birthday, its parents, its exact
-            breed mix? What does this pet like or dislike? Explain why someone would fall in love with it!</label>
-        <textarea id="biography" name="biography" rows="7" cols="100"></textarea>
-        <br>
-        <label for="availableForAdoption">Is this pet currently adoptable?</label>
-        <input type="radio" id="yes" name="availableForAdoption" value="true">
-        <label for="yes">Yes</label>
-        <input type="radio" id="no" name="availableForAdoption" value="false">
-        <label for="no">No</label>
-        <br class="dog-chosen cat-chosen">
-        <label for="breeds" class="dog-chosen cat-chosen">Breeds (maximum 2):</label>
-        <div class="dropdown btn-group dog-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Breeds
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {{#each dogBreeds}}
-                <div class="dropdown-item checkbox">
-                    <label>
-                        <input class="breeds" id="breeds" type="checkbox" name="breeds" value="{{this}}">{{this}}
-                    </label>
-                </div>
-                {{/each}}
-            </div>
+<h1>Add new pet</h1>
+<form method="POST" action="/pets/add" enctype="multipart/form-data">
+  <label for="petName">Pet name:</label>
+  <input type="text" id="petName" name="petName" required />
+  <br />
+  Animal type:
+  <input type="radio" id="dog" name="animalType" value="Dog" required />
+  <label for="dog">Dog</label>
+  <input type="radio" id="cat" name="animalType" value="Cat" />
+  <label for="cat">Cat</label>
+  <br />
+  <label for="petPictures">Pet pictures (maximum 5):</label>
+  <input
+    type="file"
+    id="petPictures"
+    name="petPictures"
+    accept="image/*"
+    multiple
+    required
+  />
+  <br />
+  Sex:
+  <input type="radio" id="female" name="sex" value="Female" required />
+  <label for="female">Female</label>
+  <input type="radio" id="male" name="sex" value="Male" />
+  <label for="male">Male</label>
+  <br />
+  <label for="currentLocation">What zip code is this animal currently located
+    in?</label>
+  <input
+    type="number"
+    id="currentLocation"
+    name="currentLocation"
+    placeholder="e.g. 07030"
+    min="00501"
+    max="99950"
+    required
+  />
+  <br />
+  <label for="adoptionFee">Adoption fee (USD):</label>
+  <input
+    type="number"
+    id="adoptionFee"
+    name="adoptionFee"
+    step="0.01"
+    placeholder="e.g. 200.00"
+    min="0"
+    max="1000"
+    required
+  />
+  <br />
+  <label for="biography">Give us more details about this pet. Do you know its
+    birthday, its parents, its exact breed mix? What does this pet like or
+    dislike? Explain why someone would fall in love with it!</label>
+  <textarea
+    id="biography"
+    name="biography"
+    rows="7"
+    cols="100"
+    required
+  ></textarea>
+  <br />
+  Is this pet currently adoptable?
+  <input type="radio" id="yes" name="availableForAdoption" value="true" required />
+  <label for="yes">Yes</label>
+  <input type="radio" id="no" name="availableForAdoption" value="false" />
+  <label for="no">No</label>
+  <br class="dog-chosen cat-chosen" />
+  <span class="dog-chosen cat-chosen">Breeds (maximum 2):</span>
+  <div class="dropdown btn-group dog-chosen">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      id="dogBreedButton"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Breeds
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dogBreedButton">
+      {{#each dogBreeds}}
+        <div class="dropdown-item checkbox">
+          <label>
+            <input
+              class="breeds"
+              type="checkbox"
+              name="breeds"
+              value="{{this}}"
+            />{{this}}
+          </label>
         </div>
-        <div class="dropdown btn-group cat-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Breeds
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {{#each catBreeds}}
-                <div class="dropdown-item checkbox">
-                    <label>
-                        <input class="breeds" id="breeds" type="checkbox" name="breeds" value="{{this}}">{{this}}
-                    </label>
-                </div>
-                {{/each}}
-            </div>
+      {{/each}}
+    </div>
+  </div>
+  <div class="dropdown btn-group cat-chosen">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      id="catBreedButton"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Breeds
+    </button>
+    <div class="dropdown-menu" aria-labelledby="catBreedButton">
+      {{#each catBreeds}}
+        <div class="dropdown-item checkbox">
+          <label>
+            <input
+              class="breeds"
+              type="checkbox"
+              name="breeds"
+              value="{{this}}"
+            />{{this}}
+          </label>
         </div>
-        <br class="dog-chosen cat-chosen">
-        <label for="ageGroup" class="dog-chosen cat-chosen">Approximate age group:</label>
-        <input type="radio" id="baby" class="dog-chosen" name="ageGroup" value="Puppy">
-        <label for="baby" class="dog-chosen">Puppy</label>
-        <input type="radio" id="baby" class="cat-chosen" name="ageGroup" value="Kitten">
-        <label for="baby" class="cat-chosen">Kitten</label>
-        <input type="radio" class="dog-chosen cat-chosen" id="young" name="ageGroup" value="Young">
-        <label for="young" class="dog-chosen cat-chosen">Young</label>
-        <input type="radio" class="dog-chosen cat-chosen" id="adult" name="ageGroup" value="Adult">
-        <label for="adult" class="dog-chosen cat-chosen">Adult</label>
-        <input type="radio" class="dog-chosen cat-chosen" id="senior" name="ageGroup" value="Senior">
-        <label for="senior" class="dog-chosen cat-chosen">Senior</label>
-        <br class="dog-chosen cat-chosen">
-        <label for="appearance" class="dog-chosen">Select anything from this list that describes the pet's
-            appearance:</label>
-        <div class="dropdown btn-group dog-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Physical Appearance
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {{#each dogAppearance}}
-                <div class="dropdown-item checkbox">
-                    <label>
-                        <input type="checkbox" name="appearance" value="{{this}}">{{this}}
-                    </label>
-                </div>
-                {{/each}}
-            </div>
+      {{/each}}
+    </div>
+  </div>
+  <br class="dog-chosen cat-chosen" />
+  <span class="dog-chosen cat-chosen">Approximate age group:</span>
+  <input
+    type="radio"
+    id="puppy"
+    class="dog-chosen"
+    name="ageGroup"
+    value="Puppy"
+    required
+  />
+  <label for="puppy" class="dog-chosen">Puppy</label>
+  <input
+    type="radio"
+    id="kitten"
+    class="cat-chosen"
+    name="ageGroup"
+    value="Kitten"
+  />
+  <label for="kitten" class="cat-chosen">Kitten</label>
+  <input
+    type="radio"
+    class="dog-chosen cat-chosen"
+    id="young"
+    name="ageGroup"
+    value="Young"
+  />
+  <label for="young" class="dog-chosen cat-chosen">Young</label>
+  <input
+    type="radio"
+    class="dog-chosen cat-chosen"
+    id="adult"
+    name="ageGroup"
+    value="Adult"
+  />
+  <label for="adult" class="dog-chosen cat-chosen">Adult</label>
+  <input
+    type="radio"
+    class="dog-chosen cat-chosen"
+    id="senior"
+    name="ageGroup"
+    value="Senior"
+  />
+  <label for="senior" class="dog-chosen cat-chosen">Senior</label>
+  <br class="dog-chosen cat-chosen" />
+  <span class="dog-chosen">Select anything from this list that
+    describes the pet's appearance:</span>
+  <div class="dropdown btn-group dog-chosen">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      id="dogAppearanceButton"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Physical Appearance
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dogAppearanceButton">
+      {{#each dogAppearance}}
+        <div class="dropdown-item checkbox">
+          <label>
+            <input type="checkbox" name="appearance" value="{{this}}" />{{this}}
+          </label>
         </div>
-        <label for="appearance" class="cat-chosen">Select anything from this list that describes the pet's
-            appearance:</label>
-        <div class="dropdown btn-group cat-chosen">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Physical Appearance
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {{#each catAppearance}}
-                <div class="dropdown-item checkbox">
-                    <label>
-                        <input type="checkbox" name="appearance" value="{{this}}">{{this}}
-                    </label>
-                </div>
-                {{/each}}
-            </div>
+      {{/each}}
+    </div>
+  </div>
+  <span class="cat-chosen">Select anything from this list that
+    describes the pet's appearance:</span>
+  <div class="dropdown btn-group cat-chosen">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      id="catAppearanceButton"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Physical Appearance
+    </button>
+    <div class="dropdown-menu" aria-labelledby="catAppearanceButton">
+      {{#each catAppearance}}
+        <div class="dropdown-item checkbox">
+          <label>
+            <input type="checkbox" name="appearance" value="{{this}}" />{{this}}
+          </label>
         </div>
-        <br>
-        <br>
-        <label for="appearance">Select anything from this list that describes the pet's behaviors or lifestyle:</label>
-        <div class="dropdown btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Behavior and Lifestyle
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {{#each behavior}}
-                <div class="dropdown-item checkbox">
-                    <label>
-                        <input type="checkbox" name="behaviors" value="{{this}}">{{this}}
-                    </label>
-                </div>
-                {{/each}}
-            </div>
+      {{/each}}
+    </div>
+  </div>
+  <br />
+  <br />
+  Select anything from this list that describes the pet's behaviors or lifestyle:
+  <div class="dropdown btn-group">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      id="behaviorButton"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Behavior and Lifestyle
+    </button>
+    <div class="dropdown-menu" aria-labelledby="behaviorButton">
+      {{#each behavior}}
+        <div class="dropdown-item checkbox">
+          <label>
+            <input type="checkbox" name="behaviors" value="{{this}}" />{{this}}
+          </label>
         </div>
-        <br>
-        <input type="submit" value="Add Pet" />
-    </form>
-    <br>
-    <br>
-    <br>
-</main>
-
-{{!--
-<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script> --}}
-<script src='../../public/js/pet-add.js'></script>
+      {{/each}}
+    </div>
+  </div>
+  <br />
+  <input type="submit" value="Add Pet" />
+</form>
+<br />
+<br />
+<br />

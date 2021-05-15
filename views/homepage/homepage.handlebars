@@ -1,31 +1,49 @@
-<main>
-    <div id="loginAndSignup" {{loginSignUp}}>
-        <button onclick="location.href = '/login'" type="button" class="login">Shelter/Rescue - Log
-            In</button>
-        <br>
-        <br>
-        <button onclick="location.href = '/signup/sr'" type="button" class="signup">Shelter/Rescue - Sign
-            Up</button>
-        <br>
-        <button onclick="location.href = '/signup/popa'" type="button" class="signup">Pet Owner/Adopter -
-            Sign Up</button>
-    </div>
+<div>
+  <h2>
+    {{#if isLoggedIn}}
+      Hello
+      {{username}}!
+    {{/if}}
+    Welcome to GetAPet!
+  </h2>
+  <h3>You can adore all our fur babies below or check the Pet Search above 🐶</h3>
+  <p id="homepagePetCounter" class="text-white bg-dark">Sitewide Pet Adopted
+    Counter:
+    {{petCount}}
+    💖</p>
+  {{#if isUserVolunteer}}<p
+      id="homepageUserVolunteer"
+      class="text-white bg-info"
+    >⭐ VOLUNTEER ⭐</p>
+  {{/if}}
+</div>
 
-    <div id="username" {{greeting}}>
-        <h2>Welcome {{username}}</h2>
-    </div>
-
-    <div id="displayPets">
-        {{#each pet}}
-        <div>
-            <br>
-            <img src="/public/images/pets/{{{petName}}}1.jpg" alt="petPhoto:{{petName}}">
-            Name: {{petName}}<br>
-            Pet Type: {{animalType}}<br>
-            Breed: {{breeds}}<br>
-            Biography: {{biography}}<br>
-            <br>
+<div id="displayPets">
+  <div id="homepagePetCatalouge" class="container">
+    <div class="row">
+      {{#each pet}}
+        <div class="col-md-4 col-sm-6">
+          <div id="homepagePetCard" class="card text-center">
+            <div class="card-block">
+              <img
+                id="homepagePetCardImage"
+                src="../public/images/pets/{{petPhoto}}"
+                alt="{{petName}}-pet-image"
+                class="img-fluid"
+              />
+              <div class="card-title">
+                <h4>{{petName}}</h4>
+              </div>
+              <div id="homepagePetCardBio" class="card-text">{{biography}}</div>
+              <a
+                id="homepagePetCardButton"
+                href="/pets/pet/{{_id}}"
+                class="btn btn-success"
+              >Know More</a>
+            </div>
+          </div>
         </div>
-        {{/each}}
+      {{/each}}
     </div>
-</main>
+  </div>
+</div>

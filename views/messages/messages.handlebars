@@ -1,0 +1,43 @@
+
+    <h1>Messages</h1>
+    <div class="row">
+        <div class="col-4">
+            {{#each thread}}
+            <div class="row message-threads" id="{{this.participants.[1]}}">
+                <div class="list-group-item list-group-item-action">
+                    <div class="d-flex">
+                        <div class="flex-grow-1">
+                            Messages with <span class="font-weight-bold">{{#if ../isUserShelter}}{{this.petOwnerName}}{{else}}{{this.shelterName}}{{/if}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="col-8 list-group-item">
+            <div class="position-relative">
+                <div class="messages-container p-2" id="message-container"{{#if reloaded}}{{else}} hidden{{/if}}>
+                    {{#each thread}}
+                    {{#each this.messages}}
+                    <div class="message-{{ifUserIsSender this.sender ../../userId}} pb-4 {{../this.participants.[1]}} {{ifMessageSent ../../recipient ../this.participants.[1]}}">
+                        <div>
+                            <div class="text-secondary small px-1 text-nowrap message-timestamp">{{formatDate this.timestamp "LLL"}}</div>
+                        </div>
+                        <div class="flex-shrink-1 bg-{{ifUserIsSender this.sender ../../userId}} rounded py-1 px-2 mr-1">
+                            <div class="font-weight-bold mb-1">{{setSenderName this.sender ../../userId ../this.petOwnerName ../this.shelterName ../../isUserShelter}}</div>
+                            {{this.messageText}}
+                        </div>
+                    </div>
+                    {{/each}}
+                    <form id="send-message-form" class="{{this.participants.[1]}} {{ifMessageSent ../recipient this.participants.[1]}} flex-container" method="POST" action="/messages">
+                        <input type="text" id="recipient" name="recipient" value="{{this.participants.[1]}}" hidden>
+                        <label for="type-message"></label>
+                        <textarea id="type-message" name="reply" placeholder="Type a message..." class="fill-width" required></textarea>
+                        <input type="submit" class="btn" value="Send"/>
+                    </form>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>

@@ -1,0 +1,20 @@
+<div id="error">
+  <ul id="errorList"></ul>
+</div>
+<form method="POST" id="feedback-form">
+  <div>
+    <label for="rating">How would you rate our website? (1 being the lowest & 5
+      being the highest)</label><br />
+    <input type="text" id="rating" name="rating" /><br /><br />
+  </div><br />
+  <div class="form-group">
+    <label for="experience">Tell us about your experience.</label>
+    <textarea class="form-control" id="experience" rows="7" name="experience"></textarea>
+  </div><br />
+  {{!-- <div class="form-group" id="successForm">
+    <h3 id="success" hidden>Feedback Sent</h3>
+  </div> --}}
+  <div class="form-group">
+    <button id="submit-button" type="submit" class="btn btn-success">Submit</button>
+  </div>
+</form>

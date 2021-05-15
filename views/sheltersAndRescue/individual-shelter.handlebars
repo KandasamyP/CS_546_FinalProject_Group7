@@ -1,0 +1,273 @@
+<section id="individualShelter">
+    <h1 class="results_page">{{shelterDetails.name}}</h1>
+    <p>{{shelterDetails.biography}}</p>
+    <hr />
+
+    <div class="row rowDetail">
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Email:</label>
+                </span>
+                <span class="col-md-9">
+                    {{shelterDetails.email}}
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Phone:</label>
+                </span>
+                <span class="col-md-9">
+                    {{shelterDetails.phoneNumber}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row rowDetail">
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Location:</label>
+                </span>
+                <span class="col-md-9">
+                    {{#if shelterDetails.location.streetAddress1}}
+                        {{shelterDetails.location.streetAddress1}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.city}}
+                        , {{shelterDetails.location.city}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.stateCode}}
+                        , {{shelterDetails.location.stateCode}}
+                    {{/if}}
+
+                    {{#if shelterDetails.location.zipCode}}
+                        , {{shelterDetails.location.zipCode}}
+                    {{/if}}
+                      
+                    {{#if geoLocation.latitude}}
+                        <iframe src="https://maps.google.com/maps?q={{geoLocation.latitude}},{{geoLocation.longitude}}&z=15&output=embed" width="360" height="270"></iframe>
+                    {{/if}}
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <span class="col-md-3">
+                    <label>Website:</label>
+                </span>
+                <div class="col-md-9">
+                   <a> {{shelterDetails.website}} </a>
+                    <div>{{#if shelterDetails.socialMedia.facebook}}
+                      Facebook: <a> {{shelterDetails.socialMedia.facebook}} </a>
+                    {{/if}}
+                    </div>
+                    <div>
+                    {{#if shelterDetails.socialMedia.instagram}}
+                       Instagram: <a> {{shelterDetails.socialMedia.instagram}} </a> 
+                    {{/if}}
+                    </div>
+                    <div>
+                    {{#if shelterDetails.socialMedia.twitter}}
+                       Twitter: <a> {{shelterDetails.socialMedia.twitter}} </a>
+                    {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+          
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Available Pets for adoption</h1>
+            {{#if availablePet}}
+            <section class="pet-carousel-bg">
+                <div id="carousel-indicators-availablePet" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {{#each availablePet}}
+                            <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
+                                {{/if}}></li>
+                        {{/each}}
+                    </ol>
+                    <div class="carousel-inner">
+                        {{#each availablePet}}
+                            <div class="carousel-item{{#if @first}} active{{/if}}">
+                                {{#each this.petPictures}}
+                                    <img class="img-fluid" src="../../public/images/pets/{{this}}" alt="{{this.petName}}">
+                                {{/each}}
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h2>{{this.petName}}</h2>
+                                    <h3><span class="carouselLabel">Age group:</span> {{this.ageGroup}}; <span class="carouselLabel">SEX: </span> {{this.sex}}</h3>
+                                    <h3> <span class="carouselLabel">Adoption Fee: </span> ${{this.adoptionFee}}</h3>
+                                </div>
+                            </div>                    
+                        {{/each}}
+                    </div>
+                    {{!-- <div class="item">
+                        <h3>{{this.petName}}</h3>
+                        Age group: {{this.ageGroup}}; SEX: {{this.sex}}
+                        <h6>Adoption Fee: {{this.adoptionFee}}</h6>
+                    </div> --}}
+                    <a class="carousel-control-prev" href="#carousel-indicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-indicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </section>
+            {{else}}
+                <h2 class="noShelterPets">No available pets for adoptions !!!</h2>
+            {{/if}}
+        </div>
+    </div>
+
+    <hr />
+     <div class="row">
+        <div class="col-md-7">
+            <h1>Adopted Pets in {{shelterDetails.name}}</h1>
+            {{#if adoptedPet}}
+            <section class="pet-carousel-bg">
+                <div id="carousel-indicators-adoptedPet" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {{#each adoptedPet}}
+                            <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
+                                {{/if}}></li>
+                        {{/each}}
+                    </ol>
+                    <div class="carousel-inner">
+                        {{#each adoptedPet}}
+                            <div class="carousel-item{{#if @first}} active{{/if}}">
+                                {{#each this.petPictures}}
+                                    <img class="img-fluid" src="../../public/images/pets/{{this}}" alt="{{this.petName}}">
+                                {{/each}}
+                                <div class="carousel-caption d-none d-md-block">                              
+                                    <h2>{{this.petName}}</h2>
+                                    <span class="carouselLabel">Age group:</span> {{this.ageGroup}}; <span class="carouselLabel">SEX: </span> {{this.sex}}
+                                    <h3> <span class="carouselLabel">Adopted Fee: </span> ${{this.adoptionFee}}</h3>
+                                </div>
+                            </div>                    
+                        {{/each}}
+                    </div>
+                    {{!-- <div class="item">
+                        <h3>{{this.petName}}</h3>
+                        Age group: {{this.ageGroup}}; SEX: {{this.sex}}
+                        <h6>Adoption Fee: {{this.adoptionFee}}</h6>
+                    </div> --}}
+                    <a class="carousel-control-prev" href="#carousel-indicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-indicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </section>
+            {{else}}
+                <h2 class="noShelterPets">No adopted pet in this shelter !!!</h2>
+            {{/if }}
+
+        </div>
+        {{#if isLoggedIn}}
+        {{#if petOwnerDetails}}
+        <div class="col-md-5">
+            <form class="form-horizontal" id="addReviewForm">
+                <h1>Review Form</h1>
+
+                <fieldset>
+            
+                    <!-- Message body -->
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label class="col-md-3 control-label" for="reviewBody">Your review on this shelter/rescue</label>
+                        </div>
+                        <div class="col-md-8">
+                            <textarea class="form-control" id="reviewBody" name="reviewBody" placeholder="Please enter your review here..." rows="3"></textarea>
+                        </div>
+                    </div>
+
+
+                    <!-- Rating -->
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                    <label class="control-label" for="rating">Your rating</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input class="form-control" type="number" min="0" max="5" id="rating" name="rating"> 
+                    </div>
+                    </div>
+                </fieldset>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9">
+                    <button type="submit" id="addReviewSubmitBtn" class="btn btn-primary btn-md">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+            {{#if petOwnerDetails.isVolunteerCandidate}}
+                <form class="form-horizontal" id="volunteerForm">
+                    <button type="submit" id="volunteerSubmitBtn" class="btn btn-primary btn-md">Click here to volunteer for this shelter!!</button>
+                </form>
+                <div class="reviewSuccess" id="volunteerSuccessMessage" hidden>Your volunteer request sent to shelter, you will be contacted in future release !!!</div>
+            {{/if}}
+
+            <div class="reviewSuccess" id="successMessage" hidden>Your review is added !!</div>
+            <div class="error" id="reviewError" hidden>All input in form is mandatory !!</div>
+        </div>
+        {{/if}}
+        {{/if}}
+    </div>
+   
+
+    <hr>
+    <div class="row" id="individualShelterRating">
+        <div class="col-md-12">
+            <h1>Review Section</h1>
+        </div>
+        <div class="col-md-3">
+            Overall Rating of Shelter
+            <div class="ratings"> <span class="product-rating" id="avgReviews">{{reviewDetail.avgReviews}}</span><span>/5</span>
+                <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                        class="fa fa-star"></i> </div>
+                <div class="rating-text" id="totalReviews"> <span>{{reviewDetail.totalReviews}} reviews</span> </div>
+            </div>
+        </div>
+        <div class="col-md-9">         
+
+            <div id="shelter-review-container">
+                {{#each userReviewDetail}}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>{{this.reviewerName}}</h3>
+                            <div>
+                                <p class="text-left"><span>Rating: {{this.rating}}</span> 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="">{{this.reviewDate}}</p>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="content">{{this.reviewBody}}</p>
+                        </div>
+                    </div>
+                 
+                    <hr/>
+                {{/each}}
+
+            </div>
+
+        </div>
+    </div>
+
+
+</section>
