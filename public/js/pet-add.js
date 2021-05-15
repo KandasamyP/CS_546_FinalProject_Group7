@@ -35,11 +35,14 @@ $(document).ready(function () {
   });
 
   // limit image upload to 5
-  $(function () {
-    $("input[type='submit']").click(function () {
-      if (parseInt($("input[type='file']").get(0).files.length) > 5) {
-        alert("You may upload no more than 5 images.");
-      }
-    });
+  $("#add-new-pet").submit((event) => {
+    if (parseInt($("input[type='file']").get(0).files.length) > 5) {
+      event.preventDefault();
+      alert("You may upload no more than 5 images.");
+      return false;
+    } else {
+      return true;
+    }
   });
+
 });

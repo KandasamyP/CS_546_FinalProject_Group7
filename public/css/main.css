@@ -188,7 +188,7 @@ li.favPets {
   color: #ff0000;
 }
 
-#homepagePetCardButton {
+.homepagePetCardButton {
   position: absolute;
   margin-top: 13px;
   bottom: 10px;
@@ -196,7 +196,7 @@ li.favPets {
   right: 0;
 }
 
-#homepagePetCardImage {
+.homepagePetCardImage {
   padding-top: 5%;
   padding-bottom: 2%;
   width: 18rem;
@@ -204,12 +204,12 @@ li.favPets {
   object-fit: cover;
 }
 
-#homepagePetCard {
+.homepagePetCard {
   width: 20rem;
   height: 26rem;
 }
 
-#homepagePetCardBio {
+.homepagePetCardBio {
   text-align: center;
   padding: 0% 5% 0% 5%;
 }

@@ -246,6 +246,8 @@ const exportedMethods = {
     }
 
     const zips = zipcodes.radius(zip, distance);
+    zips.push(zip); // just in case the module leaves out the actual zip code...
+    
     searchObj.currentLocation = {
       $in: zips,
     };
