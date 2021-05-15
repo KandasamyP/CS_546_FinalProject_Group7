@@ -163,7 +163,9 @@ let exportedMethods = {
     return await this.getShelterById(existingUserData._id);
   },
   async getShelterById(id) {
-
+    if (!ObjectId.isValid(id)) {
+      throw "Request param should be of object id";
+    }
     if (!id) throw "Please provide a proper ID "
     if (typeof id != "string") throw "Please provide a String based ID"
     if (id.trim().length === 0) throw "Input ID cannot be blank"

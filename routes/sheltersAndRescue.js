@@ -41,7 +41,11 @@ router.get("/:id", async (req, res) => {
     return;
   }
 
+
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      throw "Request param should be of object id";
+    }
     const shelter = await sheltersData.getShelterById(req.params.id);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
 
@@ -139,6 +143,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/addReviews/:id", async (req, res) => {
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      throw "Request param should be of object id";
+    }
     const shelter = await sheltersData.updateShelterReviewById(req);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
     for (let i = 0; i < shelter.availablePets.length; ++i) {
@@ -199,14 +206,15 @@ router.post("/addReviews/:id", async (req, res) => {
       res.status(200).json(recentReview);
    
   } catch (e) {
-    console.log("error" + e.status + e.error)
-
     res.status(404).send(e);
   } 
 });
 
 router.post("/addVolunteer/:id", async (req, res) => {
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      throw "Request param should be of object id";
+    }
     const shelter = await sheltersData.updateVolunteerById(req);
     res.status(200).json(shelter);
   } catch (e) {
