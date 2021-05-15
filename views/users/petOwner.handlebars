@@ -31,7 +31,7 @@
                             {{/if}}
                         </div>
                     
-                        <form id="imageForm" method="POST" action="/petOwner/changeProfileImage" enctype="multipart/form-data">
+                        <form id="imageForm" method="POST" action="/petOwner/changeProfileImage" enctype="multipart/form-data" onsubmit="return(validateImage());">
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="profilePicture" class="col-form-label">Choose an image from your computer</label>
