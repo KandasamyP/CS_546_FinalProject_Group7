@@ -1049,7 +1049,7 @@ router.post("/delete", async (req, res) => {
     await petsData.getPetById(req.body.petId);
     await petsData.delete(req.body.petId, req.body.shelterId);
 
-    res.redirect(`/shelters/${req.body.shelterId}`);
+    res.redirect(`/sheltersAndRescue/${req.body.shelterId}`);
     return;
   } catch (e) {
     res.status(404).render("pets/error", {
