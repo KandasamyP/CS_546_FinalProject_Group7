@@ -8,18 +8,40 @@ const shelterEmailId = document.getElementById("email");
 const shelterPasswordForm = document.getElementById("shelterPasswordForm");
 const shelterEditPassword = document.getElementById("editPassword");
 const shelterSavePassword = document.getElementById("savePassword");
-const shelterPassword = document.getElementById("password");
+const shelterPassword = document.getElementById("shelterPassword");
 
 var pathname = window.location.pathname;
 
 function validateShelterUserForm(){
-   
+    const phoneNumberRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;  //regex to check phone Number
+
+    if (!phoneNumberRegex.test($("#phoneNumber").val())) {
+      alert("You must enter a valid Phone Number.");
+      $("#phoneNumber").focus();
+      return false;
+    }
+
+    const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/; //regex to check zipcode
+    if (!zipCodeRegex.test($("#zipCode").val())) {
+      alert("You must enter a valid zip code.");
+      $("#zipCode").focus();
+      return false;
+    }
+    return true;
+}
+
+function validateShelterPassword(){
+  if ($("#shelterPassword").val().trim().length < 6) {
+    alert("You must enter a password with atleast 6 characters.");
+    $("#shelterPassword").focus();
+    return false;
+  }
 }
 
 function shelterUserProfile(){
     window.addEventListener("load", (event) => {
         event.preventDefault();
-        form(shelterUserInfo, true);
+        formShelter(shelterUserInfo, true);
         shelterEditData.disabled = false;
         shelterSaveData.disabled = true;
         shelterEmailId.disabled = true;
@@ -32,7 +54,7 @@ function shelterUserProfile(){
 
       shelterEditData.addEventListener("click", (event) => {
         event.preventDefault();
-        form(shelterUserInfo, false);
+        formShelter(shelterUserInfo, false);
         shelterEmailId.disabled = true;
         shelterEditData.disabled = true;
         shelterSaveData.disabled = false;
@@ -49,20 +71,11 @@ function shelterUserProfile(){
 
 }
 
-function form(formId, value) {
+function formShelter(formId, value) {
     var formData = formId;
     var i;
     for (i = 0; i < formData.length; i++) formData[i].disabled = value;
     // $("#userInfo:input").prop("disabled", true);
-}
-
-function validatePassword(){
-    if ($("#password").val().trim() === ""){
-        alert("You must provide password");
-        $("#password").focus();
-        return false;
-    }
-    return true;
 }
 
 if (pathname === "/shelterUser"){

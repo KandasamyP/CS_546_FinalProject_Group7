@@ -58,7 +58,7 @@ router.get("/:id", async (req, res) => {
       let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
       for (let i = 0; i < shelter.reviews.length; ++i) {
         if(shelter.reviews[i].reviewer) {
-          const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);   
+          const petOwnerInfo = await petOwnerData.getPetOwnerById((shelter.reviews[i].reviewer));   
           userReviewDetail.push({
             rating: shelter.reviews[i].rating,
             reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
@@ -93,12 +93,12 @@ router.get("/:id", async (req, res) => {
         };
       }
       let petOwnerDetails ;
-      if (req.session.user) {
-        var email = req.session.user.email;
-        const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
+      // if (req.session.user) {
+      //   var email = req.session.user.email;
+      //   const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
   
-        petOwnerDetails = petOwner;
-      }
+      //   petOwnerDetails = petOwner;
+      // }
 
     if (shelter.location && shelter.location.zipCode) {
       res.status(200).render("sheltersAndRescue/individual-shelter", {
