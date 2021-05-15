@@ -102,9 +102,6 @@ function validateEmail(email) {
 //returns a petOwner user searches by petOwner Email/Username
 async function getPetOwnerByUserEmail(petOwnerEmail) {
   //check email
-
-
- 
   try{
       if (petOwnerEmail === undefined || petOwnerEmail.trim() === ""){
         throw {
@@ -155,7 +152,7 @@ async function getPetOwnerById(petOwnerId) {
       }
     }
 
-
+    const petOwnerCollection = await petOwnerData();
 
     const petOwnerDetails = await petOwnerCollection.findOne({
       _id: ObjectId(petOwnerId),
@@ -254,7 +251,7 @@ async function updatePetOwner(updatedData) {
   }
   }
 
-}
+
 
 async function updatePetOwnerFeedbackById(req) {
   try{
