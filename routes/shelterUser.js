@@ -22,8 +22,7 @@ router.get("/", async (req, res) => {
   try {
     if (req.session.user) {
       var email = req.session.user.email;
-    
-      const shelterUser = await shelterUserData.getPetShelterByEmail(email);
+
 
      //checking if shelter has available pets
      if(shelterUser.availablePets.length !=0){
@@ -36,10 +35,12 @@ router.get("/", async (req, res) => {
         }
      }
 
-     //checking if shelter has available pets
-     if(shelterUser.adoptedPets.length !=0){
-        try{
-          const shelterAdoptedPets = await shelterUserData.getPetsData(shelterUser.adoptedPets);
+      //checking if shelter has available pets
+      if (shelterUser.adoptedPets.length != 0) {
+        try {
+          const shelterAdoptedPets = await shelterUserData.getPetsData(
+            shelterUser.adoptedPets
+          );
           shelterUser.adoptedPetsArray = shelterAdoptedPets;
           // for (let i = 0; i < shelterAdoptedPets.length; i++)
           //   console.log(shelterAdoptedPets[i]);
@@ -47,13 +48,17 @@ router.get("/", async (req, res) => {
           res.status(e.status).json({ error: e.error });
           return;
         };
+
       }
 
       //checking if shelter has reviews and retrieving reviewer's name
-      if(shelterUser.reviews.length !=0){
-        try{
-          const shelterDetails = await shelterUserData.getReviews(shelterUser.reviews);
+      if (shelterUser.reviews.length != 0) {
+        try {
+          const shelterDetails = await shelterUserData.getReviews(
+            shelterUser.reviews
+          );
           shelterUser.reviews = shelterDetails;
+
         }catch(e){
           res.status(e.status).json({ error: e.error });
           return;
@@ -64,7 +69,7 @@ router.get("/", async (req, res) => {
         pageTitle: "Shelter/Rescue",
         isLoggedIn: req.body.isLoggedIn,
       });
-    }
+
   } catch (e) {
     res.status(e.status).json({ error: e.error });
     return;

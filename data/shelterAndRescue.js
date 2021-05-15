@@ -3,8 +3,7 @@ let { ObjectId } = require("mongodb");
 const shelterAndRescue = mongoCollections.shelterAndRescue;
 const users = mongoCollections.petAdopterAndOwner;
 const userMethods = require("./petOwner");
-
-
+const res = require('express/lib/response');
 
 
 let exportedMethods = {
@@ -224,14 +223,39 @@ let exportedMethods = {
     addReview._id = ObjectId();
 
    shelter.reviews.push(addReview);
-   console.log(shelter);
-
 
     shelter._id = ObjectId(shelter._id);
 
     const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter });
     if (updateInfo.modifiedCount === 0)
       throw "Not able to update db";
+
+    return await this.getShelterById(shelter._id.toString());
+  },
+
+  async updateVolunteerById(req) {
+
+    const sheltersCollection = await shelterAndRescue();
+    let shelter = await this.getShelterById(req.params.id); 
+
+    if (req.session.user) {
+      var email = req.session.user.email;
+      const petOwnerCollection = await users();
+      const petOwner = await userMethods.getPetOwnerByUserEmail(email);
+      if (shelter.volunteerUserId) {
+          for(let i=0; i<shelter.volunteerUserId.length;++i) {
+            if(shelter.volunteerUserId[i].toString() != petOwner._id) {
+              shelter.volunteerUserId.push(ObjectId(petOwner._id));
+            }
+          }
+      } else {
+        shelter.volunteerUserId = [];
+        shelter.volunteerUserId.push(ObjectId(petOwner._id));
+      }
+    }  
+    shelter._id = ObjectId(shelter._id);
+
+    const updateInfo = await sheltersCollection.updateOne({ _id: ObjectId(shelter._id) }, { $set: shelter });
 
     return await this.getShelterById(shelter._id.toString());
   },

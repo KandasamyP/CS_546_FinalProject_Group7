@@ -8,6 +8,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
 require("dotenv").config();
+const xss = require("xss");
 
 //Setup Static Folder and Routes File
 const static = express.static(__dirname + "/public");
@@ -42,6 +43,34 @@ app.use(
     cookie: { maxAge: 6000000 },
   })
 );
+
+//XSS
+app.use("*", (req, res, next) => {
+  // console.log(req.method);
+
+  if (req.body) {
+    // console.log(req.body);
+    Object.keys(req.body).map(function (key, index) {
+      if (typeof req.body[key] === "string") {
+        req.body[key] = xss(req.body[key]);
+      }
+    });
+    // console.log(req.body);
+
+    if (req.params) {
+      // console.log(req.params);
+      Object.keys(req.params).map(function (key, index) {
+        if (typeof req.params[key] === "string") {
+          req.params[key] = xss(req.params[key]);
+        }
+      });
+      // console.log(req.params);
+    }
+    next();
+  } else {
+    next();
+  }
+});
 
 app.use("*", (req, res, next) => {
   if (req.session.user) {
@@ -136,15 +165,15 @@ app.use("/profile", (req, res, next) => {
   }
 });
 
-app.use("/shelters", (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  } else {
-    req.body.userData = req.session.user;
-    // console.log(req.body.userData)
-    next();
-  }
-});
+// app.use("/shelters", (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect("/login");
+//   } else {
+//     req.body.userData = req.session.user;
+//     // console.log(req.body.userData)
+//     next();
+//   }
+// });
 
 app.use("/petOwner", (req, res, next) => {
   if (!req.session.user) {

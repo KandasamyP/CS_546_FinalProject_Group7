@@ -83,7 +83,7 @@ router.get("/pet/:id", async (req, res) => {
 
         userId = userInfo._id;
       } else {
-        console.log(sessionInfo)
+        console.log(sessionInfo);
         const userInfo = await shelterData.getPetShelterByEmail(
           sessionInfo.email
         );
@@ -924,37 +924,62 @@ router.get("/pet/:id/update", async (req, res) => {
   }
 });
 
-
-router.post('/delete', async (req, res) => {
-  if (!req.body.petId || typeof req.body.petId !== "string" || req.body.petId.trim().length === 0) {
-      res.status(400).render("pets/error", {title: "Error", error: 'You must supply a pet ID to delete' });
-      return;
+router.post("/delete", async (req, res) => {
+  if (
+    !req.body.petId ||
+    typeof req.body.petId !== "string" ||
+    req.body.petId.trim().length === 0
+  ) {
+    res
+      .status(400)
+      .render("pets/error", {
+        title: "Error",
+        error: "You must supply a pet ID to delete",
+        pageTitle: "Pets",
+        isLoggedIn: req.body.isLoggedIn,
+      });
+    return;
   }
 
-  if (!req.body.shelterId || typeof req.body.shelterId !== "string" || req.body.shelterId.trim().length === 0) {
-    res.status(400).render("pets/error", {title: "Error", error: 'You must supply a shelter ID to delete' });
+  if (
+    !req.body.shelterId ||
+    typeof req.body.shelterId !== "string" ||
+    req.body.shelterId.trim().length === 0
+  ) {
+    res
+      .status(400)
+      .render("pets/error", {
+        title: "Error",
+        error: "You must supply a shelter ID to delete",
+        pageTitle: "Pets",
+        isLoggedIn: req.body.isLoggedIn,
+      });
 
     return;
   }
 
   try {
+    // make sure pet exists
+    await petsData.getPetById(req.body.petId);
 
-      // make sure pet exists
-      await petsData.getPetById(req.body.petId);
-
-      const deleted = await petsData.delete(req.body.petId, req.body.shelterId);
-      return res.redirect(`/shelters/${req.body.shelterId}`);
+    const deleted = await petsData.delete(req.body.petId, req.body.shelterId);
+    return res.redirect(`/shelters/${req.body.shelterId}`);
   } catch (e) {
-      res.status(404).render("pets/error", {title: "Error", error: e });
-      return;
-
+    res
+      .status(404)
+      .render("pets/error", {
+        title: "Error",
+        error: e,
+        pageTitle: "Pets",
+        isLoggedIn: req.body.isLoggedIn,
+      });
+    return;
   }
 });
 
 // upload.array(name of item from form submission) is required for multer
 router.post("/update", upload.array("petPictures", 5), async (req, res) => {
   try {
-    // todo add authentication check
     const sessionInfo = req.session.user;
     let shelter;
     if (
@@ -1008,7 +1033,8 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
     info.behaviors = inputBehaviors;
     info.petName = req.body.petName;
     info.associatedShelter = shelter._id;
-    info.availableForAdoption = req.body.availableForAdoption == "true" ? true : false;
+    info.availableForAdoption =
+      req.body.availableForAdoption == "true" ? true : false;
     info.adoptionFee = req.body.adoptionFee;
 
     const updatedPet = await petsData.update(req.body.petId, info);
@@ -1056,7 +1082,7 @@ router.post("/favorite", async (req, res) => {
   }
 
   try {
-    const sessionInfo = req.cookies.AuthCookie;
+    const sessionInfo = req.session.user;
     let user;
     if (
       sessionInfo &&
@@ -1065,7 +1091,12 @@ router.post("/favorite", async (req, res) => {
     ) {
       user = await petOwnerData.getPetOwnerByUserEmail(sessionInfo.email);
     } else {
-      res.redirect("/"); // todo redirect or error?
+      res.status(400).render("pets/error", {
+        title: "400 Error",
+        error: "You're not able to add or remove favorites without a pet adopter profile",
+        pageTitle: "Pets",
+        isLoggedIn: req.body.isLoggedIn,
+      });
       return;
     }
 

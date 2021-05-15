@@ -22,7 +22,6 @@ router.get("/", async (req, res) => {
         isUserShelter = true;
       }
 
-      // todo need to check specifically for userType just in case ids overlap
       const threadList = await messagesData.getThreadsByParticipant(
         userInfo._id
       );
@@ -36,8 +35,10 @@ router.get("/", async (req, res) => {
         isLoggedIn: req.body.isLoggedIn,
         script: "messages",
       });
+      return;
     } else {
       res.redirect("/login");
+      return;
     }
   } catch (e) {
     res.render("pets/error", {
@@ -46,6 +47,7 @@ router.get("/", async (req, res) => {
       pageTitle: "Messages",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
@@ -67,10 +69,51 @@ router.post("/", async (req, res) => {
         isUserShelter = true;
       }
 
+      if (!req.body.recipient) {
+        res.render("pets/error", {
+          title: "Something went wrong!",
+          error: "Recipient is missing",
+          pageTitle: "Messages",
+          isLoggedIn: req.body.isLoggedIn,
+        });
+        return;
+      }
+
+      if (!req.body.reply) {
+        res.render("pets/error", {
+          title: "Something went wrong!",
+          error: "Reply is missing",
+          pageTitle: "Messages",
+          isLoggedIn: req.body.isLoggedIn,
+        });
+        return;
+      }
+
+      if (typeof req.body.recipient !== "string" || req.body.recipient.trim().length === 0) {
+        res.render("pets/error", {
+          title: "Something went wrong!",
+          error: "Recipient cannot be empty.",
+          pageTitle: "Messages",
+          isLoggedIn: req.body.isLoggedIn,
+        });
+        return;
+      }
+
+      if (typeof req.body.reply !== "string" || req.body.reply.trim().length === 0) {
+        res.render("pets/error", {
+          title: "Something went wrong!",
+          error: "Reply is missing",
+          pageTitle: "Messages",
+          isLoggedIn: req.body.isLoggedIn,
+        });
+        return;
+      }
+
       const thread = await messagesData.getThreadByParticipants([
         userInfo._id,
         req.body.recipient,
       ]);
+      
       const newMsg = await messagesData.addMessage(
         thread._id,
         userInfo._id,
@@ -80,27 +123,30 @@ router.post("/", async (req, res) => {
       const threadList = await messagesData.getThreadsByParticipant(
         userInfo._id
       );
-      //console.log(JSON.stringify(threadList))
 
       res.status(200).render("messages/messages", {
         thread: threadList,
         userId: userInfo._id,
         reloaded: true,
+        isUserShelter: isUserShelter,
         recipient: req.body.recipient,
         pageTitle: "Messages",
         isLoggedIn: req.body.isLoggedIn,
-        script: "messages",
+        script: "messages"
       });
+      return;
     } else {
       res.redirect("/login");
+      return;
     }
   } catch (e) {
-    res.render("pets/error", {
+    res.status(500).render("pets/error", {
       title: "Something went wrong!",
       error: e,
       pageTitle: "Messages",
       isLoggedIn: req.body.isLoggedIn,
     });
+    return;
   }
 });
 
