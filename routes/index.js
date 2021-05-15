@@ -12,7 +12,7 @@ const constructorMethod = (app) => {
   app.use("/petOwner", petOwnerRoute);
   app.use("/pets", petsRoute);
 
-  app.use("/shelters", shelterRoute);
+ // app.use("/shelters", shelterRoute);
   app.use("/messages", messagesRoute);
   app.use("/sheltersAndRescue", shelterRoute);
   app.use('/helppage', helpPageRoutes);
@@ -20,8 +20,8 @@ const constructorMethod = (app) => {
 
   // All other URLs will return a 404 Error
 
-  app.use("/helppage", helpPageRoutes);
-  app.use("/feedback", feedbackRoutes);
+  // app.use("/helppage", helpPageRoutes);
+  // app.use("/feedback", feedbackRoutes);
   app.use("/shelterUser", shelterUserRoute);
 
   // All other URLs will return a 404 Error

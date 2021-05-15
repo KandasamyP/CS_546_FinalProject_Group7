@@ -31,7 +31,7 @@
                             {{/if}}
                         </div>
                     
-                        <form id="imageForm" method="POST" action="/petOwner/changeProfileImage" enctype="multipart/form-data">
+                        <form id="imageForm" method="POST" action="/petOwner/changeProfileImage" enctype="multipart/form-data" onsubmit="return(validateImage());">
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="profilePicture" class="col-form-label">Choose an image from your computer</label>
@@ -259,7 +259,7 @@
             <div class="card">
                 <p class="card-header cardheadProfile">Volunteer</p>
                 <div class="card-body"> 
-                    <form action = "/petOwner/changeVolunteer" method = "POST" id = "volunteerForm">
+                    <form action = "/petOwner/changeVolunteer" method = "POST" id = "isvolunteerForm">
                            {{#if petOwner.isVolunteerCandidate}}
                                 <p>You are a volunteer.</p>
                                     <button class="btn" id="withdrawVolunteer" type="submit">Withdraw</button>
