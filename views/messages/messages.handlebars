@@ -32,7 +32,7 @@
                     <form id="send-message-form" class="{{this.participants.[1]}} {{ifMessageSent ../recipient this.participants.[1]}} flex-container" method="POST" action="/messages">
                         <input type="text" id="recipient" name="recipient" value="{{this.participants.[1]}}" hidden>
                         <label for="type-message"></label>
-                        <textarea id="type-message" name="reply" placeholder="Type a message..." class="fill-width"></textarea>
+                        <textarea id="type-message" name="reply" placeholder="Type a message..." class="fill-width" required></textarea>
                         <input type="submit" class="btn" value="Send"/>
                     </form>
                     {{/each}}
