@@ -177,6 +177,7 @@
 
         </div>
         {{#if isLoggedIn}}
+        {{#if petOwnerDetails}}
         <div class="col-md-5">
             <form class="form-horizontal" id="addReviewForm">
                 <h1>Review Form</h1>
@@ -222,6 +223,7 @@
             <div class="reviewSuccess" id="successMessage" hidden>Your review is added !!</div>
             <div class="error" id="reviewError" hidden>All input in form is mandatory !!</div>
         </div>
+        {{/if}}
         {{/if}}
     </div>
    
