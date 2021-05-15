@@ -1,6 +1,24 @@
 <div class="user-bg container-fluid">
     <div class="row spacing">
         <div class="container-fluid">
+            {{#if error}}
+                <div class="card errorSection error">
+                    <p>{{error}}</p>
+                </div>
+            {{/if}}
+
+            {{#if alertMessage}}
+                {{!-- <div>
+                    <p id = "alertBox" hidden>{{alertMessage}}</p>
+                </div> --}}
+                <div class="card success">
+                    <p>{{alertMessage}}</p>
+                </div>
+            {{else}}  
+                {{!-- <div>
+                    <p id ="alertBox" hidden></p>
+                </div>   --}}
+            {{/if}}
             <div class="card">
                 <p class="card-header cardheadProfile" id="user-photo">Profile Picture</p>
                 <div class="card-body">
@@ -26,9 +44,11 @@
                                 </div>
                              </div>       
                         </form> 
-                         {{!-- <div class="form-group row">
-                             <div class="col-sm-12">
-                                 <p>{{alertMessage}}</p>
+                        {{!-- <div class="form-group row">
+                             <div id= "alertMessageDiv" class="col-sm-12">
+                                 {{#if alertMessage}}
+                                    <p>{{alertMessage}}</p>
+                                 {{/if}}     
                              </div>
                         </div>  --}}
 
