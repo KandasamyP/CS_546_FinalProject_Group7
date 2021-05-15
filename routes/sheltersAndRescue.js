@@ -181,7 +181,7 @@ router.post("/addReviews/:id", async (req, res) => {
           avgReviews: avgReviews.toFixed(1),
           totalReviews: shelter.reviews.length,
         };
-        const petOwnerInfo = await petOwnerData.updateShelterReviewsGiven(shelter.reviews[shelter.reviews.length - 1].reviewer, shelter.reviews[shelter.reviews.length - 1]._id);
+       const petOwnerInfo = await petOwnerData.updateShelterReviewsGiven(shelter.reviews[shelter.reviews.length - 1].reviewer, shelter.reviews[shelter.reviews.length - 1]._id);
       } else {
         reviewDetail = {
           avgReviews: 0,
