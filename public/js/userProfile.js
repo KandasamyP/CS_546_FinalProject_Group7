@@ -51,35 +51,7 @@ function userProfile() {
   }
 }
 
-$(function () {
-  $("input[type='submit']").click(function () {
-    if (parseInt($("input[type='file']").get(0).files.length) > 5) {
-      alert("You may upload no more than 5 images.");
-    }
-  });
-});
-
 function validateImage(){
-  // const imageFile = document.getElementById("imageForm");
-  // console.log((parseInt(imageFile.get(0).files.length)));
-  // if(imageFile.value == "") {
-  //   console.log(imageFile.value);
-  //   alert("You must provide image file");
-  //   $("#profilePicture").focus();
-  //   return false;
-  // }
-  // console.log("validateImage called");
-  
-  // $("#imageForm").submit((event)=>{
-  //   event.preventDefault();
-  //   if (parseInt($("input[type='file']").get(0).files.length) == 0) {
-  //     alert("You may upload photo");
-  //     return false;
-  //   }else{
-  //     return true;
-  //   }
-  // });
-
   const profilePicture = document.getElementById("profilePicture");
   if (profilePicture.value.trim() == ""){
     alert("You must provide photo");
