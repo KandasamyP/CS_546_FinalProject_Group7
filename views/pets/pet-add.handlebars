@@ -3,7 +3,7 @@
   <label for="petName">Pet name:</label>
   <input type="text" id="petName" name="petName" required />
   <br />
-  <label for="animalType">Animal type:</label>
+  Animal type:
   <input type="radio" id="dog" name="animalType" value="Dog" required />
   <label for="dog">Dog</label>
   <input type="radio" id="cat" name="animalType" value="Cat" />
@@ -19,7 +19,7 @@
     required
   />
   <br />
-  <label for="sex">Sex:</label>
+  Sex:
   <input type="radio" id="female" name="sex" value="Female" required />
   <label for="female">Female</label>
   <input type="radio" id="male" name="sex" value="Male" />
@@ -60,37 +60,30 @@
     required
   ></textarea>
   <br />
-  <label for="availableForAdoption">Is this pet currently adoptable?</label>
-  <input
-    type="radio"
-    id="yes"
-    name="availableForAdoption"
-    value="true"
-    required
-  />
+  Is this pet currently adoptable?
+  <input type="radio" id="yes" name="availableForAdoption" value="true" required />
   <label for="yes">Yes</label>
   <input type="radio" id="no" name="availableForAdoption" value="false" />
   <label for="no">No</label>
   <br class="dog-chosen cat-chosen" />
-  <label for="breeds" class="dog-chosen cat-chosen">Breeds (maximum 2):</label>
+  <span class="dog-chosen cat-chosen">Breeds (maximum 2):</span>
   <div class="dropdown btn-group dog-chosen">
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
-      id="dropdownMenuButton"
+      id="dogBreedButton"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
     >
       Breeds
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu" aria-labelledby="dogBreedButton">
       {{#each dogBreeds}}
         <div class="dropdown-item checkbox">
           <label>
             <input
               class="breeds"
-              id="breeds"
               type="checkbox"
               name="breeds"
               value="{{this}}"
@@ -104,20 +97,19 @@
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
-      id="dropdownMenuButton"
+      id="catBreedButton"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
     >
       Breeds
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu" aria-labelledby="catBreedButton">
       {{#each catBreeds}}
         <div class="dropdown-item checkbox">
           <label>
             <input
               class="breeds"
-              id="breeds"
               type="checkbox"
               name="breeds"
               value="{{this}}"
@@ -128,24 +120,24 @@
     </div>
   </div>
   <br class="dog-chosen cat-chosen" />
-  <label for="ageGroup" class="dog-chosen cat-chosen">Approximate age group:</label>
+  <span class="dog-chosen cat-chosen">Approximate age group:</span>
   <input
     type="radio"
-    id="baby"
+    id="puppy"
     class="dog-chosen"
     name="ageGroup"
     value="Puppy"
     required
   />
-  <label for="baby" class="dog-chosen">Puppy</label>
+  <label for="puppy" class="dog-chosen">Puppy</label>
   <input
     type="radio"
-    id="baby"
+    id="kitten"
     class="cat-chosen"
     name="ageGroup"
     value="Kitten"
   />
-  <label for="baby" class="cat-chosen">Kitten</label>
+  <label for="kitten" class="cat-chosen">Kitten</label>
   <input
     type="radio"
     class="dog-chosen cat-chosen"
@@ -171,20 +163,20 @@
   />
   <label for="senior" class="dog-chosen cat-chosen">Senior</label>
   <br class="dog-chosen cat-chosen" />
-  <label for="appearance" class="dog-chosen">Select anything from this list that
-    describes the pet's appearance:</label>
+  <span class="dog-chosen">Select anything from this list that
+    describes the pet's appearance:</span>
   <div class="dropdown btn-group dog-chosen">
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
-      id="dropdownMenuButton"
+      id="dogAppearanceButton"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
     >
       Physical Appearance
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu" aria-labelledby="dogAppearanceButton">
       {{#each dogAppearance}}
         <div class="dropdown-item checkbox">
           <label>
@@ -194,20 +186,20 @@
       {{/each}}
     </div>
   </div>
-  <label for="appearance" class="cat-chosen">Select anything from this list that
-    describes the pet's appearance:</label>
+  <span class="cat-chosen">Select anything from this list that
+    describes the pet's appearance:</span>
   <div class="dropdown btn-group cat-chosen">
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
-      id="dropdownMenuButton"
+      id="catAppearanceButton"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
     >
       Physical Appearance
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu" aria-labelledby="catAppearanceButton">
       {{#each catAppearance}}
         <div class="dropdown-item checkbox">
           <label>
@@ -219,20 +211,19 @@
   </div>
   <br />
   <br />
-  <label for="behaviors">Select anything from this list that describes the pet's
-    behaviors or lifestyle:</label>
+  Select anything from this list that describes the pet's behaviors or lifestyle:
   <div class="dropdown btn-group">
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
-      id="dropdownMenuButton"
+      id="behaviorButton"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
     >
       Behavior and Lifestyle
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu" aria-labelledby="behaviorButton">
       {{#each behavior}}
         <div class="dropdown-item checkbox">
           <label>

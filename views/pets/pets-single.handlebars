@@ -30,7 +30,7 @@
         {{/if}}
         {{/if}}
         <br>
-        <section class="pet-carousel-bg w-100">
+        <div class="pet-carousel-bg w-100">
             <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     {{#each pet.petPictures}}
@@ -54,7 +54,7 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-        </section>
+        </div>
         <br>
         <div class="card-deck">
             <div class="card text-center">
@@ -80,7 +80,7 @@
                     <div class="card-body">
                         <p>Somewhere in {{pet.currentLocation}}</p>
                         <p class="small">This is the general location where the pet is currently being cared for. Please message {{shelter.name}} for more information.</p>
-                        <iframe src="https://maps.google.com/maps?q={{latLong}}&z=15&output=embed" width="360" height="270" frameborder="0" style="border:0"></iframe>                        
+                        <iframe src="https://maps.google.com/maps?q={{latLong}}&z=15&output=embed" width="360" height="270" style="border:0"></iframe>                        
                     </div>
                 </div>
             </div>
@@ -116,12 +116,13 @@
     </div>
     <br>
     <h2>Are you interested in this pet? Let {{shelter.name}} know!</h2>
+    {{#if pet.availableForAdoption}}
     {{#if isAuthenticated}}
     <form id="send-message-form" method="POST" action="/pets/inquire">
-        <input type="hidden" id="recipient" name="recipient" value="{{shelter._id}}">
-        <input type="hidden" id="user" name="user" value="{{userId}}">
-        <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
-        <textarea id="type-message" class="form-control" name="reply"class="fill-width">Hello! I'm interested in learning more about {{pet.petName}}.</textarea>
+        <input type="hidden" id="messageRecipient" name="recipient" value="{{shelter._id}}">
+        <input type="hidden" id="messageUser" name="user" value="{{userId}}">
+        <input type="hidden" id="messagePetId" name="petId" value="{{pet._id}}">
+        <textarea id="type-message" class="form-control fill-width" name="reply" required>Hello! I'm interested in learning more about {{pet.petName}}.</textarea>
         <br>
         <div class="text-center">
             <input type="submit" class="btn btn-success" value="Inquire"/>
@@ -136,12 +137,12 @@
     <h3>You don't need to select everything; only what you think needs to change!</h3>
     <form id="send-corrections" method="POST" action="/pets/corrections">
         <div class="dropdown btn-group">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-primary dropdown-toggle" type="button" id="addBreeds"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Add Breeds
             </button>
             {{#if dropdownData.animalIsDog}}
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="addBreeds">
                 {{#each dropdownData.dogBreeds}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -151,7 +152,7 @@
                 {{/each}}
             </div>
             {{else}}
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="addBreeds">
                 {{#each dropdownData.catBreeds}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -163,11 +164,11 @@
             {{/if}}
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-primary dropdown-toggle" type="button" id="correctSex"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Correct Sex
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="correctSex">
                 <div class="dropdown-item checkbox">
                     <label>
                         <input type="checkbox" class="correctSex" name="correctSex" value="Female">Female
@@ -181,11 +182,11 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-primary dropdown-toggle" type="button" id="correctAge"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Correct Age
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="correctAge">
                 {{#if dropdownData.animalIsDog}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -217,12 +218,12 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-primary dropdown-toggle" type="button" id="addAppearance"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Add Physical Appearance
             </button>
             {{#if dropdownData.animalIsDog}}
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="addAppearance">
                 {{#each dropdownData.dogPhysicalCharacteristics}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -232,7 +233,7 @@
                 {{/each}}
             </div>
             {{else}}
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="addAppearance">
                 {{#each dropdownData.catPhysicalCharacteristics}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -244,11 +245,11 @@
             {{/if}}
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-primary dropdown-toggle" type="button" id="addBehavior"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Add Behaviors and Lifestyle
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="addBehavior">
                 {{#each dropdownData.behaviors}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -260,11 +261,11 @@
         </div>
         <br><br>
         <div class="dropdown btn-group">
-            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-danger dropdown-toggle" type="button" id="removeBreeds"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Remove Breeds
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="removeBreeds">
                 {{#each pet.breeds}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -275,11 +276,11 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-danger dropdown-toggle" type="button" id="removeAppearance"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Remove Physical Appearance
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="removeAppearance">
                 {{#each physicalCharacteristics}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -290,11 +291,11 @@
             </div>
         </div>
         <div class="dropdown btn-group">
-            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-danger dropdown-toggle" type="button" id="removeBehavior"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Remove Behaviors and Lifestyle
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="removeBehavior">
                 {{#each otherFilters}}
                 <div class="dropdown-item checkbox">
                     <label>
@@ -304,15 +305,18 @@
                 {{/each}}
             </div>
         </div>
-        <input type="hidden" id="recipient" name="recipient" value="{{shelter._id}}">
-        <input type="hidden" id="user" name="user" value="{{userId}}">
-        <input type="hidden" id="petName" name="petName" value="{{pet.petName}}">
-        <input type="hidden" id="petId" name="petId" value="{{pet._id}}">
+        <input type="hidden" id="correctionRecipient" name="recipient" value="{{shelter._id}}">
+        <input type="hidden" id="correctionUser" name="user" value="{{userId}}">
+        <input type="hidden" id="correctionPetName" name="petName" value="{{pet.petName}}">
+        <input type="hidden" id="CorrectionpetId" name="petId" value="{{pet._id}}">
         <br>
         <br>
         <div class="text-center">
             <input type="submit" class="btn btn-success" value="Suggest Edits"/>
         </div>
     </form>
+    {{/if}}
+    {{else}}
+    <h3>We're sorry, but this pet is no longer available for adoption!</h3>
     {{/if}}
     <br><br>

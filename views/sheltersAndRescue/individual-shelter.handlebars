@@ -87,7 +87,7 @@
             <h1>Available Pets for adoption</h1>
             {{#if availablePet}}
             <section class="pet-carousel-bg">
-                <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
+                <div id="carousel-indicators-availablePet" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {{#each availablePet}}
                             <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
@@ -135,7 +135,7 @@
             <h1>Adopted Pets in {{shelterDetails.name}}</h1>
             {{#if adoptedPet}}
             <section class="pet-carousel-bg">
-                <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
+                <div id="carousel-indicators-adoptedPet" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {{#each adoptedPet}}
                             <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
@@ -177,6 +177,7 @@
 
         </div>
         {{#if isLoggedIn}}
+        {{#if petOwnerDetails}}
         <div class="col-md-5">
             <form class="form-horizontal" id="addReviewForm">
                 <h1>Review Form</h1>
@@ -222,6 +223,7 @@
             <div class="reviewSuccess" id="successMessage" hidden>Your review is added !!</div>
             <div class="error" id="reviewError" hidden>All input in form is mandatory !!</div>
         </div>
+        {{/if}}
         {{/if}}
     </div>
    
