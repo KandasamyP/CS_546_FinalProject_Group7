@@ -90,7 +90,7 @@
                 <div id="carousel-indicators-availablePet" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {{#each availablePet}}
-                            <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
+                            <li data-target="#carousel-indicators-availablePet" data-slide-to="{{@index}}" {{#if @first}} class="active"
                                 {{/if}}></li>
                         {{/each}}
                     </ol>
@@ -113,11 +113,11 @@
                         Age group: {{this.ageGroup}}; SEX: {{this.sex}}
                         <h6>Adoption Fee: {{this.adoptionFee}}</h6>
                     </div> --}}
-                    <a class="carousel-control-prev" href="#carousel-indicators" role="button" data-slide="prev">
+                    <a class="carousel-control-prev" href="#carousel-indicators-availablePet" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </a>
-                    <a class="carousel-control-next" href="#carousel-indicators" role="button" data-slide="next">
+                    <a class="carousel-control-next" href="#carousel-indicators-availablePet" role="button" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -138,7 +138,7 @@
                 <div id="carousel-indicators-adoptedPet" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {{#each adoptedPet}}
-                            <li data-target="#carousel-indicators" data-slide-to="{{@index}}" {{#if @first}} class="active"
+                            <li data-target="#carousel-indicators-adoptedPet" data-slide-to="{{@index}}" {{#if @first}} class="active"
                                 {{/if}}></li>
                         {{/each}}
                     </ol>
@@ -161,11 +161,11 @@
                         Age group: {{this.ageGroup}}; SEX: {{this.sex}}
                         <h6>Adoption Fee: {{this.adoptionFee}}</h6>
                     </div> --}}
-                    <a class="carousel-control-prev" href="#carousel-indicators" role="button" data-slide="prev">
+                    <a class="carousel-control-prev" href="#carousel-indicators-adoptedPet" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </a>
-                    <a class="carousel-control-next" href="#carousel-indicators" role="button" data-slide="next">
+                    <a class="carousel-control-next" href="#carousel-indicators-adoptedPet" role="button" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
