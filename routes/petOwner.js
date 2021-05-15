@@ -31,7 +31,8 @@ router.get("/", async (req, res) => {
           );
           petOwner.shelterReviewsGivenArray = shelterReviewsInfo;
         } catch (e) {
-          //res.status(500).json({ error: "Internal server error." });
+          res.status(e.status).send({title: "Error", error: e.error});
+          return;
         }
       }
 
@@ -43,7 +44,8 @@ router.get("/", async (req, res) => {
           );
           petOwner.favoritedPetsArray = userFavoritePetsInfo;
         } catch (e) {
-          //res.status(500).json({error: "Internal server error"});
+          res.status(e.status).send({title: "Error", error: e.error});
+          return;
         }
       }
 
@@ -55,7 +57,7 @@ router.get("/", async (req, res) => {
       });
     }
   } catch (e) {
-    res.status(404).json({ error: "User not found." });
+    res.status(e.status).send({title: "Error", error: e.error});
     return;
   }
 });
@@ -103,14 +105,19 @@ router.post("/changePassword", async (req, res) => {
     let plainTextPassword = req.body.password;
     // console.log(plainTextPassword);
     if (!plainTextPassword || plainTextPassword.trim() === "") {
-      throw "Password must be provided";
+      throw {status: 400, error: "Password must be provided"} ;
     }
+
+    if(plainTextPassword.trim().length < 6){
+      throw {status: 404, error: "Password must contain at least 6 characters."};
+    }
+
     let email = req.body.userData.email;
     let existingUserData;
     try {
       existingUserData = await petOwnerData.getPetOwnerByUserEmail(email);
     } catch (e) {
-      res.status(404).json({ error: "user not found" });
+      res.status(e.status).send({error: e.error});
       return;
     }
     try {
@@ -138,14 +145,16 @@ router.post("/changePassword", async (req, res) => {
       });
     }
   } catch (e) {
-    res.status(500).json({ error: "Internal server error." });
+    res.status(e.status).send({title: "Error", error: e.error});
+    return;
   }
 });
 
 //handles user info changes
 router.post("/", async (req, res) => {
   const petOwnerInfo = req.body;
-  // console.log("PetOwner Data from form");
+  //*****************************check petOwnerInfo fields *******************************//  
+  
   // console.log(petOwnerInfo);
   var email = req.body.userData.email;
 
@@ -157,7 +166,7 @@ router.post("/", async (req, res) => {
     res.status(404).json({ error: "user not found" });
     return;
   }
-  // console.log("existingData");
+
   // console.log(existingUserData);
   let updatedData = {};
   //checking if data was updated
@@ -191,8 +200,6 @@ router.post("/", async (req, res) => {
   if (existingUserData.biography != petOwnerInfo.biography) {
     updatedData.biography = petOwnerInfo.biography;
   }
-  // console.log("updateData");
-  // console.log(updatedData);
   //if user updates any data, calling db function to update it in DB
   if (Object.keys(updatedData).length != 0) {
     try {
@@ -205,7 +212,8 @@ router.post("/", async (req, res) => {
         script: "userProfile",
       });
     } catch (e) {
-      res.status(500).json({ error: e });
+      res.status(e.status).send({title: "Error", error: e.error});
+      return;
     }
   } else {
     //user did not update any data. calling db function to get the existing data
@@ -221,7 +229,8 @@ router.post("/", async (req, res) => {
         script: "userProfile",
       });
     } catch (e) {
-      res.status(404).json({ error: "User not found." });
+      res.status(e.status).send({title: "Error", error: e.error});
+      return;
     }
   }
 });
@@ -229,27 +238,33 @@ router.post("/", async (req, res) => {
 //updates the status of isVolunteerCandidate field
 router.post("/changeVolunteer", async(req,res)=>{
   try{
-   
+    
+    if (!req.body.status) { throw {status:400, error: "volunteer status must be provided."} };
+
     let isVolunteerStatus = req.body.status;
-   
+     
     let email = req.body.userData.email;
     let existingUserData;
     try {
         existingUserData = await petOwnerData.getPetOwnerByUserEmail(email);
     } catch (e) {
-        res.status(404).json({error: "user not found"});
+        res.status(e.status).send({title: "Error", error: e.error});
         return;
     }
 
     try{
-
       const petOwner = await petOwnerData.updateVolunteerStatus(existingUserData._id,isVolunteerStatus);
-      res.status(200).render("users/petOwner", { petOwner });
+      res.status(200).render("users/petOwner", { petOwner,
+        pageTitle: "Pet Owner",
+        isLoggedIn: req.body.isLoggedIn,
+        script: "userProfile", });
     }catch(e){
-      res.status(404).json({ error: "User not found. Routes/petOwner" });
+      res.status(e.status).send({title: "Error", error: e.error});
+      return;
     }
   }catch(e){
-    res.status(500).json({error: "Internal server error."});
+    res.status(e.status).send({title: "Error", error: e.error});
+    return;
   }
 });
 
