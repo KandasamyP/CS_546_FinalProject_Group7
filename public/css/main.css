@@ -179,7 +179,8 @@ li.favPets {
   background-color: #0072ee;
 }
 
-.link-on-pet-page, .reviewSuccess {
+.link-on-pet-page,
+.reviewSuccess {
   color: #008a00;
 }
 
@@ -213,9 +214,15 @@ li.favPets {
   padding-top: 5px;
 }
 
-#homepagePetCounter {
+#homepagePetCounter,
+#homepageUserVolunteer {
   display: inline-block;
   padding: 10px 10px 10px 10px;
+}
+
+#homepageUserVolunteer {
+  text-align: center;
+  font-weight: bold;
 }
 
 #srSignup {
@@ -241,11 +248,6 @@ li.favPets {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   padding-top: 15px;
   color: #d8000c;
-}
-
-body {
-  /* Margin bottom by footer height */
-  /* margin-bottom: 60px; */
 }
 
 .footer {
@@ -310,5 +312,9 @@ body {
 }
 .carouselLabel, .noShelterPets {
   color: #ffa500;
+}
+
+#volunteerForm {
+  margin-top: 50px;
 }
 

@@ -6,6 +6,28 @@ const petOwnerData = mongoCollections.petOwner;
 const shelterAndRescueData = mongoCollections.shelterAndRescue;
 const petData = mongoCollections.pets;
 
+//Check if user is volunteer
+async function checkVolunteer(emailID) {
+  try {
+    if (emailID === undefined || emailID.trim() === "") {
+      throw "Email ID Not passed";
+    }
+  } catch (e) {
+    throw e;
+  }
+
+  try {
+    const petOwnerCollection = await petOwnerData();
+
+    let petOwnerDetails = await petOwnerCollection.findOne({
+      email: emailID,
+    });
+    return petOwnerDetails.isVolunteerCandidate;
+  } catch (e) {
+    throw "Cannot check if volunteer";
+  }
+}
+
 // //creates a petOwner user
 async function addPetOwner(
   profilePicture,
@@ -71,9 +93,12 @@ async function getPetOwnerByUserEmail(petOwnerEmail) {
   //check email
   const petOwnerCollection = await petOwnerData();
 
-  let petOwnerDetails = await petOwnerCollection.findOne({ email: petOwnerEmail });
+  let petOwnerDetails = await petOwnerCollection.findOne({
+    email: petOwnerEmail,
+  });
 
-  if (petOwnerDetails == null || !petOwnerDetails) throw "User not found. data/petOwner getbyemail";
+  if (petOwnerDetails == null || !petOwnerDetails)
+    throw "User not found. data/petOwner getbyemail";
 
   // return _id as string
   petOwnerDetails._id = petOwnerDetails._id.toString();
@@ -94,7 +119,8 @@ async function getPetOwnerById(petOwnerId) {
     _id: ObjectId(petOwnerId),
   });
 
-  if (petOwnerDetails == null || !petOwnerDetails) throw "User not found. data/petOwner/getbyid";
+  if (petOwnerDetails == null || !petOwnerDetails)
+    throw "User not found. data/petOwner/getbyid";
 
   return petOwnerDetails;
 }
@@ -197,7 +223,6 @@ async function updatePetOwner(updatedData) {
   return await getPetOwnerById(existingUserData._id);
 }
 
-
 async function updatePetOwnerFeedbackById(req) {
   const petOwnerCollection = await petOwnerData();
   let petOwner = await this.getPetOwnerByUserEmail(req.session.user.email);
@@ -206,7 +231,7 @@ async function updatePetOwnerFeedbackById(req) {
     date: new Date(),
     rating: req.body.rating,
     feedback: req.body.experience,
-    feedbackGivenBy: petOwner._id
+    feedbackGivenBy: petOwner._id,
   };
   addFeedback._id = ObjectId();
 
@@ -214,9 +239,11 @@ async function updatePetOwnerFeedbackById(req) {
 
   petOwner._id = ObjectId(petOwner._id);
 
-  const updateInfo = await petOwnerCollection.updateOne({ _id: ObjectId(petOwner._id) }, { $set: petOwner });
-  if (updateInfo.modifiedCount === 0)
-    throw "Not able to update db";
+  const updateInfo = await petOwnerCollection.updateOne(
+    { _id: ObjectId(petOwner._id) },
+    { $set: petOwner }
+  );
+  if (updateInfo.modifiedCount === 0) throw "Not able to update db";
 }
 
 async function updatePassword(userId, plainTextPassword) {
@@ -234,7 +261,7 @@ async function updatePassword(userId, plainTextPassword) {
 
   const updateInfo = await petOwnerCollection.updateOne(
     { _id: ObjectId(userId) },
-    { $set: { "password": hashedPassword } }
+    { $set: { password: hashedPassword } }
   );
 
   if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
@@ -253,14 +280,13 @@ async function updateProfileImage(email, picture) {
   const petOwnerCollection = await petOwnerData();
   const updateInfo = await petOwnerCollection.updateOne(
     { _id: ObjectId(userDetails._id) },
-    { $set: { "profilePicture": picture } }
+    { $set: { profilePicture: picture } }
   );
 
   if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
     throw "Could not update profile picture";
 
   return await getPetOwnerById(ObjectId(userDetails._id));
-
 }
 
 //this function returns the data
@@ -274,13 +300,15 @@ async function getShelterReviews(shelterReviewsArray, userId) {
   for (let index = 0; index < shelterReviewsArray.length; index++) {
     const parsedId = ObjectId(shelterReviewsArray[index]);
     //console.log(parsedId);
-    const reviewData = await shelterAndRescueCollection.findOne({ "reviews._id": parsedId }, { projection: { _id: 0, reviews: 1, name: 1 } });
+    const reviewData = await shelterAndRescueCollection.findOne(
+      { "reviews._id": parsedId },
+      { projection: { _id: 0, reviews: 1, name: 1 } }
+    );
 
     if (reviewData === null) throw `No review found`;
 
     shelterReviewDetails.push(reviewData);
     //console.log(shelterReviewDetails);
-
   }
   let shelterReviewArray = [];
 
@@ -289,7 +317,7 @@ async function getShelterReviews(shelterReviewsArray, userId) {
       if (shelterReviewDetails[i].reviews[j].reviewer == userId) {
         shelterReviewArray.push({
           name: shelterReviewDetails[i].name,
-          reviews: shelterReviewDetails[i].reviews[j]
+          reviews: shelterReviewDetails[i].reviews[j],
         });
       }
     }
@@ -301,18 +329,18 @@ async function getShelterReviews(shelterReviewsArray, userId) {
 }
 
 async function getUserFavoritePets(favoritePetArray) {
-
   if (!Array.isArray(favoritePetArray)) throw "Parameter must be an array";
 
   const petCollection = await petData();
   let favoritePetsDetails = [];
   for (let i = 0; i < favoritePetArray.length; i++) {
-
-    const petDetails = await petCollection.findOne({ _id: ObjectId(favoritePetArray[i]) });
+    const petDetails = await petCollection.findOne({
+      _id: ObjectId(favoritePetArray[i]),
+    });
     if (petDetails == null) throw "pet not found";
     favoritePetsDetails.push({
       name: petDetails.petName,
-      image: petDetails.petPictures[0]
+      image: petDetails.petPictures[0],
     });
   }
   // for (let index = 0; index < favoritePetsDetails.length; index++)
@@ -320,20 +348,16 @@ async function getUserFavoritePets(favoritePetArray) {
   return favoritePetsDetails;
 }
 
-
 async function updateVolunteerStatus(userId, status) {
   let value = Boolean;
   //console.log(userId+" "+status);
-  if (status == "true")
-    value = true;
-  else
-    value = false;
+  if (status == "true") value = true;
+  else value = false;
   const petOwnerCollection = await petOwnerData();
-
 
   const updateInfo = await petOwnerCollection.updateOne(
     { _id: ObjectId(userId) },
-    { $set: { "isVolunteerCandidate": value } }
+    { $set: { isVolunteerCandidate: value } }
   );
 
   if (updateInfo.matchedCount === 0 && updateInfo.modifiedCount === 0)
@@ -348,7 +372,7 @@ async function getPetCount() {
   const shelterData = await shelterAndRescueCollection.find({}).toArray();
 
   if (shelterData == null) throw "Data not found";
-  let total = 0
+  let total = 0;
   for (let i = 0; i < shelterData.length; i++) {
     total += shelterData[i].adoptedPets.length;
   }
@@ -384,10 +408,9 @@ module.exports = {
   getShelterReviews,
   updateProfileImage,
   getUserFavoritePets,
-
+  checkVolunteer,
   updateVolunteerStatus,
   getPetCount,
 
-  getAllUsersWithFavoritePet
-
+  getAllUsersWithFavoritePet,
 };

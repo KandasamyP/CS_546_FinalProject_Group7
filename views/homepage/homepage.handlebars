@@ -7,10 +7,15 @@
     Welcome to GetAPet!
   </h2>
   <h3>You can adore all our fur babies below or check the Pet Search above 🐶</h3>
-  <p id="homepagePetCounter" class="text-white bg-dark">Total Number of Pets
-    Adopted:
+  <p id="homepagePetCounter" class="text-white bg-dark">Sitewide Pet Adopted
+    Counter:
     {{petCount}}
     💖</p>
+  {{#if isUserVolunteer}}<p
+      id="homepageUserVolunteer"
+      class="text-white bg-info"
+    >⭐ VOLUNTEER ⭐</p>
+  {{/if}}
 </div>
 
 <div id="displayPets">

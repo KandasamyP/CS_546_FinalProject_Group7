@@ -50,8 +50,7 @@
                     {{/if}}
                       
                     {{#if geoLocation.latitude}}
-                        <iframe src="https://maps.google.com/maps?q={{geoLocation.latitude}}, {{geoLocation.longitude}}&z=15&output=embed"
-                            width="360" height="270" frameborder="0" style="border:0"></iframe>
+                        <iframe src="https://maps.google.com/maps?q={{geoLocation.latitude}},{{geoLocation.longitude}}&z=15&output=embed" width="360" height="270"></iframe>
                     {{/if}}
                 </span>
             </div>
@@ -61,18 +60,23 @@
                 <span class="col-md-3">
                     <label>Website:</label>
                 </span>
-                <span class="col-md-9">
+                <div class="col-md-9">
                    <a> {{shelterDetails.website}} </a>
-                    {{#if shelterDetails.socialMedia.facebook}}
-                      <p>Facebook: <a> {{shelterDetails.socialMedia.facebook}} </a> </p>
+                    <div>{{#if shelterDetails.socialMedia.facebook}}
+                      Facebook: <a> {{shelterDetails.socialMedia.facebook}} </a>
                     {{/if}}
+                    </div>
+                    <div>
                     {{#if shelterDetails.socialMedia.instagram}}
-                       <p>Instagram: <a> {{shelterDetails.socialMedia.instagram}} </a> </p>
+                       Instagram: <a> {{shelterDetails.socialMedia.instagram}} </a> 
                     {{/if}}
+                    </div>
+                    <div>
                     {{#if shelterDetails.socialMedia.twitter}}
-                       <p>Twitter: <a> {{shelterDetails.socialMedia.twitter}} </a> </p>
+                       Twitter: <a> {{shelterDetails.socialMedia.twitter}} </a>
                     {{/if}}
-                </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -207,6 +211,14 @@
                     </div>
                 </div>
             </form>
+
+            {{#if petOwnerDetails.isVolunteerCandidate}}
+                <form class="form-horizontal" id="volunteerForm">
+                    <button type="submit" id="volunteerSubmitBtn" class="btn btn-primary btn-md">Click here to volunteer this shelter!!</button>
+                </form>
+                <div class="reviewSuccess" id="volunteerSuccessMessage" hidden>Your volunteer request sent to shelter, you will be contacted in future release !!!</div>
+            {{/if}}
+
             <div class="reviewSuccess" id="successMessage" hidden>Your review is added !!</div>
             <div class="error" id="reviewError" hidden>All input in form is mandatory !!</div>
         </div>
