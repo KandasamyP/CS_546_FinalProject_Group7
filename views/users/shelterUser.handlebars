@@ -1,8 +1,13 @@
 <div class="user-bg container-fluid">
     <div class="row spacing">
         <div class="container-fluid">
+            {{#if error}}
+                <div class="card errorSection">
+                    <p>{{error}}</p>
+                </div>
+            {{/if}}
             <div class="card">
-                <h5 class="card-header" id="user-photo">Profile Picture</h5>
+                <p class="card-header cardheadProfile" id="user-photo">Profile Picture</p>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-2">
@@ -16,8 +21,8 @@
                         <form id="shleterImageForm" method="POST" action="/shelterUser/changeProfileImage" enctype="multipart/form-data">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label for="image" class="col-form-label">Choose an image from your computer</label>
-                                    <input class = "form-control" type="file" id="profilePicture" name="profilePicture" accept="image/*"/>
+                                    <label for="shelterprofilePicture" class="col-form-label">Choose an image from your computer</label>
+                                    <input class = "form-control" type="file" id="shelterprofilePicture" name="shelterprofilePicture" accept="image/*"/>
                                 </div> 
                             </div>
                              <div class="form-group row">
@@ -40,16 +45,16 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="user-photo">Change Password</h5>
+                <p class="card-header cardheadProfile" id="user-password">Change Password</p>
                 <div class="card-body">
-                    <form id="shelterPasswordForm" method="POST" action="/shelterUser/changePassword" onsubmit="return(validatePassword());">
+                    <form id="shelterPasswordForm" method="POST" action="/shelterUser/changePassword" onsubmit="return(validateShelterPassword());">
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <label for="password" class="col-form-label">Enter New Password</label>
                             </div>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control" name="password" id="password"
-                                    value="{{shelterUser.password}}" placeholder="Enter New Password"></input>
+                                <input type="password" class="form-control" name="shelterPassword" id="shelterPassword"
+                                    value="{{shelterUser.password}}" placeholder="Enter New Password" required/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -65,7 +70,6 @@
                         </div> --}}
                     </form>
                 </div>
-                {{!-- alt="{{petOwner.fullName.firstName}}" --}}
             </div>
         </div>
     </div>
@@ -73,27 +77,27 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Information</h5>
+                <p class="card-header cardheadProfile" id = "info" >Information</p>
                 <div class="card-body">
                     <form id="shelterUserInfo" method="POST" action="/shelterUser" onsubmit="return(validateShelterUserForm());">
-                        <div class="form-group row" id="formSpacing">
+                        <div class="form-group row">
                             <label for="email" class="col-sm-4 col-form-label">Username</label>
                             <label for="name" class="col-sm-4 col-form-label">Name</label>
                             <label for="phoneNumber" class="col-sm-4 col-form-label">Phone Number</label>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="email" id="email" value="{{shelterUser.email}}" placeholder="Email"></input>
+                                <input type="text" class="form-control" name="email" id="email" value="{{shelterUser.email}}" placeholder="Email"/>
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="name" id="name" value="{{shelterUser.name}}" placeholder="Name"></input>
+                                <input type="text" class="form-control" name="name" id="name" value="{{shelterUser.name}}" placeholder="Name" required/>
                             </div>
                             <div class="col-sm-4">
-                                <input type="number" class="form-control" name="phoneNumber" id="phoneNumber" value="{{shelterUser.phoneNumber}}" placeholder="Phone Number" ></input>
+                                <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" value="{{shelterUser.phoneNumber}}" placeholder="123-456-7890" required/>
                             </div>
                         </div>
 
-                        <div class="form-group row" id="formSpacing">
+                        <div class="form-group row">
                             <label for="streetAddress1" class="col-sm-4 col-form-label">Street Address Line 1</label>
                             <label for="streetAddress2" class="col-sm-4 col-form-label">Street Address Line 2</label>
                             <label for="city" class="col-sm-4 col-form-label">City</label>
@@ -101,52 +105,36 @@
 
                         <div class="form-group row">
                             <div class="col-sm-4">
-                                {{!-- <input type="text" class="form-control" name="streetAddress1" id="streetAddress1" value="{{streetAddress1.location.street}}" placeholder="Street"></input> --}}
-                                <input type="text" class="form-control" name="streetAddress1" id="streetAddress1" value="{{shelterUser.location.streetAddress1}}" placeholder="Street Address Line 1"></input>
+                                {{!-- <input type="text" class="form-control" name="streetAddress1" id="streetAddress1" value="{{streetAddress1.location.street}}" placeholder="Street"/> --}}
+                                <input type="text" class="form-control" name="streetAddress1" id="streetAddress1" value="{{shelterUser.location.streetAddress1}}" placeholder="Street Address Line 1" required/>
                             </div>
                              <div class="col-sm-4">
-                                <input type="text" class="form-control" name="streetAddress2" id="streetAddress2" value="{{shelterUser.location.streetAddress2}}" placeholder="Street Address Line 2"></input>
+                                <input type="text" class="form-control" name="streetAddress2" id="streetAddress2" value="{{shelterUser.location.streetAddress2}}" placeholder="Street Address Line 2"/>
                             </div>
                              <div class="col-sm-4">
-                                <input type="text" class="form-control" name="city" id="city" value="{{shelterUser.location.city}}" placeholder="City"></input>
+                                <input type="text" class="form-control" name="city" id="city" value="{{shelterUser.location.city}}" placeholder="City" required/>
                             </div>
                         </div>
 
-                        <div class="form-group row" id="formSpacing">
-                            <label for="stateCode" class="col-sm-4 col-form-label">State</label>
+                        <div class="form-group row" >
+                            <label for="stateCode" class="col-sm-4 col-form-label">StateCode</label>
                             <label for="zipCode" class="col-sm-4 col-form-label">Zipcode</label>
                              <label for="website" class="col-sm-4 col-form-label">Website</label>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="stateCode" id="stateCode" value="{{shelterUser.location.stateCode}}" placeholder="State Code"></input>
+                                <input type="text" class="form-control" name="stateCode" id="stateCode" value="{{shelterUser.location.stateCode}}" placeholder="State Code" required/>
                             </div>
                             <div class="col-sm-4">
-                                <input type="number" class="form-control" name="zipCode" id="zipCode" value="{{shelterUser.location.zipCode}}"  min="00501" max="99950" placeholder="Zip Code" required></input>
+                                <input type="number" class="form-control" name="zipCode" id="zipCode" value="{{shelterUser.location.zipCode}}"  min="00501" max="99950" placeholder="Zip Code" required/>
                             </div>
                              <div class="col-sm-4">
-                                <input type="text" class="form-control" name="website" id="website" value="{{shelterUser.website}}" placeholder="Website"></input>
+                                <input type="text" class="form-control" name="website" id="website" value="{{shelterUser.website}}" placeholder="Website"/>
                             </div>
                         </div>
 
-                        {{!-- <div class="form-group row">
-                            <div class="col-sm-4">
-                                <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth"
-                                    value="{{shelterUser.dateOfBirth}}" placeholder="Date Of Birth"></input>
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="number" class="form-control" name="phoneNumber" id="phoneNumber"
-                                    value="{{shelterUser.phoneNumber}}" placeholder="Phone Number" ></input>
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="number" class="form-control" name="zipCode" id="zipCode"
-                                    value="{{shelterUser.zipCode}}" placeholder="Zip Code" ></input>
-                            </div>
-                        </div> --}}
-                        
-
-                        <div class="form-group row" id="formSpacing">
+                        <div class="form-group row">
                             <label for="twitter" class="col-sm-4 col-form-label">Twitter</label>
                             <label for="facebook" class="col-sm-4 col-form-label">Facebook</label>
                             <label for="instagram" class="col-sm-4 col-form-label">Instagram</label>
@@ -154,17 +142,17 @@
 
                         <div class="form-group row">
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="twitter" id="twitter" value="{{shelterUser.socialMedia.twitter}}" placeholder="Twitter"></input>
+                                <input type="text" class="form-control" name="twitter" id="twitter" value="{{shelterUser.socialMedia.twitter}}" placeholder="Twitter"/>
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="facebook" id="facebook" value="{{shelterUser.socialMedia.facebook}}" placeholder="Facebook"></input>
+                                <input type="text" class="form-control" name="facebook" id="facebook" value="{{shelterUser.socialMedia.facebook}}" placeholder="Facebook"/>
                             </div>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="instagram" id="instagram" value="{{shelterUser.socialMedia.instagram}}" placeholder="Instagram" ></input>
+                                <input type="text" class="form-control" name="instagram" id="instagram" value="{{shelterUser.socialMedia.instagram}}" placeholder="Instagram" />
                             </div>
                         </div>
 
-                        <div class="form-group row" id="formSpacing">
+                        <div class="form-group row">
                             <label for="biography" class="col-sm-12 col-form-label">Biography</label>
                         </div>
 
@@ -174,7 +162,7 @@
                                 {{!-- <textarea type="text" class="form-control" name="biography" id="biography"
                                     value="{{shelterUser.biography}}" placeholder="biography"></textarea> --}}
                                 <input type="text" class="form-control" name="biography" id="biography"
-                                    value="{{shelterUser.biography}}" placeholder="biography"></input>
+                                    value="{{shelterUser.biography}}" placeholder="biography"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -192,7 +180,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Available Pets</h5>
+                <p class="card-header cardheadProfile">Available Pets</p>
                 <div class="card-body">
                     {{#if shelterUser.availablePetsArray.length}}
                     <ul>
@@ -214,7 +202,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Adopted Pets</h5>
+                <p class="card-header cardheadProfile">Adopted Pets</p>
                 <div class="card-body">
                     {{#if shelterUser.adoptedPetsArray.length}}
                     <ul>
@@ -236,7 +224,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Reviews</h5>
+                <p class="card-header cardheadProfile">Reviews</p>
                 <div class="card-body">
                     {{#if shelterUser.reviews.length}}
                     <ul>
@@ -260,7 +248,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             <div class="card">
-                <h5 class="card-header" id="info">Feedback</h5>
+                <p class="card-header cardheadProfile">Feedback</p>
                 <div class="card-body">
                     {{#if shelterUser.websiteFeedbackGiven}}
                         {{#each shelterUser.websiteFeedbackGiven}}
