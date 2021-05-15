@@ -72,6 +72,15 @@ function shelterUserProfile(){
 
 }
 
+function validateShelterImage(){
+  if($("#shelterprofilePicture").val().trim() == "")
+  {
+    alert("you must provide photo");
+    return false;
+  }
+  return true;
+}
+
 function formShelter(formId, value) {
     var formData = formId;
     var i;
