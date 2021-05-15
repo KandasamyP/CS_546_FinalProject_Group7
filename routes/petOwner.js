@@ -21,12 +21,16 @@ router.get("/", async (req, res) => {
   try {
     if (req.session.user) {
       var email = req.body.userData.email;
+
       const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
-      //checking if user has given any shelter reviews
-      if (petOwner.shelterReviewsGiven.length != 0) {
+       
+      console.log(petOwner);
+
+      
+      // //checking if user has given any shelter reviews
+     if (petOwner.shelterReviewsGiven.length != 0) {
         try {
           const shelterReviewsInfo = await petOwnerData.getShelterReviews(
-            petOwner.shelterReviewsGiven,
             petOwner._id
           );
           petOwner.shelterReviewsGivenArray = shelterReviewsInfo;
@@ -34,10 +38,10 @@ router.get("/", async (req, res) => {
           res.status(e.status).send({title: "Error", error: e.error});
           return;
         }
-      }
-
-      //checking if user has any favorite pets
-      if (petOwner.favoritedPets.length != 0) {
+     }
+    
+       //checking if user has any favorite pets
+       if (petOwner.favoritedPets.length != 0) {
         try {
           const userFavoritePetsInfo = await petOwnerData.getUserFavoritePets(
             petOwner.favoritedPets
