@@ -49,6 +49,12 @@ function userProfile() {
     for (i = 0; i < formData.length; i++) formData[i].disabled = value;
     // $("#userInfo:input").prop("disabled", true);
   }
+
+  // if (document.getElementById("alertBox").textContent != null){
+  //   const alertMessage = document.getElementById("alertBox");
+  //   console.log(alertMessage.textContent);
+  //   (alert(alertMessage.textContent));
+  // }
 }
 
 function validateForm() {

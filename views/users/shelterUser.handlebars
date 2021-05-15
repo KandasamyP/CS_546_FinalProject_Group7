@@ -2,7 +2,7 @@
     <div class="row spacing">
         <div class="container-fluid">
             {{#if error}}
-                <div class="card errorSection">
+                <div class="card errorSection error">
                     <p>{{error}}</p>
                 </div>
             {{/if}}
@@ -252,11 +252,15 @@
                 <p class="card-header cardheadProfile">Feedback</p>
                 <div class="card-body">
                     {{#if shelterUser.websiteFeedbackGiven}}
+                    <ul>
                         {{#each shelterUser.websiteFeedbackGiven}}
-                        <p>Description: {{this.feedback}}</p>
-                        <p>Date: {{this.date}}</p>
-                        <p>Rating: {{this.rating}}/5</p>
+                        <li>
+                            <p>Description: {{this.feedback}}</p>
+                            <p>Date: {{this.date}}</p>
+                            <p>Rating: {{this.rating}}/5</p>
+                        </li>
                         {{/each}}
+                    </ul>    
                     {{else}}
                         <p>You haven't given feedback yet.</p>
                     {{/if}}
