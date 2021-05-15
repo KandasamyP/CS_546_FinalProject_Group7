@@ -36,8 +36,8 @@ $(document).ready(function () {
 
   // limit image upload to 5
   $("#add-new-pet").submit((event) => {
-    event.preventDefault();
     if (parseInt($("input[type='file']").get(0).files.length) > 5) {
+      event.preventDefault();
       alert("You may upload no more than 5 images.");
       return false;
     } else {

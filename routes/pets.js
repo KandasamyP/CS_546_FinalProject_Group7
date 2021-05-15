@@ -153,6 +153,7 @@ router.get("/pet/:id", async (req, res) => {
 });
 
 router.post("/inquire", async (req, res) => {
+  const sessionInfo = req.session.user;
   if (!sessionInfo || !sessionInfo.userAuthenticated || sessionInfo.userType !== "popaUser") {
     res.status(400).render("pets/error", {
       title: "400 Error",
@@ -288,6 +289,7 @@ router.post("/inquire", async (req, res) => {
 });
 
 router.post("/corrections", async (req, res) => {
+  const sessionInfo = req.session.user;
   if (!sessionInfo || !sessionInfo.userAuthenticated || sessionInfo.userType !== "popaUser") {
     res.status(400).render("pets/error", {
       title: "400 Error",
