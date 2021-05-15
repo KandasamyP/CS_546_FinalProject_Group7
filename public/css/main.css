@@ -314,11 +314,14 @@ li.favPets {
   color: #ffa500;
 }
 
-#volunteerForm {
-  margin-top: 50px;
-}
-
 .cardheadProfile{
   font-weight:500;
 }
 
+.addpets{
+  float:right;
+}
+
+#volunteerForm {
+  margin-top: 50px;
+}

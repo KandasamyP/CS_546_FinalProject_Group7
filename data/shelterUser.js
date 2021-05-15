@@ -69,6 +69,10 @@ async function updateShelter(updatedData, email) {
     //   },
     //   availablePets: Array
     // }
+
+    if(!updatedData.name || !updatedData.phoneNumber || !updatedData.location.hasOwnProperty("streetAddress1") ||
+    !updatedData.location.hasOwnProperty("city") || !updatedData.location.hasOwnProperty("stateCode") || !updatedData.location.hasOwnProperty("zipCode") )
+      throw {status: 404, error: "One of the mandatory fields is missing."};
     
     const sheltersCollection = await shelterAndRescueData();
 

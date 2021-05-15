@@ -204,7 +204,7 @@
                                 <li>
                                     <p>Website Rating: {{this.rating}}/5</p>
                                     <p>Feedback Given On: {{this.date}}</p>
-                                    <p>Your Comments: {{this.description}}</p>
+                                    <p>Your Comments: {{this.feedback}}</p>
                                 </li>
                             {{/each}}
                         </ul>
@@ -239,30 +239,16 @@
             <div class="card">
                 <p class="card-header cardheadProfile">Volunteer</p>
                 <div class="card-body"> 
-                    {{!-- {{#if petOwner.isVolunteerCandidate}}
-                        <p>You are a volunteer.</p>
-                    {{else}}
-                        <p>You are not a volunteer.</p> 
-                        <form action = "/petOwner/applyToBeAnVolunteer" method = "POST" id = "volunteerForm">
-                            <label for="applyToBeAnVolunteer">
-                                <button class="btn" id="applyToBeVolunteer" type="submit">Apply Now</button>
-                            </label>
-                        </form>
-                    {{/if}} --}}
-
                     <form action = "/petOwner/changeVolunteer" method = "POST" id = "volunteerForm">
                            {{#if petOwner.isVolunteerCandidate}}
                                 <p>You are a volunteer.</p>
-                                
                                     <button class="btn" id="withdrawVolunteer" type="submit">Withdraw</button>
                                     <input type="text" id = "status" name = "status" value="false" hidden>
                               
                             {{else}}
                                 <p>You are not a volunteer.</p> 
-                               
                                     <button class="btn" id="applyToBeVolunteer" type="submit">Apply</button>
                                     <input type="text" id = "status" name = "status" value="true" hidden>
-                               
                             {{/if}}
                     </form>
                 </div>

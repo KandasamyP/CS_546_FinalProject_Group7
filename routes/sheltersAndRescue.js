@@ -41,9 +41,14 @@ router.get("/:id", async (req, res) => {
     return;
   }
 
+
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      throw "Request param should be of object id";
+    }
     const shelter = await sheltersData.getShelterById(req.params.id);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
+
     for (let i = 0; i < shelter.availablePets.length; ++i) {
       const petsDetails = await petsData.getPetById(shelter.availablePets[i]);
       petsDetailsArray.push(petsDetails);
@@ -55,50 +60,53 @@ router.get("/:id", async (req, res) => {
     }
 
     
-      let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
-      for (let i = 0; i < shelter.reviews.length; ++i) {
-        if(shelter.reviews[i].reviewer) {
-          const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);   
+    let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
+
+    for (let i = 0; i < shelter.reviews.length; ++i) {
+      if (shelter.reviews[i].reviewer) {
+        const petOwnerInfo = await petOwnerData.getPetOwnerById((shelter.reviews[i].reviewer));   
+        userReviewDetail.push({
+          rating: shelter.reviews[i].rating,
+          reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+          reviewBody: shelter.reviews[i].reviewBody,
+          reviewDate: shelter.reviews[i].reviewDate,
+          reviewer: shelter.reviews[i].rating,
+        });
+      }  else {
           userReviewDetail.push({
             rating: shelter.reviews[i].rating,
-            reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+            reviewerName: "",
             reviewBody: shelter.reviews[i].reviewBody,
             reviewDate: shelter.reviews[i].reviewDate,
             reviewer: shelter.reviews[i].rating,
           });
-        }  else {
-            userReviewDetail.push({
-              rating: shelter.reviews[i].rating,
-              reviewerName: "",
-              reviewBody: shelter.reviews[i].reviewBody,
-              reviewDate: shelter.reviews[i].reviewDate,
-              reviewer: shelter.reviews[i].rating,
-            });
         }
-       
-        totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
-      }
-      let reviewDetail = {};
+      
+      totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
+    }
 
-      if(shelter.reviews.length > 0) {
-        avgReviews = totalReviews / shelter.reviews.length;
-        reviewDetail = {
-          avgReviews: avgReviews.toFixed(2),
-          totalReviews: shelter.reviews.length,
-        };
-      } else {
-        reviewDetail = {
-          avgReviews: 0,
-          totalReviews: 0,
-        };
-      }
-      let petOwnerDetails ;
-      if (req.session.user) {
-        var email = req.session.user.email;
-        const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
-  
-        petOwnerDetails = petOwner;
-      }
+    let reviewDetail = {};
+
+    if (shelter.reviews.length > 0) {
+      avgReviews = totalReviews / shelter.reviews.length;
+      reviewDetail = {
+        avgReviews: avgReviews.toFixed(1),
+        totalReviews: shelter.reviews.length,
+      };
+    } else {
+      reviewDetail = {
+        avgReviews: 0,
+        totalReviews: 0,
+      };
+    }
+    
+    let petOwnerDetails;
+    if (req.session.user && req.session.user.userType == "popaUser") {
+      var email = req.session.user.email;
+      const petOwner = await petOwnerData.getPetOwnerByUserEmail(email);
+
+      petOwnerDetails = petOwner;
+    }
 
     if (shelter.location && shelter.location.zipCode) {
       res.status(200).render("sheltersAndRescue/individual-shelter", {
@@ -128,13 +136,16 @@ router.get("/:id", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
-
     res.status(404).send(e);
+    return;
   }
 });
 
 router.post("/addReviews/:id", async (req, res) => {
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      throw "Request param should be of object id";
+    }
     const shelter = await sheltersData.updateShelterReviewById(req);
     let petsDetailsArray = [], adoptedPetsDetailsArray = [];
     for (let i = 0; i < shelter.availablePets.length; ++i) {
@@ -147,45 +158,67 @@ router.post("/addReviews/:id", async (req, res) => {
       adoptedPetsDetailsArray.push(petsDetails);
     }
       let avgReviews = 0, totalReviews = 0, userReviewDetail = [];
+
       for (let i = 0; i < shelter.reviews.length; ++i) {
-        const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);
-        userReviewDetail.push({
-          rating: shelter.reviews[i].rating,
-          reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
-          reviewBody: shelter.reviews[i].reviewBody,
-          reviewDate: shelter.reviews[i].reviewDate,
-          reviewer: shelter.reviews[i].rating,
-        });
+        if(shelter.reviews[i].reviewer) {
+          const petOwnerInfo = await petOwnerData.getPetOwnerById(shelter.reviews[i].reviewer);
+          userReviewDetail.push({
+            rating: shelter.reviews[i].rating,
+            reviewerName: petOwnerInfo.fullName.firstName + " " + petOwnerInfo.fullName.lastName,
+            reviewBody: shelter.reviews[i].reviewBody,
+            reviewDate: shelter.reviews[i].reviewDate,
+            reviewer: shelter.reviews[i].rating,
+          });
+        } else {
+          userReviewDetail.push({
+            rating: shelter.reviews[i].rating,
+            reviewerName: " ",
+            reviewBody: shelter.reviews[i].reviewBody,
+            reviewDate: shelter.reviews[i].reviewDate,
+            reviewer: shelter.reviews[i].rating,
+          });
+        }
         totalReviews = totalReviews + parseInt(shelter.reviews[i].rating);
       }
-      avgReviews = totalReviews / shelter.reviews.length;
+      let reviewDetail;
 
-      let reviewDetail = {
-        avgReviews: avgReviews.toFixed(2),
-        totalReviews: shelter.reviews.length,
-      };
+      if (shelter.reviews.length > 0) {
+        avgReviews = totalReviews / shelter.reviews.length;
+        reviewDetail = {
+          avgReviews: avgReviews.toFixed(1),
+          totalReviews: shelter.reviews.length,
+        };
+       const petOwnerInfo = await petOwnerData.updateShelterReviewsGiven(shelter.reviews[shelter.reviews.length - 1].reviewer, shelter.reviews[shelter.reviews.length - 1]._id);
+      } else {
+        reviewDetail = {
+          avgReviews: 0,
+          totalReviews: 0,
+        };
+      }
+
       let recentReview = {};
 
       if(userReviewDetail.length > 0) {
         recentReview = userReviewDetail[userReviewDetail.length - 1];
-        recentReview.avgReviews = avgReviews.toFixed(2);
+        recentReview.avgReviews = avgReviews.toFixed(1);
         recentReview.totalReviews = shelter.reviews.length;
       }
       res.status(200).json(recentReview);
    
   } catch (e) {
-    console.log("error" + e)
-
     res.status(404).send(e);
   } 
 });
 
 router.post("/addVolunteer/:id", async (req, res) => {
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      throw "Request param should be of object id";
+    }
     const shelter = await sheltersData.updateVolunteerById(req);
     res.status(200).json(shelter);
   } catch (e) {
-    console.log("error" + e)
+    console.log("error" + e);
 
     res.status(404).send(e);
   } 
