@@ -12,15 +12,15 @@ $(document).ready(function () {
     $(".cat-chosen").show();
   });
 
-  if ($('input#dog').is(':checked')) {
+  if ($("input#dog").is(":checked")) {
     $(".cat-chosen").hide();
     $(".dog-chosen").show();
-  };
+  }
 
-  if ($('input#cat').is(':checked')) {
+  if ($("input#cat").is(":checked")) {
     $(".dog-chosen").hide();
     $(".cat-chosen").show();
-  };
+  }
 
   // don't allow more than 2 breeds to be checked
   $("input.breeds").on("change", function () {
@@ -44,5 +44,4 @@ $(document).ready(function () {
       return true;
     }
   });
-
 });

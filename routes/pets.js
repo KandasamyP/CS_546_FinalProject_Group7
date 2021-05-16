@@ -154,7 +154,11 @@ router.get("/pet/:id", async (req, res) => {
 
 router.post("/inquire", async (req, res) => {
   const sessionInfo = req.session.user;
-  if (!sessionInfo || !sessionInfo.userAuthenticated || sessionInfo.userType !== "popaUser") {
+  if (
+    !sessionInfo ||
+    !sessionInfo.userAuthenticated ||
+    sessionInfo.userType !== "popaUser"
+  ) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "Please sign in as a pet adopter to use this feature.",
@@ -290,7 +294,11 @@ router.post("/inquire", async (req, res) => {
 
 router.post("/corrections", async (req, res) => {
   const sessionInfo = req.session.user;
-  if (!sessionInfo || !sessionInfo.userAuthenticated || sessionInfo.userType !== "popaUser") {
+  if (
+    !sessionInfo ||
+    !sessionInfo.userAuthenticated ||
+    sessionInfo.userType !== "popaUser"
+  ) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "Please sign in as a pet adopter to use this feature.",
@@ -799,7 +807,7 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
       }
 
       let filters = [];
-      
+
       filters = appearanceArray.concat(behaviorsArray);
 
       const shelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
@@ -830,7 +838,7 @@ router.post("/add", upload.array("petPictures", 5), async (req, res) => {
       title: "Something went wrong!",
       error: e,
       pageTitle: "Pets",
-      isLoggedIn: req.body.isLoggedIn
+      isLoggedIn: req.body.isLoggedIn,
     });
     return;
   }
@@ -926,7 +934,11 @@ router.get("/new", async (req, res) => {
 
 router.get("/pet/:id/update", async (req, res) => {
   try {
-    if (!req.params.id || typeof req.params.id !== "string" || req.params.id.trim().length === 0) {
+    if (
+      !req.params.id ||
+      typeof req.params.id !== "string" ||
+      req.params.id.trim().length === 0
+    ) {
       res.status(404).render("pets/error", {
         title: "404 Error",
         error: "No id supplied.",
@@ -944,11 +956,13 @@ router.get("/pet/:id/update", async (req, res) => {
       return;
     }
 
-    const thisShelter = await shelterData.getPetShelterByEmail(sessionInfo.email);
+    const thisShelter = await shelterData.getPetShelterByEmail(
+      sessionInfo.email
+    );
     const pet = await petsData.getPetById(req.params.id);
 
     // if you are not the shelter that manages this pet, you can't be on this page!
-    if (thisShelter._id !== pet.associatedShelter)  {
+    if (thisShelter._id !== pet.associatedShelter) {
       res.redirect(`/pets/pet/${req.params.id}`);
       return;
     }
@@ -1003,7 +1017,7 @@ router.get("/pet/:id/update", async (req, res) => {
       pet: pet,
       pageTitle: "Pets",
       isLoggedIn: req.body.isLoggedIn,
-      script: "pet-add"
+      script: "pet-add",
     });
     return;
   } catch (e) {
@@ -1032,7 +1046,7 @@ router.post("/delete", async (req, res) => {
       });
       return;
     }
-  
+
     if (
       !req.body.shelterId ||
       typeof req.body.shelterId !== "string" ||
@@ -1089,7 +1103,7 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
 
     let inputAnimalType = req.body.animalType;
     let inputBreeds;
-    
+
     if (inputAnimalType === "Dog") {
       inputBreeds = req.body.dogBreeds;
     } else {
@@ -1191,7 +1205,11 @@ router.post("/update", upload.array("petPictures", 5), async (req, res) => {
 });
 
 router.post("/favorite", async (req, res) => {
-  if (!req.body.favoritedPet || typeof req.body.favoritedPet !== "string" || req.body.favoritedPet.trim().length === 0) {
+  if (
+    !req.body.favoritedPet ||
+    typeof req.body.favoritedPet !== "string" ||
+    req.body.favoritedPet.trim().length === 0
+  ) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "No pet id supplied.",
@@ -1201,7 +1219,11 @@ router.post("/favorite", async (req, res) => {
     return;
   }
 
-  if (!req.body.userId || typeof req.body.userId !== "string" || req.body.userId.trim().length === 0) {
+  if (
+    !req.body.userId ||
+    typeof req.body.userId !== "string" ||
+    req.body.userId.trim().length === 0
+  ) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "No user id supplied.",
@@ -1211,7 +1233,11 @@ router.post("/favorite", async (req, res) => {
     return;
   }
 
-  if (!req.body.favoriteTrueFalse || typeof req.body.favoriteTrueFalse !== "string" || req.body.favoriteTrueFalse.trim().length === 0) {
+  if (
+    !req.body.favoriteTrueFalse ||
+    typeof req.body.favoriteTrueFalse !== "string" ||
+    req.body.favoriteTrueFalse.trim().length === 0
+  ) {
     res.status(400).render("pets/error", {
       title: "400 Error",
       error: "Can't determine if pet is being favorited or unfavorited.",
@@ -1233,7 +1259,8 @@ router.post("/favorite", async (req, res) => {
     } else {
       res.status(400).render("pets/error", {
         title: "400 Error",
-        error: "You're not able to add or remove favorites without a pet adopter profile",
+        error:
+          "You're not able to add or remove favorites without a pet adopter profile",
         pageTitle: "Pets",
         isLoggedIn: req.body.isLoggedIn,
       });
