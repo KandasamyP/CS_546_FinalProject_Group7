@@ -53,13 +53,11 @@ router.post("/", async (req, res) => {
     if (req.session.user.userType === "popaUser") {
       await petOwnerData.updatePetOwnerFeedbackById(req);
     }
-    res
-      .status(200)
-      .render("shelters/feedback", {
-        title: "Feedback",
-        isLoggedIn: req.body.isLoggedIn,
-        script: "feedback",
-      });
+    res.status(200).render("shelters/feedback", {
+      title: "Feedback",
+      isLoggedIn: req.body.isLoggedIn,
+      script: "feedback",
+    });
   } catch (e) {
     res.status(e.status).json({ error: e.error });
   }

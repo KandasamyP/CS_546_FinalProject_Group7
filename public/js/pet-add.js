@@ -12,15 +12,15 @@ $(document).ready(function () {
     $(".cat-chosen").show();
   });
 
-  if ($('input#dog').is(':checked')) {
+  if ($("input#dog").is(":checked")) {
     $(".cat-chosen").hide();
     $(".dog-chosen").show();
-  };
+  }
 
-  if ($('input#cat').is(':checked')) {
+  if ($("input#cat").is(":checked")) {
     $(".dog-chosen").hide();
     $(".cat-chosen").show();
-  };
+  }
 
   // don't allow more than 2 breeds to be checked
   $("input.breeds").on("change", function () {
@@ -35,11 +35,13 @@ $(document).ready(function () {
   });
 
   // limit image upload to 5
-  $(function () {
-    $("input[type='submit']").click(function () {
-      if (parseInt($("input[type='file']").get(0).files.length) > 5) {
-        alert("You may upload no more than 5 images.");
-      }
-    });
+  $("#add-new-pet").submit((event) => {
+    if (parseInt($("input[type='file']").get(0).files.length) > 5) {
+      event.preventDefault();
+      alert("You may upload no more than 5 images.");
+      return false;
+    } else {
+      return true;
+    }
   });
 });

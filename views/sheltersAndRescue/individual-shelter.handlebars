@@ -198,10 +198,11 @@
                     <!-- Rating -->
                     <div class="form-group row">
                         <div class="col-md-4">
-                    <label class="control-label" for="rating">Your rating</label>
+                        <label class="control-label" for="rating">Your rating</label>
                     </div>
                     <div class="col-md-8">
                         <input class="form-control" type="number" min="0" max="5" id="rating" name="rating"> 
+                        (0 being the lowest and 5 being the highest)
                     </div>
                     </div>
                 </fieldset>
@@ -247,7 +248,7 @@
                 {{#each userReviewDetail}}
                     <div class="row">
                         <div class="col-md-6">
-                            <h3>{{this.reviewerName}}</h3>
+                            <h2>{{this.reviewerName}}</h3>
                             <div>
                                 <p class="text-left"><span>Rating: {{this.rating}}</span> 
                                 </p>

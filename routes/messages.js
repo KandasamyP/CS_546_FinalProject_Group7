@@ -89,7 +89,10 @@ router.post("/", async (req, res) => {
         return;
       }
 
-      if (typeof req.body.recipient !== "string" || req.body.recipient.trim().length === 0) {
+      if (
+        typeof req.body.recipient !== "string" ||
+        req.body.recipient.trim().length === 0
+      ) {
         res.render("pets/error", {
           title: "Something went wrong!",
           error: "Recipient cannot be empty.",
@@ -99,7 +102,10 @@ router.post("/", async (req, res) => {
         return;
       }
 
-      if (typeof req.body.reply !== "string" || req.body.reply.trim().length === 0) {
+      if (
+        typeof req.body.reply !== "string" ||
+        req.body.reply.trim().length === 0
+      ) {
         res.render("pets/error", {
           title: "Something went wrong!",
           error: "Reply is missing",
@@ -113,7 +119,7 @@ router.post("/", async (req, res) => {
         userInfo._id,
         req.body.recipient,
       ]);
-      
+
       const newMsg = await messagesData.addMessage(
         thread._id,
         userInfo._id,
@@ -132,7 +138,7 @@ router.post("/", async (req, res) => {
         recipient: req.body.recipient,
         pageTitle: "Messages",
         isLoggedIn: req.body.isLoggedIn,
-        script: "messages"
+        script: "messages",
       });
       return;
     } else {
