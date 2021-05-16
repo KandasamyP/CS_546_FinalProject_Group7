@@ -87,48 +87,48 @@ router.post(
     let email = req.session.user.email;
 
     const shelterUser = await shelterUserData.getPetShelterByEmail(email);
-      //checking if shelter has available pets
-      if (shelterUser.availablePets.length != 0) {
-        try {
-          const shelterAvailablePets = await shelterUserData.getPetsData(
-            shelterUser.availablePets
-          );
-          shelterUser.availablePetsArray = shelterAvailablePets;
-        } catch (e) {
-          res.status(e.status).json({ error: e.error });
-          return;
-        }
+    //checking if shelter has available pets
+    if (shelterUser.availablePets.length != 0) {
+      try {
+        const shelterAvailablePets = await shelterUserData.getPetsData(
+          shelterUser.availablePets
+        );
+        shelterUser.availablePetsArray = shelterAvailablePets;
+      } catch (e) {
+        res.status(e.status).json({ error: e.error });
+        return;
       }
+    }
 
-      //checking if shelter has available pets
-      if (shelterUser.adoptedPets.length != 0) {
-        try {
-          const shelterAdoptedPets = await shelterUserData.getPetsData(
-            shelterUser.adoptedPets
-          );
-          shelterUser.adoptedPetsArray = shelterAdoptedPets;
-          // for (let i = 0; i < shelterAdoptedPets.length; i++)
-          //   console.log(shelterAdoptedPets[i]);
-        } catch (e) {
-          res.status(e.status).json({ error: e.error });
-          return;
-        }
+    //checking if shelter has available pets
+    if (shelterUser.adoptedPets.length != 0) {
+      try {
+        const shelterAdoptedPets = await shelterUserData.getPetsData(
+          shelterUser.adoptedPets
+        );
+        shelterUser.adoptedPetsArray = shelterAdoptedPets;
+        // for (let i = 0; i < shelterAdoptedPets.length; i++)
+        //   console.log(shelterAdoptedPets[i]);
+      } catch (e) {
+        res.status(e.status).json({ error: e.error });
+        return;
       }
+    }
 
-      //checking if shelter has reviews and retrieving reviewer's name
-      if (shelterUser.reviews.length != 0) {
-        try {
-          const shelterDetails = await shelterUserData.getReviews(
-            shelterUser.reviews
-          );
-          shelterUser.reviews = shelterDetails;
-        } catch (e) {
-          res.status(e.status).json({ error: e.error });
-          return;
-        }
+    //checking if shelter has reviews and retrieving reviewer's name
+    if (shelterUser.reviews.length != 0) {
+      try {
+        const shelterDetails = await shelterUserData.getReviews(
+          shelterUser.reviews
+        );
+        shelterUser.reviews = shelterDetails;
+      } catch (e) {
+        res.status(e.status).json({ error: e.error });
+        return;
       }
+    }
 
-    if (!req.file){
+    if (!req.file) {
       res.status(500).render("users/shelterUser", {
         shelterUser,
         status: "failed",
@@ -137,7 +137,7 @@ router.post(
         isLoggedIn: req.body.isLoggedIn,
         script: "sheltersProfile",
       });
-      return
+      return;
     }
     imageData.profilePicture = req.file.filename;
     // console.log(req.session.user);
@@ -408,7 +408,6 @@ router.post("/", async (req, res) => {
     }
 
     try {
-     
       const { data } = await axios.get(
         encodeURI(
           `https://us-street.api.smartystreets.com/street-address?auth-id=33470d7f-96b9-3696-5112-d370eef1e36f&auth-token=FWi7nSCzrbUQmPsX5rGe&street=${shelterUserInfo.streetAddress1}&street2=${shelterUserInfo.streetAddress2}&city=${shelterUserInfo.city}&state=${shelterUserInfo.stateCode}&zipcode=${shelterUserInfo.zipCode}`

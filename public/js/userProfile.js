@@ -35,7 +35,7 @@ function userProfile() {
     //emailId.disabled = true;  //uncomment this as value will come from session
   });
 
-  editPassword.addEventListener("click", (event)=>{
+  editPassword.addEventListener("click", (event) => {
     event.preventDefault();
     password.disabled = false;
     password.value = "";
@@ -51,9 +51,9 @@ function userProfile() {
   }
 }
 
-function validateImage(){
+function validateImage() {
   const profilePicture = document.getElementById("profilePicture");
-  if (profilePicture.value.trim() == ""){
+  if (profilePicture.value.trim() == "") {
     alert("You must provide photo");
     return false;
   }
@@ -73,7 +73,8 @@ function validateForm() {
     return false;
   }
 
-  const phoneNumberRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;  //regex to check phone Number
+  const phoneNumberRegex =
+    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im; //regex to check phone Number
   if (!phoneNumberRegex.test($("#phoneNumber").val())) {
     alert("You must enter a valid Phone Number.");
     $("#phoneNumber").focus();
@@ -82,7 +83,7 @@ function validateForm() {
   return true;
 }
 
-function validatePassword(){
+function validatePassword() {
   if ($("#password").val().trim().length < 6) {
     alert("You must enter a password with atleast 6 characters.");
     $("#password").focus();
@@ -94,17 +95,17 @@ if (pathname === "/petOwner") {
   userProfile();
 }
 
-if( pathname === "/petOwner/changePassword") {
+if (pathname === "/petOwner/changePassword") {
   window.location.pathname = "/petOwner";
   userProfile();
 }
 
-if( pathname === "/petOwner/changeProfileImage") {
+if (pathname === "/petOwner/changeProfileImage") {
   window.location.pathname = "/petOwner";
   userProfile();
 }
 
-if( pathname === "/petOwner/changeVolunteer") {
+if (pathname === "/petOwner/changeVolunteer") {
   window.location.pathname = "/petOwner";
   userProfile();
 }
